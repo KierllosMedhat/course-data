@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* TODO: Override the default media-query dark mode to use a class-based approach instead */
+/* HINT: Use @custom-variant */

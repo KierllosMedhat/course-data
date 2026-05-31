@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic HTML Tags Reference</title>
+</head>
+<body>
+
+  <!-- HEADINGS -->
+  <h1>Heading Level 1 (Page Title — use only once)</h1>
+  <h2>Heading Level 2 (Section)</h2>
+  <h3>Heading Level 3 (Sub-section)</h3>
+
+  <!-- PARAGRAPHS & TEXT -->
+  <p>This is a paragraph. It flows naturally and wraps at the container edge.</p>
+  <p>Use <strong>strong</strong> for important text and <em>em</em> for emphasis.</p>
+
+  <!-- LINKS -->
+  <a href="https://developer.mozilla.org" target="_blank" rel="noopener noreferrer">
+    MDN Web Docs (opens in new tab)
+  </a>
+  <!-- Internal anchor link -->
+  <a href="#section2">Jump to Section 2</a>
+
+  <!-- UNORDERED LIST -->
+  <ul>
+    <li>HTML — structure</li>
+    <li>CSS — appearance</li>
+    <li>JavaScript — behaviour</li>
+  </ul>
+
+  <!-- ORDERED LIST -->
+  <ol>
+    <li>Download VS Code</li>
+    <li>Install Live Server extension</li>
+    <li>Open your HTML file</li>
+  </ol>
+
+  <!-- IMAGE with alt text (accessibility requirement) -->
+  <img
+    src="https://via.placeholder.com/400x200"
+    alt="A placeholder image showing 400 by 200 pixels"
+    width="400"
+  >
+
+  <!-- BLOCK vs INLINE -->
+  <div style="background: #eee; padding: 8px;">
+    I am a block element (div) — I take up the full width.
+    <span style="color: blue;">I am inline (span) — I flow with text.</span>
+  </div>
+
+  <section id="section2">
+    <h2>Section 2</h2>
+    <p>This is the anchor target for the internal link above.</p>
+  </section>
+
+</body>
+</html>

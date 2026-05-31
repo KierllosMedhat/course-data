@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Queries Lab</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: sans-serif; display: flex; gap: 2rem; padding: 2rem; }
+        
+        .sidebar { width: 300px; background: #f4f4f4; padding: 1rem; }
+        .main { flex: 1; background: #e0e0e0; padding: 1rem; }
+
+        .card-wrapper {
+            /* TODO: Define this element as an inline-size container */
+            
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column; /* Default stacked layout */
+            gap: 1rem;
+        }
+
+        .card-img {
+            background: #3498db;
+            height: 150px;
+            width: 100%;
+        }
+
+        /* TODO: Write a @container query. 
+           When the container is at least 400px wide, change .card to flex-direction: row 
+           and set .card-img width to 150px.
+        */
+
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Sidebar</h2>
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-img"></div>
+                <div class="card-content">
+                    <h3>My Card</h3>
+                    <p>This is a component.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <h2>Main Content</h2>
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-img"></div>
+                <div class="card-content">
+                    <h3>My Card</h3>
+                    <p>This is the EXACT same HTML component as in the sidebar.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

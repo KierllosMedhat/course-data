@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "a36gzIJv9kM=",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\Fullstack Web Development Course\\course-data\\lecture-41-efcore-webapi\\assignment\\BlogApi\\BlogApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kierl\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.6\\microsoft.aspnetcore.openapi.10.0.6.nupkg.sha512",
+    "C:\\Users\\Kierl\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

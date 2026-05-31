@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODO — SaaS Landing Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- TODO: Configure custom brand colours in tailwind.config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          // TODO: Add a custom 'brand' colour palette
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
+
+  <!--
+  ASSIGNMENT — SaaS Landing Page (Tailwind CSS Advanced)
+  Requirements:
+  ✅ Full dark mode support using `dark:` variants on text, backgrounds, and borders
+  ✅ Use a custom brand colour defined in the tailwind.config script
+  ✅ Use `group` and `group-hover:` for a complex interactive card
+  ✅ Use at least one arbitrary value (e.g., `w-[320px]` or `bg-[#123456]`)
+  ✅ Use `peer` and `peer-checked:` to style a custom toggle or radio button setup (Optional but recommended)
+  ✅ Responsive layout: mobile-first approach
+  -->
+
+  <nav class="border-b border-gray-200 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+      <div class="font-bold text-xl text-brand-500">TODO Logo</div>
+      <button id="dark-mode-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-gray-800">
+        Toggle Dark Mode
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    
+    <!-- TODO: Hero Section -->
+    <div class="text-center max-w-3xl mx-auto">
+      <h1 class="text-5xl font-extrabold tracking-tight">TODO — Revolutionary SaaS</h1>
+      <p class="mt-4 text-xl text-gray-500 dark:text-gray-400">TODO — Description text supporting dark mode.</p>
+      <!-- TODO: Custom branded button with hover/focus states -->
+    </div>
+
+    <!-- TODO: Feature Grid with Group Hover -->
+    <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Feature Card 1 -->
+      <div class="group border border-gray-200 dark:border-gray-800 rounded-2xl p-8 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors">
+        <!-- TODO: Icon that changes colour on group-hover -->
+        <!-- TODO: Title that changes colour on group-hover -->
+        <p class="mt-2 text-gray-500 dark:text-gray-400">Description here.</p>
+      </div>
+      <!-- Add more feature cards -->
+    </div>
+
+  </main>
+
+  <script>
+    document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+  </script>
+</body>
+</html>

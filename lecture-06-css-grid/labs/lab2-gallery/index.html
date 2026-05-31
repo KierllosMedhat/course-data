@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-fit Gallery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { padding: 2rem; }
+
+        .gallery {
+            /* TODO: Make this a grid container */
+            
+            /* TODO: Use repeat, auto-fit, and minmax to make columns automatically fill available space */
+            
+            /* TODO: Add a gap of 10px */
+
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* TODO: Add a class .span-2 that spans 2 columns or 2 rows */
+
+    </style>
+</head>
+<body>
+    <h1>Responsive Gallery</h1>
+    <div class="gallery">
+        <img src="https://picsum.photos/400?1" alt="Placeholder">
+        <img src="https://picsum.photos/400?2" alt="Placeholder">
+        <img src="https://picsum.photos/400?3" alt="Placeholder" class="span-2">
+        <img src="https://picsum.photos/400?4" alt="Placeholder">
+        <img src="https://picsum.photos/400?5" alt="Placeholder">
+        <img src="https://picsum.photos/400?6" alt="Placeholder">
+    </div>
+</body>
+</html>

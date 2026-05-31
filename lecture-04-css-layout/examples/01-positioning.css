@@ -1,0 +1,78 @@
+/* ===================================================
+   CSS LAYOUT — Positioning, Floats & Display Examples
+   =================================================== */
+
+/* ===== 1. THE DISPLAY PROPERTY ===== */
+.block   { display: block; }         /* takes full width, stacks vertically */
+.inline  { display: inline; }        /* flows with text, no width/height */
+.inline-block { display: inline-block; width: 120px; height: 80px; } /* inline + box model */
+.none    { display: none; }          /* hidden — no space reserved */
+
+/* ===== 2. POSITION: STATIC (default) ===== */
+.static-box {
+  position: static;  /* Normal document flow — top/left/right/bottom have no effect */
+}
+
+/* ===== 3. POSITION: RELATIVE ===== */
+.relative-box {
+  position: relative;
+  top: 20px;    /* shifts DOWN 20px from its normal position */
+  left: 30px;   /* shifts RIGHT 30px — original space is preserved */
+  background: #e3f2fd;
+}
+
+/* ===== 4. POSITION: ABSOLUTE ===== */
+.parent {
+  position: relative; /* Establishes a "containing block" for absolute children */
+  width: 300px;
+  height: 200px;
+  background: #fff3e0;
+  border: 2px dashed #ffa726;
+}
+
+.absolute-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ff5722;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+/* ===== 5. POSITION: FIXED ===== */
+.sticky-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a2e;
+  color: #fff;
+  padding: 12px 24px;
+  z-index: 1000;  /* Stacks above other content */
+}
+
+/* ===== 6. POSITION: STICKY ===== */
+.sticky-header {
+  position: sticky;
+  top: 0;         /* Sticks to the top of its scroll container */
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 12px;
+  z-index: 100;
+}
+
+/* ===== 7. Z-INDEX ===== */
+/*
+  z-index only works on positioned elements (relative, absolute, fixed, sticky).
+  Higher z-index = closer to the viewer (rendered on top).
+*/
+.modal-overlay { position: fixed; z-index: 900; }
+.modal-dialog  { position: fixed; z-index: 901; } /* on top of overlay */
+.tooltip       { position: absolute; z-index: 1100; } /* on top of everything */
+
+/* ===== 8. OVERFLOW ===== */
+.clip      { overflow: hidden; }   /* clip content that exceeds the box */
+.scroll    { overflow: scroll; }   /* always show scrollbars */
+.auto-scroll { overflow: auto; }   /* show scrollbars only when needed (best practice) */

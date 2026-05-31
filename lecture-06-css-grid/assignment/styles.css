@@ -1,0 +1,65 @@
+/* ASSIGNMENT — Photo Gallery Styles */
+/* ============================================
+   Build a photography portfolio gallery using CSS Grid.
+
+   Requirements:
+   ✅ Named grid-template-areas for the overall page layout
+      (header, sidebar/filters, main gallery, footer)
+   ✅ Photo gallery grid using repeat(auto-fit, minmax(250px, 1fr))
+   ✅ At least 2 "featured" photos that span 2 columns (grid-column: span 2)
+   ✅ A lightbox-style overlay: centered in viewport using place-items: center
+   ✅ Use gap for spacing (no margin between cards)
+   ✅ Dense auto-placement (grid-auto-flow: dense) so gaps are filled
+============================================ */
+
+:root {
+  /* TODO: colour palette, spacing */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ===== PAGE LAYOUT (named areas) ===== */
+.page {
+  display: grid;
+  /* TODO: Define grid-template-areas for: header, sidebar, gallery, footer */
+  /* TODO: Set grid-template-columns and grid-template-rows */
+  min-height: 100vh;
+}
+
+header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.gallery-section { grid-area: gallery; }
+footer  { grid-area: footer; }
+
+/* ===== PHOTO GALLERY ===== */
+.gallery {
+  display: grid;
+  /* TODO: repeat(auto-fit, minmax(250px, 1fr)) */
+  /* TODO: grid-auto-flow: dense */
+  gap: 12px;
+}
+
+/* ===== FEATURED PHOTOS ===== */
+.photo-card--featured {
+  /* TODO: grid-column: span 2 (or grid-row: span 2 for a taller card) */
+}
+
+/* ===== PHOTO CARD ===== */
+.photo-card {
+  /* TODO: position: relative, overflow: hidden */
+}
+
+.photo-card img {
+  /* TODO: width: 100%, height: 100%, object-fit: cover */
+}
+
+.photo-card__overlay {
+  /* TODO: position: absolute overlay showing on :hover */
+  /* Show photographer name and description */
+}
+
+/* ===== LIGHTBOX OVERLAY ===== */
+.lightbox {
+  /* TODO: position: fixed, full screen, centered image */
+  /* Use display: grid; place-items: center */
+}

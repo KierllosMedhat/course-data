@@ -1,0 +1,72 @@
+/* FLEXBOX EXAMPLES — Lecture 05 */
+
+/* 1. Flex Container */
+.flex-container {
+  display: flex;
+  flex-direction: row;        /* row | column | row-reverse | column-reverse */
+  flex-wrap: wrap;            /* nowrap | wrap | wrap-reverse */
+  justify-content: center;    /* main-axis: flex-start | flex-end | center | space-between | space-around | space-evenly */
+  align-items: stretch;       /* cross-axis: flex-start | flex-end | center | stretch | baseline */
+  align-content: flex-start;  /* multi-line cross-axis (only when wrap is active) */
+  gap: 16px;                  /* shorthand for row-gap + column-gap */
+}
+
+/* 2. Flex Items */
+.flex-item {
+  flex-grow: 1;    /* how much the item grows to fill remaining space */
+  flex-shrink: 1;  /* how much the item shrinks when space is short */
+  flex-basis: 200px; /* ideal size before growing/shrinking */
+  /* shorthand: flex: grow shrink basis */
+  flex: 1 1 200px;
+}
+
+/* A fixed item that doesn't grow or shrink */
+.flex-item--fixed {
+  flex: 0 0 120px; /* always 120px */
+}
+
+/* align-self overrides align-items for a single item */
+.flex-item--top {
+  align-self: flex-start;
+}
+
+/* Order changes visual position without touching HTML */
+.flex-item--last { order: 99; }
+.flex-item--first { order: -1; }
+
+/* 3. COMMON PATTERNS */
+
+/* Centred hero */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Sticky footer */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main { flex: 1; } /* grows to push footer down */
+
+/* Navbar: brand left, links right */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+}
+
+/* Card grid: equal-width cards that wrap */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.card-grid .card {
+  flex: 1 1 280px;  /* grow, shrink, minimum 280px */
+  max-width: 380px;
+}

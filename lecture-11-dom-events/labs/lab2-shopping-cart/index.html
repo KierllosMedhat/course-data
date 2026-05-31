@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <script src="app.js" defer></script>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        .cart-item { display: flex; justify-content: space-between; padding: 1rem; border: 1px solid #ccc; margin-bottom: 1rem; }
+        .delete-btn { background: red; color: white; border: none; padding: 0.5rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Shopping Cart Delegation Lab</h1>
+    
+    <div id="cart">
+        <div class="cart-item">
+            <span>Apple</span>
+            <button class="delete-btn">Remove</button>
+        </div>
+        <div class="cart-item">
+            <span>Banana</span>
+            <button class="delete-btn">Remove</button>
+        </div>
+        <div class="cart-item">
+            <span>Orange</span>
+            <button class="delete-btn">Remove</button>
+        </div>
+    </div>
+</body>
+</html>

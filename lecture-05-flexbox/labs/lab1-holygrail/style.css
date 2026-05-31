@@ -1,0 +1,31 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: sans-serif;
+    /* TODO: Make the body a flex container, set direction to column, and minimum height to 100vh */
+
+}
+
+.header, .footer {
+    background: #333;
+    color: white;
+    padding: 1rem;
+}
+
+.content-wrapper {
+    /* TODO: Make this a flex container and tell it to take up the remaining vertical space */
+
+}
+
+.sidebar {
+    background: #f4f4f4;
+    padding: 1rem;
+    /* TODO: Fix this sidebar to 250px wide so it doesn't grow or shrink */
+
+}
+
+.main-content {
+    padding: 2rem;
+    /* TODO: Make this take up the remaining horizontal space */
+
+}

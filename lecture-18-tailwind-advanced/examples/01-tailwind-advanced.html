@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS - Advanced</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Configuring Tailwind to extend the default theme -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class', // Enable dark mode manually via a class
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              500: '#14b8a6',
+              900: '#134e4a',
+            }
+          },
+          animation: {
+            'wiggle': 'wiggle 1s ease-in-out infinite',
+          },
+          keyframes: {
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-3deg)' },
+              '50%': { transform: 'rotate(3deg)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 min-h-screen p-8">
+
+  <div class="max-w-4xl mx-auto space-y-12">
+
+    <!-- 1. DARK MODE -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Dark Mode Support</h2>
+      <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Themed Card</h3>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">This text automatically adjusts based on the presence of the <code class="text-brand-500">dark</code> class on a parent element (usually the HTML or body tag).</p>
+      </div>
+      <button id="theme-toggle" class="mt-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+        Toggle Dark Mode
+      </button>
+    </section>
+
+    <!-- 2. CUSTOM THEME CONFIGURATION -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Custom Configuration</h2>
+      <button class="bg-brand-500 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:bg-brand-900 transition">
+        Custom Brand Colour
+      </button>
+      <div class="mt-4 inline-block text-4xl animate-wiggle">👋</div>
+    </section>
+
+    <!-- 3. ADVANCED RESPONSIVENESS & ARBITRARY VALUES -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Arbitrary Values & Modifiers</h2>
+      <!-- Using square brackets for exact, one-off values -->
+      <div class="w-[300px] h-[150px] bg-[#ff4400] text-white p-4 rounded-[20px] shadow-[0_10px_30px_rgba(255,68,0,0.4)]">
+        Exact sizes and hex colours!
+      </div>
+      
+      <!-- Group hover -->
+      <div class="group mt-6 p-4 border border-gray-300 rounded-lg hover:bg-brand-50 cursor-pointer">
+        <h3 class="font-bold text-gray-800 group-hover:text-brand-500 transition-colors">Group Hover Target</h3>
+        <p class="text-gray-500 mt-1">Hovering anywhere in the card changes the title colour.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Simple script to toggle the 'dark' class on the body
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+  </script>
+</body>
+</html>

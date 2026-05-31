@@ -1,0 +1,47 @@
+/* ASSIGNMENT — Magazine Layout Styles */
+:root {
+  /* TODO: Define colour, spacing, font variables */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  /* TODO: Add padding-top equal to navbar height so content isn't hidden */
+}
+
+.main-nav {
+  /* TODO: position: fixed, top: 0, full width, z-index above all content */
+}
+
+.hero {
+  /* TODO: position: relative, background image/gradient, min-height for banner look */
+}
+
+.hero-content {
+  /* TODO: position: absolute, centered horizontally and vertically */
+}
+
+.content-wrapper {
+  /* TODO: Use inline-block or float for two-column layout */
+}
+
+.main-article {
+  /* TODO: ~65% width, display: inline-block or float: left */
+}
+
+.sidebar {
+  /* TODO: ~30% width, margin/gap from main article */
+}
+
+.main-article h2 {
+  /* TODO: position: sticky, top equal to navbar height */
+}
+
+.news-feed {
+  /* TODO: Fixed height, overflow: auto for scrollable content */
+}
+
+/* BONUS */
+.toast {
+  /* TODO: position: fixed, bottom-right corner, z-index above content */
+}

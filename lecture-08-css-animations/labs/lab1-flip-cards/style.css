@@ -1,0 +1,54 @@
+* { box-sizing: border-box; }
+body { font-family: sans-serif; display: grid; place-items: center; min-height: 100vh; background: #eee; }
+
+.card-container {
+    width: 300px;
+    height: 400px;
+    /* TODO: Set the perspective here */
+    
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* TODO: Preserve 3D space for children */
+    
+    /* TODO: Add a transition for the transform property */
+    
+}
+
+.card:hover {
+    /* TODO: Rotate the card 180 degrees on the Y axis when hovered */
+    
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* TODO: Hide the backface of these elements */
+    
+}
+
+.card-front {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-back {
+    background: #3498db;
+    color: white;
+    /* TODO: Pre-rotate the back so it's facing away initially */
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

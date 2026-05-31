@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll-Driven Progress</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: sans-serif; line-height: 1.6; padding: 2rem; }
+        
+        .content { max-width: 800px; margin: 0 auto; }
+        
+        /* The Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 6px;
+            background: #e74c3c;
+            width: 0%; /* Starts at 0 */
+            z-index: 100;
+            
+            /* TODO: Link the 'grow-progress' animation to the scroll timeline */
+            
+        }
+
+        /* TODO: Define the @keyframes for 'grow-progress' to animate width from 0% to 100% */
+        
+
+    </style>
+</head>
+<body>
+    <div class="progress-bar"></div>
+    
+    <div class="content">
+        <h1>Scroll Down!</h1>
+        <p>Notice the red progress bar at the top of the screen as you scroll.</p>
+        
+        <div style="height: 3000px; background: linear-gradient(#f9f9f9, #ddd);">
+            <!-- Mock Content -->
+        </div>
+
+        <h2>You reached the bottom!</h2>
+    </div>
+</body>
+</html>

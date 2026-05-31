@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "X6n5C8Q2keo=",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\Fullstack Web Development Course\\course-data\\lecture-48-capstone\\assignment\\BusinessManagementSystem\\backend\\BusinessManagementApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kierl\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.6\\microsoft.aspnetcore.openapi.10.0.6.nupkg.sha512",
+    "C:\\Users\\Kierl\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
