@@ -9,175 +9,313 @@
 ## 🎯 Learning Objectives
 
 By the end of this lecture, you will be able to:
-- Integrate EF Core 10 into an ASP.NET Core Web API.
-- Implement the Repository and Unit of Work patterns.
-- Design Data Transfer Objects (DTOs) to prevent over-posting and circular references.
-- Map entities to DTOs automatically using AutoMapper.
-- Implement offset-based pagination.
+- Integrate EF Core securely into an ASP.NET Core Web API using Dependency Injection
+- Understand when and how to implement the Repository and Unit of Work patterns
+- Design Data Transfer Objects (DTOs) to prevent over-posting and infinite JSON loops
+- Automate object mapping from Entities to DTOs using AutoMapper
+- Implement efficient database pagination using `.Skip()` and `.Take()`
 
 ---
 
 ## 📋 Agenda
 
 ### Part 1 — Theory (~90 min)
-1. Registering `DbContext` with DI
+1. Integrating `DbContext` in ASP.NET Core
 2. The Repository & Unit of Work Patterns
-3. DTOs (Data Transfer Objects)
-4. AutoMapper Integration
-5. Pagination
+3. DTOs (Data Transfer Objects): The Plated Meal Analogy
+4. AutoMapper: Eliminating Boilerplate
+5. Efficient Pagination
 
 ### Part 2 — Practice / Lab (~90–120 min)
-1. Repository & Unit of Work Implementation
-2. AutoMapper Setup
-3. ShopAPI Project Part 3: EF Core Integration
+1. Implementing generic Repositories
+2. Configuring AutoMapper Profiles
+3. ShopAPI Project Part 3: Database & DTO Integration
 
 ---
 
-## 1. Registering DbContext with DI
+## 1. Integrating `DbContext` in ASP.NET Core
+
+In a previous lecture, we built a console app and hardcoded the SQLite connection string inside `OnConfiguring`. In a Web API, we configure the database centrally in `Program.cs` so we can securely pull the connection string from `appsettings.json`.
+
+### Step 1: `appsettings.json`
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=shop.db"
+  }
+}
+```
+
+### Step 2: `Program.cs`
 
 ```csharp
-// Program.cs
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. Fetch the connection string securely
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// 2. Register the DbContext with the DI Container
 builder.Services.AddDbContext<ShopContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlite(connectionString);
+});
 ```
 
 > [!WARNING]
-> `DbContext` is registered as **Scoped** by default (one per HTTP request). It is NOT thread-safe, so never register it as Singleton.
+> `AddDbContext` registers your context as **Scoped** by default. This is perfect because it creates a new database connection at the start of an HTTP request and closes it at the end. Never register a `DbContext` as a Singleton, because it is not thread-safe!
 
 ---
 
-## 2. Repository & Unit of Work Patterns
+## 2. The Repository & Unit of Work Patterns
 
-If your application has complex business logic, abstracting EF Core behind a Repository makes your code easier to test and maintain.
+While you *can* inject `ShopContext` directly into your API Controllers, this tightly couples your API to Entity Framework Core. If your application grows complex, abstracting data access behind a Repository is highly recommended.
 
-### Generic Repository Interface
+### The Generic Repository Interface
+
+Instead of writing a repository for every single entity, we write one Generic Repository!
+
 ```csharp
 public interface IRepository<T> where T : class
 {
     Task<T?> GetByIdAsync(int id);
     Task<IReadOnlyList<T>> GetAllAsync();
-    Task AddAsync(T entity);
+    
+    // Notice these don't return Task. They just mark the entity as added/removed in memory!
+    void Add(T entity);
     void Remove(T entity);
 }
 ```
 
-### Unit of Work
-The Unit of Work orchestrates multiple repositories and shares a single `DbContext`.
+### The Unit of Work (The Conductor)
+
+If we have multiple repositories (e.g., `ProductRepository` and `OrderRepository`), we need a way to ensure that if we add an Order and update a Product, both changes are saved to the database simultaneously in a single transaction.
+
+The **Unit of Work** holds all the repositories and provides a single method to save changes.
+
 ```csharp
-public interface IUnitOfWork
+public interface IUnitOfWork : IDisposable
 {
     IRepository<Product> Products { get; }
     IRepository<Category> Categories { get; }
     
-    // Only the Unit of Work calls SaveChanges!
+    // The only place where we actually call _context.SaveChangesAsync()
     Task<int> CompleteAsync(); 
 }
 ```
 
+### Controller Usage
+```csharp
+[HttpPost]
+public async Task<IActionResult> CreateProduct(Product product)
+{
+    // Mark for addition in memory
+    _unitOfWork.Products.Add(product);
+    
+    // Commit to the database
+    await _unitOfWork.CompleteAsync(); 
+    
+    return Ok();
+}
+```
+
 ---
 
-## 3. Data Transfer Objects (DTOs)
+## 3. DTOs (Data Transfer Objects): The Plated Meal Analogy
 
-Never return your database Entity classes directly from your API!
-- **Circular References:** A Product has a Category, a Category has Products... JSON serialization will crash in an infinite loop.
-- **Over-posting:** A user shouldn't be able to send an `IsAdmin=true` field when updating their profile.
+### The Real-World Analogy
 
-Create dedicated DTOs for the API contract:
+Imagine you order a steak at a restaurant. 
+- The **Entity** is the raw slab of meat, the bag of potatoes, and the carton of butter sitting in the kitchen fridge.
+- The **DTO (Data Transfer Object)** is the beautifully plated steak with mashed potatoes placed on your table.
+
+You should **never** send raw Entities from your database directly to the user, and you should never accept raw Entities directly from the user's HTTP request.
+
+### Problem 1: Over-posting (Security Flaw)
+
 ```csharp
-// The Database Entity
-public class Product
+public class User 
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public decimal Price { get; set; }
-    public Category Category { get; set; } // Complex
+    public bool IsAdmin { get; set; } // DANGER!
 }
+```
+If a hacker sends `{"name": "Hacker", "isAdmin": true}`, and you bind that directly to the `User` entity, you just gave them admin rights! 
 
-// The API Response DTO
+**Solution:** Create a `CreateUserDto` that only contains `Name`.
+
+### Problem 2: Circular References (Infinite Loops)
+
+```csharp
+public class Category { public List<Product> Products { get; set; } }
+public class Product { public Category Category { get; set; } }
+```
+If you return a `Product`, the JSON serializer will serialize the `Category`. Inside the Category, it finds the `Product`. Inside the Product, it finds the `Category`... and your API crashes with an infinite loop exception!
+
+### The DTO Solution
+
+Always map Database Entities to API DTOs before returning data.
+
+```csharp
+// API Contract (What the frontend sees)
 public record ProductDto(int Id, string Name, decimal Price, string CategoryName);
-```
 
----
-
-## 4. AutoMapper
-
-Writing `new ProductDto { Name = p.Name, ... }` manually gets tedious. **AutoMapper** automates this!
-
-### 1. Install AutoMapper
-```bash
-dotnet add package AutoMapper
-```
-
-### 2. Create a Profile
-AutoMapper automatically maps properties with the same name. It can also "flatten" objects (e.g. `Category.Name` -> `CategoryName`).
-```csharp
-public class MappingProfile : Profile
-{
-    public MappingProfile()
-    {
-        CreateMap<Product, ProductDto>(); // Entity -> DTO
-        CreateMap<CreateProductDto, Product>(); // DTO -> Entity
-    }
-}
-```
-
-### 3. Use it in the API
-```csharp
+// Controller
 [HttpGet]
-public async Task<ActionResult<List<ProductDto>>> GetProducts()
+public async Task<ActionResult<List<ProductDto>>> Get()
 {
-    var products = await _unitOfWork.Products.GetAllAsync();
-    var dtos = _mapper.Map<List<ProductDto>>(products);
+    var products = await _db.Products.Include(p => p.Category).ToListAsync();
+    
+    // Manual mapping
+    var dtos = products.Select(p => new ProductDto(
+        p.Id, p.Name, p.Price, p.Category.Name
+    )).ToList();
+    
     return Ok(dtos);
 }
 ```
 
 ---
 
-## 5. Pagination
+## 4. AutoMapper: Eliminating Boilerplate
 
-Don't return 10,000 products at once. Use `.Skip()` and `.Take()`.
+Manual mapping (`p.Name = dto.Name`) becomes tedious when you have 30 properties. **AutoMapper** is a popular library that does this automatically using Reflection.
+
+### 1. Installation
+
+```bash
+dotnet add package AutoMapper
+```
+
+### 2. Create a Mapping Profile
+
+AutoMapper automatically maps properties with identical names. It also has a superpower called "Flattening". If your DTO has a property called `CategoryName`, AutoMapper will automatically look for `entity.Category.Name`!
 
 ```csharp
-public async Task<List<Product>> GetPagedProductsAsync(int pageIndex, int pageSize)
+using AutoMapper;
+
+public class MappingProfile : Profile
 {
-    return await _context.Products
-        .Skip((pageIndex - 1) * pageSize)
-        .Take(pageSize)
-        .ToListAsync();
+    public MappingProfile()
+    {
+        // Source -> Destination
+        CreateMap<Product, ProductDto>(); 
+        
+        // Reverse mapping for creating
+        CreateMap<CreateProductDto, Product>(); 
+    }
 }
 ```
 
-Return the total count in a custom HTTP header (`X-Pagination`) or a wrapper object so the Angular frontend knows how many pages exist!
+### 3. Register and Use in the API
+
+```csharp
+// Program.cs
+// Tells AutoMapper to scan the assembly for classes inheriting from 'Profile'
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+```
+
+```csharp
+// Controller
+private readonly IMapper _mapper;
+
+public ProductsController(IMapper mapper) { _mapper = mapper; }
+
+[HttpGet]
+public async Task<IActionResult> GetProducts()
+{
+    var products = await _unitOfWork.Products.GetAllAsync();
+    
+    // One line of code transforms the entire list!
+    var data = _mapper.Map<IReadOnlyList<ProductDto>>(products);
+    
+    return Ok(data);
+}
+```
+
+---
+
+## 5. Efficient Pagination
+
+If your database has 1 million products, you cannot return them all in one `GET` request. The server will run out of memory, and the user's browser will crash. 
+
+We use **Offset-based Pagination** using LINQ's `.Skip()` and `.Take()`.
+
+### The Logic
+
+To get Page 3, where each page has 10 items:
+- We want items 21 through 30.
+- We **Skip** the first 20 items: `Skip((3 - 1) * 10)`
+- We **Take** 10 items: `Take(10)`
+
+### The Implementation
+
+```csharp
+[HttpGet]
+public async Task<IActionResult> GetPagedProducts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+{
+    // Maximum page size to prevent abuse
+    if (pageSize > 50) pageSize = 50;
+
+    // Execute query in the database
+    var products = await _context.Products
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToListAsync();
+        
+    return Ok(products);
+}
+```
+
+> [!NOTE]
+> It is also good practice to return the **Total Count** of items in the database, so the Angular frontend knows exactly how many pages exist to render the `[1] [2] [3] [4]` pagination buttons.
+
+---
+
+## Common Mistakes & How to Avoid Them
+
+| ❌ Mistake | ✅ Fix |
+|-----------|--------|
+| Returning raw database Entities from an API | Always map to DTOs to prevent circular references and data leaks. |
+| Making `.Add()` asynchronous in a generic repository | Adding to EF Core memory is synchronous (`_context.Set<T>().Add(entity)`). Only `SaveChangesAsync()` needs to be awaited. |
+| Calling `SaveChanges` inside a Repository loop | Use the Unit of Work pattern so `SaveChanges` is only called once at the very end of the HTTP request. |
+| Writing 50 lines of manual mapping code | Install and configure AutoMapper profiles. |
 
 ---
 
 ## 🧪 Practice Labs
 
 ### Lab 1 — AutoMapper (40 min)
-1. Install AutoMapper via NuGet.
-2. Create a `User` entity and a `UserDto` record.
-3. Create a `MappingProfile` and register AutoMapper in `Program.cs`.
-4. Inject `IMapper` into your controller and map a `User` to a `UserDto`.
+1. Install the `AutoMapper` package.
+2. Create an `Employee` entity (Id, Name, Salary, Department).
+3. Create an `EmployeeDto` (Id, Name, DepartmentName) - deliberately hiding the Salary!
+4. Create a `MappingProfile`.
+5. Write a Controller endpoint that loads employees, maps them to DTOs using `IMapper`, and returns them. Ensure the Salary is not in the JSON response!
 
 ### Lab 2 — Pagination (40 min)
-1. Add `[FromQuery] int page = 1` and `[FromQuery] int pageSize = 10` to your GetAll endpoint.
-2. Modify your EF Core query to use `.Skip()` and `.Take()`.
-3. Test it in Swagger!
+1. Add `page` and `pageSize` query parameters to a GET endpoint.
+2. Apply `.Skip()` and `.Take()` to the EF Core query.
+3. Test it via Postman or Swagger by requesting `?page=2&pageSize=5`.
 
 ---
 
 ## 📝 Assignment: ShopAPI Project — Part 3
 
-Let's integrate EF Core and DTOs into our ShopAPI!
+Let's integrate EF Core and DTOs into our actual ShopAPI backend!
 
 ### Requirements
-1. Install `Microsoft.EntityFrameworkCore.Sqlite`, `Design`, and `AutoMapper`.
-2. Create a `ShopContext` with `Products` and `Categories`. Create migrations and update your database.
-3. Create an `IRepository<T>` and `IUnitOfWork`. Register them in DI.
+1. Install the required EF Core and AutoMapper packages.
+2. Build the `ShopContext` containing `Products` and `Brands`. Add a SQLite connection string to `appsettings.json`.
+3. Create the Generic `IRepository<T>` and the `IUnitOfWork`. Register them in DI as `Scoped`.
 4. Create a `ProductDto` and a `CreateProductDto`.
-5. Refactor your `ProductsController` to use `IUnitOfWork` and `IMapper`.
-6. Add Pagination to the `GET /api/products` endpoint.
+5. Set up AutoMapper profiles mapping between your entities and DTOs.
+6. Refactor your `ProductsController`:
+   - Inject `IUnitOfWork` and `IMapper`.
+   - Update `GetAll` to return DTOs and implement Pagination (`Skip`/`Take`).
+   - Update `Create` to accept a `CreateProductDto`, map it to an entity, add it via UnitOf Work, and save.
 
 ---
 
@@ -185,17 +323,19 @@ Let's integrate EF Core and DTOs into our ShopAPI!
 
 | Resource | Link |
 |----------|------|
-| EF Core Documentation | https://learn.microsoft.com/en-us/ef/core/ |
-| AutoMapper | https://docs.automapper.org/ |
+| EF Core DbContext | https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/ |
+| AutoMapper Docs | https://docs.automapper.org/en/stable/ |
+| Repository Pattern in ASP.NET Core | https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design |
 
 ---
 
 ## 📌 Key Takeaways
-- **`AddDbContext`** registers EF Core with a Scoped lifetime.
-- **Repository & Unit of Work** patterns cleanly abstract database access.
-- **DTOs** are mandatory to prevent circular references and over-posting.
-- **AutoMapper** eliminates manual mapping code.
-- **Pagination** (`Skip`/`Take`) is essential for performance.
+- **`AddDbContext`** centrally configures EF Core via Dependency Injection (Scoped lifetime).
+- **The Generic Repository** abstracts duplicate EF Core code (`GetAll`, `GetById`).
+- **The Unit of Work** ensures multiple database changes happen in a single, safe transaction.
+- **DTOs** are mandatory! Never return your internal database entities to the public internet.
+- **AutoMapper** replaces manual `dto.Name = entity.Name` code with clean, profile-based configurations.
+- **Pagination** uses `.Skip()` and `.Take()` to fetch data in small chunks, keeping your API lightning fast.
 
 ---
 
