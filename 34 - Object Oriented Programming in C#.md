@@ -6,7 +6,17 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 1. Prerequisites
+
+Before starting this lecture, you should:
+- Have a firm grasp of C# fundamentals (variables, loops, conditions).
+- Understand basic C# syntax and methods (Lecture 33).
+- Be comfortable creating simple console applications in .NET.
+- Have a working installation of the .NET 8 or 9 SDK and an IDE like Visual Studio or VS Code.
+
+---
+
+## 2. Objectives
 
 By the end of this lecture, you will be able to:
 - Explain the four pillars of OOP (Encapsulation, Inheritance, Polymorphism, Abstraction)
@@ -20,7 +30,7 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 📋 Agenda
+## 3. Agenda
 
 ### Part 1 — Theory (~90 min)
 1. The four pillars of OOP
@@ -39,7 +49,9 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 1. The Four Pillars of OOP
+## 4. Deep Dive
+
+### 4.1. The Four Pillars of OOP
 
 ### Plain-English Explanation
 
@@ -76,7 +88,7 @@ In C#: abstract classes and interfaces define *what* an object can do without sp
 
 ---
 
-## 2. Classes & Objects
+### 4.2. Classes & Objects
 
 ### What is a Class? What is an Object?
 
@@ -178,7 +190,7 @@ public class ProductExample
 
 ---
 
-## 3. Constructors & Methods
+### 4.3. Constructors & Methods
 
 ### What is a Constructor?
 
@@ -275,7 +287,7 @@ public class Point(double x, double y)
 
 ---
 
-## 4. Encapsulation & Access Modifiers
+### 4.4. Encapsulation & Access Modifiers
 
 ### What is Encapsulation?
 
@@ -358,7 +370,7 @@ public class BankAccount
 
 ---
 
-## 5. Inheritance
+### 4.5. Inheritance
 
 ### What is Inheritance?
 
@@ -494,7 +506,7 @@ public class Poodle : Dog
 
 ---
 
-## 6. Abstract Classes
+### 4.6. Abstract Classes
 
 ### What is an Abstract Class?
 
@@ -607,7 +619,7 @@ foreach (Shape shape in shapes)
 
 ---
 
-## 7. Interfaces
+### 4.7. Interfaces
 
 ### What is an Interface?
 
@@ -757,7 +769,7 @@ public class Transaction : ILoggable, IAuditable, IExportable
 
 ---
 
-## 8. Abstract Classes vs Interfaces — When to Use Which
+### 4.8. Abstract Classes vs Interfaces — When to Use Which
 
 This is one of the most common questions in OOP. Here's a clear framework:
 
@@ -817,19 +829,73 @@ public class Duck : Animal, ISpeakable, ISwimmable, IFlyable
 }
 ```
 
-### Common Mistakes in OOP
+---
 
-| Mistake | What Goes Wrong | Fix |
-|---------|----------------|-----|
-| Public fields instead of properties | Can't add validation later without breaking API | Always use properties with `{ get; set; }` |
-| Not sealing classes that should be final | Unintended inheritance creates fragile hierarchies | Add `sealed` to concrete classes that shouldn't be extended |
-| Overusing inheritance ("is-a" abuse) | Tight coupling, fragile code | Prefer composition over inheritance when in doubt |
-| Forgetting `override` keyword | Compiler warning, hides base method instead of overriding | Always use `override` for virtual/abstract method replacements |
-| Interface with too many members | Clients must implement everything even if unused | Split large interfaces into smaller ones (Interface Segregation Principle) |
+## 5. Think Like a Dev
+
+When writing object-oriented code, ask yourself:
+1. **Am I exposing too much?** Keep fields private. Only expose what the rest of the application absolutely needs. 
+2. **Does this class have too many responsibilities?** If a class `OrderProcessor` is also saving data to the database and sending emails, it's doing too much. Split it.
+3. **Is this an "IS-A" or "HAS-A" relationship?** Don't use inheritance just to reuse code. Use it when the subclass fundamentally *is a* specific type of the parent class. If it just *uses* the functionality, prefer composition (HAS-A).
+4. **Program to interfaces, not implementations.** When passing dependencies, use `IPaymentProcessor` instead of `StripePaymentProcessor`. This makes your code testable and easy to change later.
 
 ---
 
-## 🧪 Practice Labs
+## 6. Before/After
+
+### Before: Procedural Spaghetti (No OOP)
+
+```csharp
+// Data is disconnected from logic
+string accountName = "Alice";
+decimal balance = 1000m;
+
+// Anyone can arbitrarily change the balance
+balance = -500; // Invalid state!
+
+void Deposit(ref decimal currentBalance, decimal amount)
+{
+    currentBalance += amount;
+}
+```
+
+### After: Encapsulated OOP
+
+```csharp
+public class BankAccount
+{
+    public string AccountName { get; }
+    
+    // Controlled mutation
+    public decimal Balance { get; private set; }
+
+    public BankAccount(string name, decimal initialBalance)
+    {
+        AccountName = name;
+        Balance = initialBalance;
+    }
+
+    public void Deposit(decimal amount)
+    {
+        if (amount <= 0) throw new ArgumentException("Amount must be positive.");
+        Balance += amount;
+    }
+}
+
+// Usage:
+var account = new BankAccount("Alice", 1000m);
+account.Deposit(200m);
+// account.Balance = -500; // ❌ COMPILE ERROR
+```
+
+---
+
+## 7. Common Mistakes
+
+| Mistake | What Goes Wrong | Fix |
+|---
+
+## 8. Labs
 
 ### Lab 1 — Class Hierarchy: Person → Student (30 min)
 1. Create an `abstract class Person` with:
@@ -855,7 +921,7 @@ public class Duck : Animal, ISpeakable, ISwimmable, IFlyable
 3. Create an `InMemoryProductRepository : IRepository<Product>` that stores products in a private `List<Product>`.
 4. In `Program.cs`, declare a variable of type `IRepository<Product>` pointing to your implementation. Add products, get by ID, remove one, and print all.
 
----
+
 
 ## 📝 Assignment: FinanceTracker Project — Part 2
 
@@ -918,17 +984,38 @@ Balance: $2,954.50
 
 ---
 
-## 🔗 Resources
+## 9. Interview Prep
 
-| Resource | Link |
-|----------|------|
-| C# OOP Tutorial | https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/oop/ |
-| Abstract Classes | https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/abstract |
-| Interfaces | https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interface |
+**Q: What are the four pillars of OOP?**  
+A: Encapsulation (hiding state, requiring methods to mutate it), Inheritance (deriving from a base class to share behavior), Polymorphism (overriding methods or using interfaces to treat different types generically), and Abstraction (hiding complex implementations behind simple interfaces or abstract classes).
+
+**Q: What is the difference between an Abstract Class and an Interface?**  
+A: An abstract class can have implementation details (fields, non-abstract methods) and you can only inherit from one. An interface defines a contract with no implementation (historically) and a class can implement multiple interfaces.
+
+**Q: What does the `virtual` keyword do?**  
+A: It marks a method or property in a base class as able to be overridden in a derived class using the `override` keyword.
+
+**Q: When would you use a Primary Constructor?**  
+A: Introduced in C# 12, primary constructors are great for simple dependency injection or classes where the parameters are directly mapped to properties, reducing boilerplate code.
 
 ---
 
-## 📌 Key Takeaways
+## 10. Cheat Sheet
+
+- **Class Definition:** `public class Car { }`
+- **Fields:** `private int _speed;`
+- **Properties:** `public int Speed { get; private set; }`
+- **Inheritance:** `public class ElectricCar : Car { }`
+- **Interfaces:** `public interface IDriveable { void Drive(); }`
+- **Abstract Class:** `public abstract class Vehicle { public abstract void Start(); }`
+- **Virtual Method:** `public virtual void Honk() { Console.WriteLine("Beep!"); }`
+- **Override Method:** `public override void Honk() { Console.WriteLine("BEEEEP!"); }`
+- **Sealed Class:** `public sealed class SecuritySystem { }` (Cannot be inherited)
+- **Primary Constructor:** `public class Person(string name) { public string Name => name; }`
+
+---
+
+## 11. Key Takeaways
 
 - **The four OOP pillars**: Encapsulation (hide internals), Inheritance (build on existing), Polymorphism (many forms), Abstraction (focus on what, not how)
 - **Classes** are blueprints; **objects** are instances — each object has its own independent state

@@ -37,6 +37,16 @@ By the end of this lecture, you will be able to:
 
 ---
 
+
+## 🛑 0. Prerequisites (What to know before starting)
+
+Before diving into Angular v21, ensure you are comfortable with:
+- **HTML & CSS:** Basic structure and styling (Grid/Flexbox).
+- **JavaScript/TypeScript:** ES6 features (classes, arrow functions, destructuring) and basic types.
+- **Command Line:** Navigating folders and running basic `npm` commands.
+
+---
+
 ## 1. What Is Angular?
 
 ### The Plain-English Explanation — Starting from Zero
@@ -103,45 +113,6 @@ Understanding that Angular is a *complete system* — not just a UI library — 
 - Angular is a **batteries-included, opinionated framework** — everything you need is built in.
 - Modern Angular uses **Standalone Components** (no NgModules), **Signals** for reactivity, and **Zoneless** change detection.
 - Angular plays three roles: UI **framework**, deployment **platform**, and development **toolset**.
-
----
-
-## 2. Angular vs React vs Vue — Choosing the Right Tool
-
-Before diving into code, let's understand the landscape of modern front-end frameworks so you can make informed decisions:
-
-| Feature | Angular (v21) | React (v19+) | Vue (v3.5+) |
-|---------|--------------|--------------|-------------|
-| **Type Safety** | TypeScript mandatory | Optional TS | Optional TS |
-| **Router** | Built-in, full-featured | React Router (3rd party) | Vue Router (official) |
-| **Forms** | Built-in, two approaches | Formik/RHF (3rd party) | VeeValidate (3rd party) |
-| **HTTP Client** | Built-in | fetch/axios (3rd party) | fetch/axios (3rd party) |
-| **State Management** | Signals + Services | Zustand, Redux, Recoil | Pinia |
-| **Learning Curve** | Steeper (more concepts upfront) | Moderate | Gentle |
-| **Best For** | Enterprise, large teams | Flexible apps, large ecosystem | Small/medium apps |
-| **Backed By** | Google | Meta | Community (Evan You) |
-
-### When to Choose Each
-
-**Choose Angular when:**
-- Building large-scale enterprise applications
-- Working in large teams where consistency and conventions are critical
-- The project requires a strict TypeScript-first, structured architecture
-- You want everything handled by one integrated system
-
-**Choose React when:**
-- You need maximum flexibility in choosing your own libraries
-- You want access to the largest ecosystem of third-party components
-- Your team already has React expertise
-- You're building an app where the UI is highly custom
-
-**Choose Vue when:**
-- You want a gentle learning curve with gradual TypeScript adoption
-- You're building small to medium-sized applications
-- You prefer a simpler, more approachable template syntax
-
-> [!NOTE]
-> In this course, we use Angular because enterprise employers highly value Angular expertise, and because Angular's conventions teach you software architecture patterns (Dependency Injection, Services, Reactive Programming) that transfer to any framework.
 
 ---
 
@@ -212,23 +183,6 @@ ng g p my-pipe                       # Generate a pipe
 ng g guard my-guard                  # Generate a route guard
 ng g interface my-model              # Generate a TypeScript interface
 
-# ── Dry Run: Preview without Creating ────────────────────────
-ng g c product-list --dry-run        # Show what would be created — no files made
-
-# ── Build & Test ─────────────────────────────────────────────
-ng build                             # Development build
-ng build --configuration production  # Optimised production build (minified)
-ng test                              # Run unit tests (uses Vitest in modern Angular)
-ng lint                              # Lint the project with ESLint
-
-# ── Info ─────────────────────────────────────────────────────
-ng version                           # Show Angular CLI and package versions
-ng help                              # List all available commands
-```
-
-> [!TIP]
-> Always run `ng g c my-component --dry-run` first when you're not sure what a `ng generate` command will create. It shows you a preview without writing any files.
-
 ### Section Recap
 - Install the Angular CLI globally: `npm install -g @angular/cli@latest`
 - Create a project: `ng new my-app` — follow the prompts
@@ -264,107 +218,25 @@ AppModule                        ← Gone! No NgModule needed.
   ]
 ```
 
-### Folder Structure Walkthrough
-
-When you run `ng new shop-angular`, this is what gets created:
-
-```
-shop-angular/
-├── src/                             ← All your application code lives here
-│   ├── app/
-│   │   ├── app.component.ts        ← Root component (the entry point of your UI)
-│   │   ├── app.component.html      ← Root template
-│   │   ├── app.component.css       ← Root styles
-│   │   ├── app.config.ts           ← App-wide configuration (replaces AppModule!)
-│   │   └── app.routes.ts           ← Route definitions
-│   ├── assets/                     ← Static files: images, fonts, icons
-│   ├── index.html                  ← The one and only HTML page (SPA!)
-│   ├── main.ts                     ← Entry point — bootstraps the Angular app
-│   └── styles.css                  ← Global CSS (not scoped to any component)
-├── angular.json                    ← Angular CLI configuration
-├── package.json                    ← NPM dependencies
-├── tsconfig.json                   ← TypeScript compiler configuration
-└── tsconfig.app.json               ← TypeScript config specific to the app
-```
-
-### The Three Most Important Files
-
-**`src/main.ts` — The Entry Point**
-
-```ts
-// This is the FIRST file that executes when the browser loads your Angular app.
-// It has one job: start (bootstrap) the application.
-
-import { bootstrapApplication } from '@angular/platform-browser';
-// bootstrapApplication: the Angular function that starts everything
-
-import { appConfig } from './app/app.config';
-// appConfig: the configuration object that customises Angular's behaviour
-
-import { AppComponent } from './app/app.component';
-// AppComponent: the ROOT component — the top of the component tree
-
-// Start the application!
-// 1. Read appConfig (which providers/features to enable)
-// 2. Find <app-root> in index.html
-// 3. Render AppComponent there
-bootstrapApplication(AppComponent, appConfig)
-  .catch(err => console.error(err)); // Log any startup errors
-```
-
-**`src/app/app.config.ts` — Application Configuration**
-
-```ts
-// This file replaces the old AppModule. It configures Angular-wide features.
-
-import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter }     from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { routes }            from './app.routes';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    // provideZonelessChangeDetection: use the modern change detection (no Zone.js!)
-    // This means Angular ONLY updates the UI when signals/effects say it should.
-    provideZonelessChangeDetection(),
-
-    // provideRouter: activate Angular's routing with our route definitions
-    provideRouter(routes),
-
-    // provideHttpClient: make the HttpClient service available for injection
-    // so any service can use it to make API calls
-    provideHttpClient(),
-  ]
-};
-```
-
-**`src/index.html` — The Single HTML Page**
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>ShopAngular</title>
-    <!-- Angular fills in styles and scripts automatically -->
-  </head>
-  <body>
-    <!-- This is the only HTML element you place manually! -->
-    <!-- Angular replaces <app-root> with AppComponent's template. -->
-    <app-root></app-root>
-  </body>
-</html>
-```
-
 ### The Bootstrap Process — Step by Step
 
-1. Browser loads `index.html`
-2. Browser loads compiled JS
-3. `main.ts` runs and calls `bootstrapApplication()`
-4. Angular reads `appConfig`
-5. Angular processes `AppComponent`
-6. Renders template inside `<app-root>` in `index.html`
-7. App is visible!
+```
+Step 1: Browser loads index.html
+        ↓
+Step 2: Browser finds and loads the compiled JavaScript bundle
+        ↓
+Step 3: main.ts runs → calls bootstrapApplication(AppComponent, appConfig)
+        ↓
+Step 4: Angular reads appConfig → activates router, HTTP, zoneless detection
+        ↓
+Step 5: Angular processes the @Component decorator on AppComponent
+        ↓
+Step 6: Angular finds <app-root> in index.html
+        ↓
+Step 7: Angular renders AppComponent's template inside <app-root>
+        ↓
+Step 8: Your app is visible in the browser! 🎉
+```
 
 > [!TIP]
 > **Why is it called a "Single Page App" (SPA)?** Because `index.html` is the ONLY HTML file. When you navigate to `/products` or `/cart`, Angular doesn't load a new HTML file from the server. Instead, it intercepts the navigation and dynamically swaps out the UI — all within the same `index.html` page.
@@ -376,6 +248,28 @@ export const appConfig: ApplicationConfig = {
 ### What Is a Component? Starting from Zero
 
 A **component** is the fundamental building block of Angular's UI. Before we look at code, let's understand the concept.
+
+Think of a webpage as a tree of LEGO bricks, where each brick is a component:
+
+```
+┌───────────────────────────────────────────────────────┐
+│  AppComponent          ← Root (the whole page)        │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │  NavbarComponent                                │   │
+│  │  ┌─────────────┐  ┌────────────────────────┐   │   │
+│  │  │ LogoComponent│  │ NavLinksComponent      │   │   │
+│  │  └─────────────┘  └────────────────────────┘   │   │
+│  └─────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │  ProductListComponent                           │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌───────────┐     │   │
+│  │  │ProductCard│ │ProductCard│ │ProductCard│     │   │
+│  │  └───────────┘ └───────────┘ └───────────┘     │   │
+│  └─────────────────────────────────────────────────┘   │
+└───────────────────────────────────────────────────────┘
+```
+
+Each `ProductCard` knows nothing about `Navbar` — they are completely independent. This **isolation** is one of the most important architectural benefits of components.
 
 **A component has three parts:**
 1. **Template (HTML)** — What the user sees.
@@ -402,22 +296,38 @@ import { ProductListComponent } from './product-list/product-list.component';
 // The @Component decorator is the MOST IMPORTANT part.
 // It configures what this component IS and how it LOOKS.
 @Component({
-  // 1. SELECTOR: CSS selector for this component. Replaces <app-root> in index.html.
+  // ── 1. SELECTOR ──────────────────────────────────────────────────────
+  // The CSS selector for this component.
+  // <app-root> in index.html will be replaced by this component's template.
+  // Convention: use 'app-' prefix to avoid conflicts with native HTML elements.
   selector: 'app-root',
 
-  // 2. TEMPLATE: Path to external .html file (or use inline `template:`)
+  // ── 2. TEMPLATE ──────────────────────────────────────────────────────
+  // For complex templates, reference an external .html file:
   templateUrl: './app.component.html',
+  // For simple templates, write HTML directly (inline):
+  // template: `<h1>{{ title }}</h1>`,
 
-  // 3. STYLES: External CSS file (or inline `styles:`)
+  // ── 3. STYLES ────────────────────────────────────────────────────────
+  // External CSS file:
   styleUrl: './app.component.css',
+  // OR inline styles:
+  // styles: [`h1 { color: navy; font-size: 2rem; }`],
 
-  // 4. IMPORTS: List dependencies used in THIS template.
+  // ── 4. IMPORTS ───────────────────────────────────────────────────────
+  // List ALL other standalone components/directives/pipes used in THIS template.
+  // This replaces the old NgModule 'declarations' and 'imports' arrays.
   imports: [
     HeaderComponent,      // <app-header> can now be used in this template
     ProductListComponent, // <app-product-list> can be used in this template
   ],
 
-  // 5. CHANGE DETECTION: OnPush is recommended when using Signals for better performance.
+  // ── 5. CHANGE DETECTION STRATEGY ─────────────────────────────────────
+  // OnPush = Angular ONLY re-renders this component when:
+  // - An input signal changes
+  // - A computed signal changes
+  // - An event is triggered inside the component
+  // This is the recommended setting when using Signals.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
@@ -498,6 +408,27 @@ This means you can write `.card { color: red }` in ten different components and 
 ### The Three Core Binding Mechanisms
 
 Angular templates are HTML with special syntax for connecting the template to the component class.
+
+**The fundamental data flow pattern:**
+```
+TypeScript Class (the source of truth)    ←→    Template (the view)
+─────────────────────────────────────           ────────────────────────
+Properties/Signals           ───→    Displayed via Interpolation {{ }}
+Properties/Signals           ───→    Set DOM properties via [property]="value"
+Events                       ←───    Raised by (event)="handler()"
+Two-way (model inputs)       ←──→    Managed via [(property)]="value"
+```
+
+**ASCII diagram — binding directions:**
+
+```
+  Component Class                         Template (HTML)
+  ───────────────                         ───────────────
+  title = "Hello"    →  [data out]  →    {{ title }}         Interpolation
+  imageUrl = "..."   →  [data out]  →    [src]="imageUrl"    Property Binding
+  method()           ←  [data in]   ←    (click)="method()"  Event Binding
+  count = signal(0)  ↔  [two-way]   ↔    [(count)]="count"   Two-way (models)
+```
 
 ### Interpolation `{{ }}`
 
@@ -680,17 +611,11 @@ Angular v17+ introduced a built-in control flow syntax. It replaces the old `*ng
 
 ## 7. Reactive Data Fetching with `resource()`
 
-### The Problem — Manual State Management is Tedious
+### 🧠 Think Like a Developer: Handling Missing Data
+**Scenario:** You fetch products, but the API is slow or returns an empty list.
+**Bad Approach:** Show a blank screen while loading, let the user think the app is frozen.
+**Expert Approach:** Always handle the three states (Loading, Success, Error). With `@if` and `@for`, show a skeleton loader, then the data, and an `@empty` block if no data exists. This improves UX and trust.
 
-Fetching async data (like an API response) requires managing three separate states:
-1. **Loading** — the request is in flight
-2. **Success** — the data arrived
-3. **Error** — something went wrong
-
-Without `resource()`, you'd write this manually in every component:
-
-```ts
-*(Without `resource()`, you would have to manually manage `isLoading`, `error`, and `data` signals, requiring 15+ lines of boilerplate per component.)*
 
 ### The Solution: `resource()` (Angular v19+)
 
@@ -898,6 +823,42 @@ export interface Product {
 **5. Import** `ProductListComponent` into `AppComponent` and add `<app-product-list />` to the template.
 
 **6. Bonus:** Use `resource()` to fetch from `https://fakestoreapi.com/products`. Handle all three states (loading spinner, error message with retry button, product list).
+
+---
+
+
+## 🚫 Common Mistakes & How to Avoid Them
+
+| Mistake | Consequence | Fix |
+|---------|-------------|-----|
+| Missing `track` in `@for` | Angular throws a compilation error. | Always use `track item.id` to identify elements. |
+| Forgetting to call a signal `count` | Displays the signal object instead of its value. | Always use parentheses: `count()` or `{{ count() }}`. |
+| Using `href` instead of `routerLink` | Causes full page reload, breaking the SPA experience. | Use `routerLink="/path"` for client-side navigation. |
+| `resource()` loader not async | Throws an error, expects a Promise. | Always use `async () => { return await fetch(...) }`. |
+| Running `ng new` inside a project | Creates nested projects, breaking builds. | Run `ng new` in a neutral parent directory. |
+
+---
+
+## 🎙️ Interview Prep
+
+**Q1: How is Angular different from React?**
+**A:** Angular is an opinionated, comprehensive framework with built-in routing, HTTP, and forms. React is a UI library that relies on third-party tools for these features.
+
+**Q2: What are Standalone Components?**
+**A:** Introduced in v14 (and default in v17+), they remove the need for `NgModules`. Components declare their own dependencies, making the app easier to learn and scale.
+
+**Q3: Why use Signals over traditional variables?**
+**A:** Signals provide fine-grained reactivity. They tell Angular exactly *what* changed, allowing zoneless, highly optimized UI updates without checking the entire component tree.
+
+---
+
+## 📑 Cheat Sheet
+
+- **Interpolation:** `{{ value() }}`
+- **Property Binding:** `[disabled]="isValid()"`
+- **Event Binding:** `(click)="save()"`
+- **Control Flow:** `@if (cond) { ... }`, `@for (item of items; track item.id) { ... }`
+- **CLI Gen Component:** `ng g c my-component`
 
 ---
 

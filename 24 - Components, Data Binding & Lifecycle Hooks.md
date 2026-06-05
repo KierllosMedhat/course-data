@@ -6,7 +6,18 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 🛑 Prerequisites
+
+Before beginning this lecture, you should have a solid understanding of:
+- **Angular Fundamentals:** Basic component creation, template syntax, modular structure, and bootstrapping an Angular app.
+- **TypeScript Basics:** Interfaces, types, basic generics, and classes. You should be comfortable with strongly typed variables and return types.
+- **Signals Core Concepts:** You should already be familiar with what `signal()` and `computed()` are from previous lectures. You should understand how signals wrap values and notify consumers upon changes.
+- **HTML & CSS:** Basic UI layout skills to understand template structures and style bindings.
+- **Reactive Programming Mindset:** An introductory understanding of reactive paradigms where data changes automatically propagate through the UI.
+
+---
+
+## 🎯 Objectives
 
 By the end of this lecture, you will be able to:
 - Use signal-based `input()` and `output()` for component communication
@@ -15,30 +26,40 @@ By the end of this lecture, you will be able to:
 - Run side-effects when signals change using `effect()`
 - Access child elements reactively with `viewChild()` and `viewChildren()`
 - Implement key lifecycle hooks: `ngOnInit`, `ngOnDestroy`, `afterNextRender`
+- Understand the modern Angular architectural shift from decorator-based communication to function-based signals.
 
 ---
 
 ## 📋 Agenda
 
 ### Part 1 — Theory (~90 min)
-1. Signal inputs: `input()`, `.required()`, transforms, aliases
-2. Function outputs: `output()`
-3. Model inputs for two-way binding (`model()`)
-4. Synchronizing local state: `linkedSignal()`
-5. Signal side-effects: `effect()`
-6. Template reference variables & signal queries: `viewChild()`
-7. Lifecycle hooks in a Signal world
+1. **Prerequisites & Objectives** (10 min)
+2. **Deep Dive: Component Communication** (60 min)
+   - The Component Tree Problem
+   - Signal Inputs (`input()`, `.required()`, Transforms, Aliases)
+   - Function Outputs (`output()`)
+   - Model Inputs (`model()`)
+   - Local State Sync (`linkedSignal()`)
+   - Side-Effects (`effect()`)
+   - Queries (`viewChild()`, `viewChildren()`)
+   - Lifecycle Hooks
+3. **Think Like a Dev** (15 min)
+4. **Before/After Comparisons** (15 min)
+5. **Common Mistakes** (15 min)
 
 ### Part 2 — Practice / Lab (~90–120 min)
 1. Build a product card component with `input()` and `output()`
 2. Implement `linkedSignal()` to manage local state
 3. ShopAngular Project Part 2: Product Cards & Cart Logic
+4. **Interview Prep & Cheat Sheet** (20 min)
 
 ---
 
-## 1. Component Communication — The Problem
+## 📖 Deep Dive
 
-### Why Do Components Need to Communicate?
+### 1. Component Communication — The Problem
+
+#### Why Do Components Need to Communicate?
 
 In Angular, the UI is a **tree of components**. Each component is isolated — it owns its own data and can't directly reach into another component's properties. This isolation is a feature, not a bug — it makes components independently reusable and testable.
 
@@ -46,7 +67,7 @@ But real UIs need components to work together. A `ProductCard` needs to know *wh
 
 **Visual: The component tree and data flow**
 
-```
+```text
                     AppComponent (parent)
                     ┌─────────────────────────────────────┐
                     │  products = signal<Product[]>([...]) │
@@ -75,25 +96,13 @@ But real UIs need components to work together. A `ProductCard` needs to know *wh
 
 ---
 
-## 2. Signal Inputs — `input()`
+### 2. Signal Inputs — `input()`
 
-### Why `input()` Instead of `@Input()`?
+#### Why `input()` Instead of `@Input()`?
 
 Old Angular used the `@Input()` decorator to receive data from a parent. Modern Angular (v17+) uses the `input()` function instead. The key advantage: `input()` creates a **Signal** — meaning the input value is reactive and can be tracked by `computed()`, `effect()`, and `resource()`.
 
 ```ts
-// ❌ OLD WAY — @Input() decorator (still works, but not reactive)
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-
-export class ProductCard {
-  @Input() product!: Product;  // Not reactive — can't be tracked by computed()
-
-  ngOnChanges(changes: SimpleChanges) {
-    // You had to use a lifecycle hook just to react to input changes
-    console.log('Product changed:', this.product);
-  }
-}
-
 // ✅ NEW WAY — input() function (reactive Signal)
 import { Component, input, computed } from '@angular/core';
 
@@ -108,7 +117,7 @@ export class ProductCard {
 }
 ```
 
-### Optional Inputs — `input(defaultValue)`
+#### Optional Inputs — `input(defaultValue)`
 
 ```ts
 import { Component, input } from '@angular/core';
@@ -137,7 +146,7 @@ export class BadgeComponent {
 <app-badge [label]="product().badge" [color]="badgeColor()" />
 ```
 
-### Required Inputs — `input.required<T>()`
+#### Required Inputs — `input.required<T>()`
 
 If a component MUST have an input to function, use `input.required<T>()`. Angular will give you a **build error** if the parent doesn't provide it:
 
@@ -173,13 +182,7 @@ export class ProductCardComponent {
 }
 ```
 
-```html
-<!-- In the parent: -->
-<app-product-card [product]="item" />   <!-- ✅ Required input provided -->
-<app-product-card />                    <!-- ❌ Build error: required input 'product' not bound -->
-```
-
-### Input Transforms — Processing Values Before Storage
+#### Input Transforms — Processing Values Before Storage
 
 Transforms automatically convert the raw input value before storing it in the signal:
 
@@ -204,15 +207,7 @@ export class SliderComponent {
 }
 ```
 
-```html
-<!-- HTML attribute (no square brackets) becomes a boolean — works with booleanAttribute -->
-<app-slider disabled />               <!-- disabled = true -->
-<app-slider [disabled]="false" />     <!-- disabled = false -->
-<app-slider maxValue="50" />          <!-- maxValue = 50 (number, not "50") -->
-<app-slider [label]="'  hello  '" />  <!-- label = "hello" (trimmed) -->
-```
-
-### Input Aliases — Different External vs Internal Name
+#### Input Aliases — Different External vs Internal Name
 
 ```ts
 @Component({
@@ -227,65 +222,17 @@ export class HighlightDirective {
 }
 ```
 
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Accessing an optional input's value without handling undefined
-export class MyComponent {
-  title = input<string>(); // No default = type is 'string | undefined'
-
-  showTitle() {
-    console.log(this.title().toUpperCase()); // ❌ Crash if title is undefined!
-  }
-}
-
-// ✅ FIX: Provide a default value OR use optional chaining
-export class MyComponentFixed {
-  title = input(''); // ✅ Default empty string — always a string, never undefined
-
-  showTitle() {
-    console.log(this.title()?.toUpperCase() ?? 'No title'); // ✅ Safe
-  }
-}
-
-// ❌ MISTAKE 2: Trying to write to an input signal from inside the component
-export class ChildComp {
-  value = input(0);
-
-  update() {
-    this.value.set(10); // ❌ Error! Input signals are READ-ONLY inside the component.
-  }
-}
-
-// ✅ FIX: Use linkedSignal() for a local writable copy (covered in Section 5)
-export class ChildCompFixed {
-  valueFromParent = input(0);
-  localValue = linkedSignal(() => this.valueFromParent()); // Writable local copy
-
-  update() {
-    this.localValue.set(10); // ✅ Updates local copy only
-  }
-}
-```
-
-### Section Recap
-- `input(default)` — optional input with a fallback. Returns `Signal<T>`.
-- `input.required<T>()` — required input. Build error if parent doesn't provide it. Returns `Signal<T>`.
-- Input signals are **read-only** inside the child component.
-- `transform` — automatically converts raw input values (string → boolean, string → number).
-- `alias` — changes the template-facing name without changing the internal property name.
-
 ---
 
-## 3. Function Outputs — `output()`
+### 3. Function Outputs — `output()`
 
-### Why Outputs? Events Flow Up
+#### Why Outputs? Events Flow Up
 
 A child component needs a way to tell its parent "something happened." Angular uses `output()` for this. The child **emits** an event; the parent **listens** for it.
 
 **Real-world analogy:** A doorbell (child component) has one job — emit a signal when pressed. The house's speaker system (parent) listens for the signal and plays a sound. The doorbell doesn't need to know anything about the speaker system.
 
-### Creating and Emitting Outputs
+#### Creating and Emitting Outputs
 
 ```ts
 // FILE: src/app/product-card/product-card.component.ts
@@ -324,7 +271,7 @@ export class ProductCardComponent {
 }
 ```
 
-### The Parent Listens for the Event
+#### The Parent Listens for the Event
 
 ```ts
 // FILE: src/app/product-list/product-list.component.ts
@@ -371,15 +318,7 @@ export class ProductListComponent {
 }
 ```
 
-**The data flow step by step:**
-1. User clicks "Add to Cart" in `ProductCard`.
-2. `addToCartClick()` runs → calls `this.addedToCart.emit(this.product())`.
-3. Angular sees the parent has `(addedToCart)="onAddToCart($event)"`.
-4. Angular calls `onAddToCart(product)` in the parent.
-5. `onAddToCart` adds the product to the cart signal.
-6. Template re-renders with the updated `cart().length`.
-
-### Outputs with No Value
+#### Outputs with No Value
 
 ```ts
 export class ModalComponent {
@@ -392,53 +331,11 @@ export class ModalComponent {
 }
 ```
 
-```html
-<app-modal (closed)="onModalClosed()" />
-```
-
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Forgetting to call .emit() — parent is never notified
-export class CounterComponent {
-  incremented = output<number>();
-  count = signal(0);
-
-  increment() {
-    this.count.update(n => n + 1);
-    // ❌ Missing: this.incremented.emit(this.count());
-    // Parent never knows the count changed!
-  }
-}
-
-// ✅ FIX: Always emit after updating
-increment() {
-  this.count.update(n => n + 1);
-  this.incremented.emit(this.count()); // ✅ Parent is notified
-}
-
-// ❌ MISTAKE 2: Wrong output name in parent template (silent failure!)
-// Child: addedToCart = output<Product>();
-// Parent: (addToCart)="..." ← 'addToCart' ≠ 'addedToCart'
-// Angular silently ignores the binding — no error, no output!
-<app-product-card (addToCart)="..." />   // ❌ Wrong name
-
-// ✅ FIX: Match the exact output property name
-<app-product-card (addedToCart)="..." />  // ✅ Exact match
-```
-
-### Section Recap
-- `output<T>()` creates an event channel that the child can emit values through.
-- Call `.emit(value)` to trigger the event and notify the parent.
-- The parent listens with `(outputName)="handler($event)"` — `$event` is the emitted value.
-- `output<void>()` for events that don't carry data.
-- Output names must match exactly between child and parent template.
-
 ---
 
-## 4. Model Inputs — Two-Way Binding with `model()`
+### 4. Model Inputs — Two-Way Binding with `model()`
 
-### What Is Two-Way Binding?
+#### What Is Two-Way Binding?
 
 One-way binding: the parent sends data DOWN (`[input]`) and the child sends events UP (`(output)`).
 
@@ -454,7 +351,7 @@ One-way binding: the parent sends data DOWN (`[input]`) and the child sends even
 <app-slider [(value)]="volume" />
 ```
 
-### Creating a Two-Way Bindable Component
+#### Creating a Two-Way Bindable Component
 
 ```ts
 import { Component, model } from '@angular/core';
@@ -510,9 +407,9 @@ export class AppComponent {
 
 ---
 
-## 5. Synchronizing Local State — `linkedSignal()`
+### 5. Synchronizing Local State — `linkedSignal()`
 
-### The Problem: Editable Local Copy of a Parent Input
+#### The Problem: Editable Local Copy of a Parent Input
 
 A very common UI pattern: the parent passes initial data, the child lets the user edit it locally, but if the parent's input changes (e.g., user switches to edit a different item), the local edit state should **reset** to match the new input.
 
@@ -553,7 +450,7 @@ export class EditProfileComponent {
 
 **Visual — `linkedSignal()` lifecycle:**
 
-```
+```text
 1. Component mounts:
    originalUsername input → "Alice"
    editableUsername       → "Alice"  ← initialized from source
@@ -570,9 +467,9 @@ export class EditProfileComponent {
 
 ---
 
-## 6. Signal Side-Effects — `effect()`
+### 6. Signal Side-Effects — `effect()`
 
-### What Is a Side Effect?
+#### What Is a Side Effect?
 
 A **side effect** is code that interacts with the world outside of computing a return value: writing to localStorage, logging, calling a chart library, updating the URL. `effect()` automatically runs such code whenever its signal dependencies change.
 
@@ -605,7 +502,7 @@ export class CartComponent {
 }
 ```
 
-### Use Cases for `effect()`
+#### Use Cases for `effect()`
 
 ```ts
 // USE CASE 1: Sync dark mode preference to the DOM
@@ -621,42 +518,9 @@ export class ThemeService {
     });
   }
 }
-
-// USE CASE 2: Update a third-party chart library when data changes
-export class ChartComponent {
-  chartData = signal<number[]>([10, 20, 30, 40, 50]);
-  private chartInstance: any = null;
-
-  constructor() {
-    afterNextRender(() => {
-      this.chartInstance = new SomeChartLibrary(document.querySelector('#chart'), {
-        data: this.chartData()
-      });
-    });
-
-    effect(() => {
-      if (this.chartInstance) {
-        this.chartInstance.updateData(this.chartData()); // Re-render chart on data change
-      }
-    });
-  }
-}
 ```
 
-> [!WARNING]
-> **Never update other signals inside an `effect()`!** This creates circular dependencies and potential infinite loops.
-> ```ts
-> effect(() => {
->   const a = this.signalA();
->   this.signalB.set(a * 2); // ❌ Anti-pattern! Use computed() instead.
-> });
-> ```
-> **Use `computed()` for derived values:**
-> ```ts
-> signalB = computed(() => this.signalA() * 2); // ✅ Pure, no side effects
-> ```
-
-### `effect()` Cleanup
+#### `effect()` Cleanup
 
 If your effect starts a timer or resource, clean up before re-runs:
 
@@ -670,35 +534,11 @@ constructor() {
 }
 ```
 
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE: Calling effect() outside the injection context
-export class MyComponent {
-  doSomething() {
-    effect(() => { /* ... */ }); // ❌ Error! Must be in constructor/field initializer
-  }
-}
-
-// ✅ FIX: Call effect() in the constructor or as a class field
-export class MyComponentFixed {
-  private logger = effect(() => {  // ✅ Field initializer — injection context
-    console.log('Signal changed:', this.mySignal());
-  });
-}
-```
-
-### Section Recap
-- `effect(() => { ... })` — runs when signals it reads change. Runs immediately on init.
-- Use for: localStorage, third-party library updates, DOM manipulation, logging.
-- **Never** update other signals inside `effect()` — use `computed()` instead.
-- Use `onCleanup(() => ...)` to clean up timers/resources between runs.
-
 ---
 
-## 7. Signal Queries — `viewChild()` and `viewChildren()`
+### 7. Signal Queries — `viewChild()` and `viewChildren()`
 
-### Template Reference Variables (`#name`)
+#### Template Reference Variables (`#name`)
 
 A `#name` attribute creates a reference to a DOM element or component in the template:
 
@@ -708,7 +548,7 @@ A `#name` attribute creates a reference to a DOM element or component in the tem
 <button (click)="searchInput.focus()">Focus</button>
 ```
 
-### `viewChild()` — Reactive Query for One Element
+#### `viewChild()` — Reactive Query for One Element
 
 `viewChild()` returns a **signal** that resolves to a DOM element or child component:
 
@@ -736,32 +576,11 @@ export class DashboardComponent {
   focusSearch(): void {
     // Call the signal to get the ElementRef, then .nativeElement for the DOM element
     this.searchInput()?.nativeElement.focus();
-    //    ↑ call signal  ↑ optional chain   ↑ actual DOM element
   }
 }
 ```
 
-### `viewChild()` for Child Components
-
-```ts
-@Component({
-  imports: [VideoPlayerComponent],
-  template: `
-    <app-video-player #player />
-    <button (click)="togglePlay()">Play/Pause</button>
-  `
-})
-export class AppComponent {
-  player = viewChild<VideoPlayerComponent>('player');
-  // Returns Signal<VideoPlayerComponent | undefined>
-
-  togglePlay(): void {
-    this.player()?.toggle(); // Call a method on the child component directly!
-  }
-}
-```
-
-### `viewChildren()` — Query Multiple Elements
+#### `viewChildren()` — Query Multiple Elements
 
 ```ts
 @Component({
@@ -786,17 +605,15 @@ export class CardListComponent {
 
 ---
 
-## 8. Lifecycle Hooks in a Signal World
+### 8. Lifecycle Hooks in a Signal World
 
-### Component Lifecycle Overview
+#### Component Lifecycle Overview
 
-```
+```text
   Mounts  →  Inputs set  →  View rendered  →  Inputs updated  →  Destroyed
      │            │               │                  │               │
 constructor    ngOnInit    afterNextRender       (signals)       ngOnDestroy
 ```
-
-### The Hooks That Matter in Modern Angular
 
 #### `ngOnInit` — First Initialization
 
@@ -814,9 +631,6 @@ export class UserProfileComponent implements OnInit {
   }
 }
 ```
-
-> [!TIP]
-> In modern Angular, `ngOnInit` is rarely needed. If you're using it to fetch data, switch to `resource()` — it handles loading/error states automatically and re-fetches when signals change.
 
 #### `ngOnDestroy` — Cleanup Before the Component Dies
 
@@ -859,82 +673,121 @@ export class ChartComponent {
 }
 ```
 
-### Hooks You No Longer Need (With Signals)
+---
 
-| Old Hook | Old Purpose | Modern Replacement |
-|----------|-------------|-------------------|
-| `ngOnChanges` | React when `@Input()` changes | `computed()` or `effect()` reading `input()` signals |
-| `ngAfterViewInit` | Access view children after render | `afterNextRender()` + `viewChild()` signals |
-| `ngAfterContentInit` | React when projected content arrives | `afterNextRender()` + `contentChild()` signals |
+## 🧠 Think Like a Dev
 
-### Common Mistakes & How to Avoid Them
+When building modern Angular applications, you must shift your mindset from "when does this property change?" to "what does this data depend on?". 
 
-```ts
-// ❌ MISTAKE 1: Reading viewChild in ngOnInit (might not be set yet)
-export class MyComp implements OnInit {
-  myElement = viewChild<ElementRef>('el');
-
-  ngOnInit() {
-    this.myElement()?.nativeElement.focus(); // ❌ Might be undefined in ngOnInit!
-  }
-}
-
-// ✅ FIX: Use afterNextRender() — DOM is guaranteed ready
-constructor() {
-  afterNextRender(() => {
-    this.myElement()?.nativeElement.focus(); // ✅ DOM is fully rendered
-  });
-}
-
-// ❌ MISTAKE 2: Forgetting to clean up timers — causes memory leaks!
-export class LeakyComponent {
-  constructor() {
-    setInterval(() => this.doWork(), 1000); // ❌ Runs forever — even after component is destroyed!
-  }
-}
-
-// ✅ FIX: Always store the ID and clear in ngOnDestroy
-export class CleanComponent implements OnDestroy {
-  private id = setInterval(() => this.doWork(), 1000);
-  ngOnDestroy(): void { clearInterval(this.id); } // ✅ Cleaned up!
-}
-```
-
-### Section Recap
-- **`ngOnInit`** — runs once after inputs are set. Prefer `resource()` for data fetching.
-- **`ngOnDestroy`** — runs once before destruction. **Always** clean up timers and subscriptions here.
-- **`afterNextRender()`** — runs once after the first DOM render. Use for third-party library initialization.
-- `ngOnChanges` → replaced by `computed()`/`effect()` with `input()` signals.
-- `ngAfterViewInit` → replaced by `afterNextRender()` + `viewChild()`.
+1. **Smart vs. Dumb Components:** Keep your UI components "dumb". They should simply receive data via `input()` and emit user actions via `output()`. The "smart" container components should handle data fetching and manage the core state using services.
+2. **Derive Everything You Can:** If you have `firstName` and `lastName`, do not manually update a `fullName` string. Always use `computed(() => firstName() + ' ' + lastName())`. Let Angular handle the reactivity graph automatically.
+3. **Avoid Side Effects When Possible:** Before reaching for `effect()`, ask yourself: "Can I just use `computed()`?" Use `effect()` strictly for integrating with non-reactive APIs (like the DOM, Canvas, or localStorage). Side effects make your code harder to predict and test.
+4. **Data Ownership:** If a child needs to modify data, who owns it? If the parent owns it, the child must `output()` the intent to change. If the child only modifies a local draft, use `linkedSignal()`. If both need to stay synced bi-directionally, use `model()`.
+5. **Memory Leak Prevention:** Always be paranoid about any asynchronous process you start. If you `setInterval`, if you subscribe to an RxJS Observable, if you register a DOM event listener manually, ensure that it is canceled within `ngOnDestroy()` or `onCleanup()` in an `effect()`.
 
 ---
 
-## 🧪 Practice Labs
+## 🔄 Before/After
+
+How modern Angular (v17+) compares to older Angular codebases:
+
+### Receiving Data
+**Before (Decorator):**
+```ts
+@Input() product: Product;
+ngOnChanges() {
+  this.display = format(this.product);
+}
+```
+**After (Signal):**
+```ts
+product = input.required<Product>();
+display = computed(() => format(this.product()));
+```
+
+### Emitting Events
+**Before:**
+```ts
+@Output() added = new EventEmitter<Product>();
+this.added.emit(item);
+```
+**After:**
+```ts
+added = output<Product>();
+this.added.emit(item);
+```
+
+### Querying the DOM
+**Before:**
+```ts
+@ViewChild('myInput') myInput: ElementRef;
+ngAfterViewInit() {
+  this.myInput.nativeElement.focus();
+}
+```
+**After:**
+```ts
+myInput = viewChild<ElementRef>('myInput');
+constructor() {
+  afterNextRender(() => this.myInput()?.nativeElement.focus());
+}
+```
+
+---
+
+## ⚠️ Common Mistakes
+
+1. **Accessing an Optional Input Without Handling Undefined**
+   - *Mistake:* `title = input<string>();` followed by `this.title().toUpperCase()`. Crashes if undefined.
+   - *Fix:* Provide a default `title = input('')` or use optional chaining `this.title()?.toUpperCase()`.
+
+2. **Trying to Write to an Input Signal**
+   - *Mistake:* `this.myInput.set(10);` (Inputs are read-only!)
+   - *Fix:* Use `linkedSignal()` for a local writable copy, or `model()` if the parent should also update.
+
+3. **Forgetting to Call `.emit()`**
+   - *Mistake:* Updating local state and assuming the parent knows.
+   - *Fix:* Always call `this.myOutput.emit(data)` to notify the parent.
+
+4. **Wrong Output Name in Parent Template**
+   - *Mistake:* Child uses `addedToCart = output()`, parent uses `(addToCart)="..."`. Angular silently ignores this binding!
+   - *Fix:* Match the exact output property name: `(addedToCart)="..."`.
+
+5. **Updating Signals Inside an `effect()`**
+   - *Mistake:* Using `effect()` to sync two signals, e.g., `this.b.set(this.a() * 2);`. This creates anti-patterns and potential infinite loops.
+   - *Fix:* Use `computed()` to derive values purely.
+
+6. **Reading `viewChild` in `ngOnInit`**
+   - *Mistake:* The DOM hasn't rendered yet during `ngOnInit`, so `viewChild()` might be undefined.
+   - *Fix:* Use `afterNextRender()` to guarantee the DOM is ready.
+
+7. **Forgetting to Clean Up Timers**
+   - *Mistake:* Starting a `setInterval` in the constructor and never clearing it.
+   - *Fix:* Store the interval ID and call `clearInterval()` in `ngOnDestroy()`.
+
+8. **Calling effect() Outside Injection Context**
+   - *Mistake:* Trying to instantiate an `effect()` inside a random class method without passing an `Injector`.
+   - *Fix:* Always declare `effect()` directly in the constructor or as a class field initializer.
+
+---
+
+## 🧪 Labs
 
 ### Lab 1: Product Card with `input()` and `output()` (40 min)
-
 1. Generate: `ng g c product-card`
 2. Define a `Product` interface in `src/app/models/product.ts`
 3. Add `product = input.required<Product>()` to the component
 4. Display `product().name`, `product().price`, and `product().imageUrl` in the template
 5. Add `addedToCart = output<Product>()` and an "Add to Cart" button that calls `.emit(this.product())`
-6. In `AppComponent`, create a products array, use `@for` with `<app-product-card>`, and listen for `(addedToCart)` to log the product name
+6. In `AppComponent`, create a products array, use `@for` with `<app-product-card>`, and listen for `(addedToCart)` to log the product name.
 
 ### Lab 2: `linkedSignal()` and `effect()` (40 min)
+1. Add `quantity = linkedSignal(() => 1)` to `ProductCardComponent` — it must reset to 1 whenever a new product is bound.
+2. Add `+` and `-` buttons to modify `quantity` (min: 1).
+3. Add an `effect()` in the constructor that logs `"Quantity for [name] changed to [N]"` on every quantity change.
+4. Modify the output to emit `{ product: this.product(), quantity: this.quantity() }`.
 
-1. Add `quantity = linkedSignal(() => 1)` to `ProductCardComponent` — resets to 1 whenever a new product is bound
-2. Add `+` and `-` buttons to modify `quantity` (min: 1)
-3. Add an `effect()` in the constructor that logs `"Quantity for [name] changed to [N]"` on every quantity change
-4. Modify the output to emit `{ product: this.product(), quantity: this.quantity() }`
-
----
-
-## 📝 Assignment: ShopAngular Project — Part 2
-
-Let's make ShopAngular interactive!
-
-### Requirements
-
+### Assignment: ShopAngular Project — Part 2
 1. **Extract `ProductCardComponent`:**
    - Move product display code into a standalone `ProductCardComponent`.
    - Use `input.required<Product>()` to receive the product.
@@ -959,29 +812,75 @@ Let's make ShopAngular interactive!
 
 ---
 
-## 🔗 Resources
+## 💼 Interview Prep
 
-| Resource | Link |
-|----------|------|
-| Angular Signals Guide | https://angular.dev/guide/signals |
-| `input()` and `output()` | https://angular.dev/guide/components/inputs |
-| `linkedSignal()` | https://angular.dev/guide/signals/linked-signal |
-| `effect()` | https://angular.dev/guide/signals/side-effects |
-| Angular Lifecycle Hooks | https://angular.dev/guide/components/lifecycle |
+**Q: Explain the difference between `input()` and `model()`.**
+*A:* `input()` creates a read-only signal that receives data from the parent. `model()` creates a writable signal that represents two-way binding; when you `.set()` or `.update()` a `model()`, it automatically emits a change event back to the parent to update the parent's source variable. This eliminates the need for manual event boilerplate.
+
+**Q: What is `linkedSignal()` used for?**
+*A:* It creates a local writable state that is initialized from a source signal (like a parent input) and automatically resets whenever that source signal changes. It's perfect for building editable forms or local draft states that need to stay logically tied to an external source of truth without manual syncing logic. It resolves circular dependency issues commonly faced with `effect()`.
+
+**Q: Why shouldn't you use `effect()` to update other signals?**
+*A:* Updating signals inside an `effect()` can cause unintended circular dependencies, cascading updates, and performance bottlenecks. It breaks the declarative data flow and makes code unpredictable. Instead, derived state should always be created using pure `computed()` signals which evaluate lazily.
+
+**Q: When would you use `afterNextRender()` instead of `ngOnInit()`?**
+*A:* `ngOnInit()` runs before the view is fully rendered, meaning DOM elements (like those queried via `viewChild`) might not be available yet. `afterNextRender()` is guaranteed to run after the DOM is painted, making it the correct place to initialize third-party UI libraries like charts or maps that require an actual DOM node to attach to.
+
+**Q: Why do component templates need the `$` event syntax on bindings like `(click)="handler($event)"`?**
+*A:* The `$event` is a special template variable exposed by Angular that contains the payload of the event emitted. For native DOM events, it's the `Event` object. For custom `output()` events, it's whatever data was passed into the `.emit()` function.
+
+---
+
+## 📄 Cheat Sheet
+
+```typescript
+// --- INPUTS ---
+optionalInput = input('default');           // Signal<string>
+requiredInput = input.required<User>();     // Signal<User>
+boolInput = input(false, { transform: booleanAttribute }); 
+
+// --- OUTPUTS ---
+onClick = output<number>();                 // output<T>
+onClick.emit(42);                           // Emitting
+
+// --- MODEL (Two-Way Binding) ---
+value = model(0);                           // Used with [(value)]="parentVar"
+this.value.set(10);                         // Updates local AND parent
+
+// --- LINKED SIGNAL ---
+draft = linkedSignal(() => this.input());   // Writable, auto-resets on input change
+
+// --- EFFECT ---
+constructor() {
+  effect((onCleanup) => {
+    console.log(this.someSignal());         // Runs on init & when signal changes
+    onCleanup(() => { /* Cleanup logic */ });
+  });
+}
+
+// --- QUERIES ---
+myDiv = viewChild<ElementRef>('myDiv');     // <div #myDiv></div>
+
+// --- LIFECYCLE ---
+ngOnInit() { /* Inputs are ready */ }
+constructor() { afterNextRender(() => { /* DOM is ready */ }); }
+ngOnDestroy() { /* Cleanup timers/subs */ }
+```
 
 ---
 
 ## 📌 Key Takeaways
 
-- **`input(default)` and `input.required<T>()`** replace `@Input()` — they return reactive Signals.
+- **`input()` and `input.required<T>()`** return reactive Signals instead of static values.
 - Data flows **down** via `[input]="value"` bindings in the template.
-- **`output<T>()`** replaces `@Output() EventEmitter<T>` — call `.emit(value)` to notify the parent.
+- **`output<T>()`** completely replaces `@Output() EventEmitter<T>`.
 - Events flow **up** via `(outputName)="handler($event)"` in the parent template.
-- **`model()`** enables two-way binding — `[(propertyName)]="value"` syntax.
-- **`linkedSignal()`** creates a writable local copy of an input that auto-resets when the source changes.
-- **`effect()`** runs side-effects when signals change. **Never** update signals inside an `effect()`.
-- **`viewChild()`** is a reactive signal query for DOM elements and child components.
-- **`ngOnDestroy()`** is critical — always clean up timers and subscriptions to prevent memory leaks.
+- **`model()`** elegantly enables two-way binding using the `[(propertyName)]="value"` syntax without manual boilerplate.
+- **`linkedSignal()`** simplifies local draft states that rely on external data.
+- **`effect()`** handles interactions outside the Angular reactive context. **Never** update signals inside an `effect()`.
+- **`viewChild()`** provides a reactive, signal-based approach to querying the DOM elements and child components.
+- Modern Angular prioritizes a **signal-first** mental model over legacy lifecycle hooks (`ngOnChanges`, `ngAfterViewInit`).
+- **Always clean up timers and subscriptions in `ngOnDestroy()`** to maintain performance and avoid memory leaks.
 
 ---
 

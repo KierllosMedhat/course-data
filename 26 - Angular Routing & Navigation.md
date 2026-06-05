@@ -6,7 +6,17 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 1. 🏗️ Prerequisites
+
+Before starting this lecture, you should be familiar with:
+- **Angular Fundamentals:** Components, Templates, and Signals.
+- **Dependency Injection:** Basic understanding of `inject()` and providing services.
+- **Web Basics:** Understanding of URLs, paths, query strings, and basic HTTP concepts.
+- **TypeScript:** Interfaces, types, and basic asynchronous programming (Promises/async-await).
+
+---
+
+## 2. 🎯 Objectives
 
 By the end of this lecture, you will be able to:
 - Explain what a Single Page Application router does and why it exists
@@ -21,7 +31,7 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 📋 Agenda
+## 3. 📋 Agenda
 
 ### Part 1 — Theory (~90 min)
 1. What is a router? The SPA navigation problem
@@ -41,7 +51,9 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 1. What Is a Router? Starting from Zero
+## 4. 🤿 Deep Dive
+
+### 4.1 What Is a Router? Starting from Zero
 
 ### The Problem: Navigation Without Page Reloads
 
@@ -68,7 +80,7 @@ User action                    Angular Router                     Result
 
 ---
 
-## 2. Router Setup — The Three Required Pieces
+### 4.2 Router Setup — The Three Required Pieces
 
 ### Overview
 
@@ -218,7 +230,7 @@ export class AppComponent {}
 
 ---
 
-## 3. Navigation — Links and Programmatic Navigation
+### 4.3 Navigation — Links and Programmatic Navigation
 
 ### `routerLink` — Navigate Without Reloading
 
@@ -300,26 +312,9 @@ export class LoginComponent {
 }
 ```
 
-### Common Mistakes & How to Avoid Them
-
-```html
-<!-- ❌ MISTAKE 1: Using href for in-app navigation -->
-<a href="/cart">Go to Cart</a>
-<!-- Causes full page reload — app state is lost! -->
-
-<!-- ✅ FIX: Use routerLink -->
-<a routerLink="/cart">Go to Cart</a>
-
-<!-- ❌ MISTAKE 2: Using routerLink without importing RouterLink -->
-<!-- Error: "Can't bind to 'routerLink' since it isn't a known property of 'a'" -->
-
-<!-- ✅ FIX: Add RouterLink to the component's imports array -->
-<!-- @Component({ imports: [RouterLink, RouterLinkActive, RouterOutlet] }) -->
-```
-
 ---
 
-## 4. Route Parameters — `withComponentInputBinding()`
+### 4.4 Route Parameters — `withComponentInputBinding()`
 
 ### What Are Route Parameters?
 
@@ -463,27 +458,6 @@ export class ProductDetailComponent implements OnInit {
 }
 ```
 
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE: Treating route params as numbers when they are strings
-export class ProductDetailComponent {
-  id = input.required<string>(); // ✅ Declared as string — correct
-
-  loadProduct() {
-    const numericId = this.id(); // ❌ This is still a string!
-    fetch(`/api/products/${numericId}`); // Fine — string in URL is OK
-
-    const parsed = parseInt(this.id()); // ✅ If you need a number, explicitly convert
-  }
-}
-
-// ❌ MISTAKE: Forgetting withComponentInputBinding() in app.config.ts
-// Symptom: id() is always undefined, params don't appear in the component
-// Fix:
-provideRouter(routes, withComponentInputBinding()) // ✅ Must include this!
-```
-
 ### Section Recap
 - Route params (`:id`) become component inputs automatically with `withComponentInputBinding()`.
 - Route params are always **strings** — use `numberAttribute` transform if you need a number.
@@ -493,7 +467,7 @@ provideRouter(routes, withComponentInputBinding()) // ✅ Must include this!
 
 ---
 
-## 5. Child Routes & Nested `<router-outlet>`
+### 4.5 Child Routes & Nested `<router-outlet>`
 
 ### What Are Child Routes?
 
@@ -586,7 +560,7 @@ export class DashboardComponent {}
 
 ---
 
-## 6. Functional Route Guards — `CanActivateFn`
+### 4.6 Functional Route Guards — `CanActivateFn`
 
 ### What Is a Route Guard?
 
@@ -690,36 +664,6 @@ export const unsavedChangesGuard: CanDeactivateFn<HasUnsavedChanges> = (componen
 };
 ```
 
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Returning undefined instead of false when denying access
-export const authGuard: CanActivateFn = () => {
-  const isLoggedIn = false;
-  if (!isLoggedIn) {
-    // Forgot the return — returns undefined, which Angular treats as 'allow'!
-    inject(Router).navigate(['/login']);
-  }
-  return true;
-};
-
-// ✅ FIX: Return router.parseUrl('/login') instead of calling navigate()
-export const authGuard: CanActivateFn = () => {
-  const isLoggedIn = false;
-  if (!isLoggedIn) {
-    return inject(Router).parseUrl('/login'); // ✅ Proper redirect
-  }
-  return true;
-};
-
-// ❌ MISTAKE 2: Forgetting to add the guard to the route definition
-{ path: 'checkout', component: CheckoutComponent }
-// ↑ No 'canActivate' — guard does nothing!
-
-// ✅ FIX: Always add the guard to the route
-{ path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] }
-```
-
 ### Section Recap
 - A guard is a **function** matching `CanActivateFn` — returns `true` (allow), `false` (deny), or a `UrlTree` (redirect).
 - `canActivate: [guard1, guard2]` — all guards must pass for the route to activate.
@@ -729,7 +673,7 @@ export const authGuard: CanActivateFn = () => {
 
 ---
 
-## 7. Lazy Loading — `loadComponent`
+### 4.7 Lazy Loading — `loadComponent`
 
 ### Why Lazy Load?
 
@@ -801,7 +745,7 @@ export const routes: Routes = [
 
 ---
 
-## 8. View Transitions — Smooth Page Animations
+### 4.8 View Transitions — Smooth Page Animations
 
 ### What Are View Transitions?
 
@@ -857,7 +801,87 @@ export const appConfig: ApplicationConfig = {
 
 ---
 
-## 🧪 Practice Labs
+## 5. 🧠 Think Like a Dev
+
+When architecting a Single Page Application, routing isn't just about changing the URL—it's about state management. The URL *is* the ultimate source of truth for your app's state.
+
+1. **URL-First Thinking:** Before creating a new component or feature, ask yourself: "Should this have its own URL?" If a user might want to bookmark it, share it with a friend, or use the browser's back button to return to it, it needs a route.
+2. **Design for Deep Linking:** Users don't always enter your app through the home page. A user might click a link directly to `/products/42?tab=reviews`. Your routing architecture and data fetching must support loading this view directly without relying on state from previous pages.
+3. **Bundle Size Awareness:** As your app grows, the initial bundle size increases. Always keep an eye on what needs to be loaded immediately versus what can be lazy-loaded. If a feature isn't visible on the first screen (like an Admin panel or a User Settings page), lazy load it.
+4. **Security at the Route Level:** Never trust the client, but use Route Guards to provide a good user experience. Guards prevent unauthorized users from downloading code or seeing views they shouldn't, but remember that real security always happens on the backend.
+
+---
+
+## 6. 🔄 Before / After
+
+### Before: Traditional MPAs or Old Angular Routing
+In traditional Multi-Page Applications, navigation meant a full page refresh. State was lost, and the user had to wait for the entire HTML, CSS, and JS to re-download.
+
+In older Angular versions (pre-v16), accessing route parameters was tedious and required `ActivatedRoute` and RxJS observables:
+```ts
+// The Old Way: Manually subscribing to ActivatedRoute
+import { ActivatedRoute } from '@angular/router';
+
+export class ProductDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  productId = '';
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.productId = params['id'];
+    });
+  }
+}
+```
+
+### After: Modern Angular SPAs with Input Binding
+With Modern Angular, navigation is instantaneous, and the View Transitions API provides native, smooth animations. Accessing parameters is now entirely reactive and declarative using `withComponentInputBinding()`.
+
+```ts
+// The Modern Way: withComponentInputBinding() + Signals
+import { Component, input } from '@angular/core';
+
+export class ProductDetailComponent {
+  // Angular automatically maps the ':id' route param to this input!
+  id = input.required<string>();
+}
+```
+This is cleaner, safer, and completely eliminates the need for manual subscription management.
+
+---
+
+## 7. ❌ Common Mistakes
+
+Here are the most frequent pitfalls developers encounter when working with Angular Routing:
+
+### 1. Using `href` instead of `routerLink`
+- **Mistake:** Using standard `<a href="/cart">Go to Cart</a>` for internal links.
+- **Impact:** This causes a full page reload, losing all application state and defeating the purpose of a Single Page Application.
+- **Fix:** Always use `<a routerLink="/cart">Go to Cart</a>` for in-app navigation.
+
+### 2. Forgetting to import RouterLink
+- **Mistake:** Using `routerLink` in a template but forgetting to add `RouterLink` to the component's `imports` array.
+- **Impact:** Angular throws a template error: "Can't bind to 'routerLink' since it isn't a known property of 'a'".
+- **Fix:** Add `imports: [RouterLink]` to your `@Component` decorator.
+
+### 3. Wildcard Route Ordering
+- **Mistake:** Placing the `**` (404) route at the top or middle of the `Routes` array.
+- **Impact:** Because Angular matches routes top-to-bottom, placing `**` early means it will intercept valid routes that appear below it.
+- **Fix:** Always ensure `{ path: '**', component: NotFoundComponent }` is the absolute last element in your `routes` array.
+
+### 4. Treating Route Parameters as Numbers
+- **Mistake:** Assuming an ID parameter is a number: `id = input.required<number>()` when `withComponentInputBinding()` is active.
+- **Impact:** Route parameters are parsed from the URL as strings. Strict type checks or mathematical operations will fail or behave unexpectedly.
+- **Fix:** Declare inputs mapped to route parameters as `string`, or use `transform: numberAttribute`.
+
+### 5. Guard Return Values
+- **Mistake:** Returning `undefined` from a `CanActivateFn` guard instead of explicitly returning `false` or a `UrlTree`.
+- **Impact:** Angular treats `undefined` as allowing navigation, potentially exposing protected routes.
+- **Fix:** Ensure all code paths in your guard explicitly return `true`, `false`, or `router.parseUrl('/login')`.
+
+---
+
+## 8. 🧪 Labs
 
 ### Lab 1 — Multi-Page SPA with Nested Routes (45 min)
 
@@ -878,7 +902,7 @@ export const appConfig: ApplicationConfig = {
 
 ---
 
-## 📝 Assignment: ShopAngular Project — Part 4
+### Assignment: ShopAngular Project — Part 4
 
 Let's add routing to our e-commerce app!
 
@@ -909,18 +933,107 @@ Let's add routing to our e-commerce app!
 
 ---
 
-## 🔗 Resources
+---
 
-| Resource | Link |
-|----------|------|
-| Angular Routing Overview | https://angular.dev/guide/routing |
-| Component Input Binding | https://angular.dev/guide/routing/common-router-tasks#getting-route-information |
-| Route Guards | https://angular.dev/guide/routing/common-router-tasks#preventing-unauthorized-access |
-| Lazy Loading | https://angular.dev/guide/ngmodules/lazy-loading |
+## 9. 💼 Interview Prep
+
+Be prepared to answer these common routing questions in technical interviews:
+
+**Q: Explain the difference between `routerLink` and `href`.**
+A: `href` is standard HTML that causes the browser to make a new server request and fully reload the page. `routerLink` is an Angular directive that intercepts the click, updates the browser's URL using the HTML5 History API, and dynamically swaps the active component via the router, preventing a page reload.
+
+**Q: How does Lazy Loading work in Angular and why use it?**
+A: Lazy loading delays the downloading of feature modules or components until the user navigates to their specific route. It is implemented using dynamic imports (`loadComponent: () => import(...)`). This significantly reduces the initial JavaScript bundle size, leading to faster startup times.
+
+**Q: What is a Route Guard? Give an example.**
+A: A Route Guard is a function or service that controls whether a user can navigate to or from a route. For example, a `CanActivate` guard can check if a user has a valid authentication token before allowing them to access an `/admin` route. If they don't, it can redirect them to a login page.
+
+**Q: How do you handle 404 errors in an Angular application?**
+A: By defining a wildcard route using `path: '**'` mapped to a 404/NotFound component. This route must be placed at the very end of the routing array because Angular evaluates routes in order.
+
+**Q: How can you pass data via routes?**
+A: You can pass data via Route Parameters (`/products/:id`), Query Parameters (`/products?category=shoes`), or Route Data (static data defined in the route config using the `data` property).
 
 ---
 
-## 📌 Key Takeaways
+## 10. 📝 Cheat Sheet
+
+### Core Router Setup (`app.config.ts`)
+```ts
+import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
+import { routes } from './app.routes';
+
+export const appConfig = {
+  providers: [
+    provideRouter(routes, withComponentInputBinding(), withViewTransitions())
+  ]
+};
+```
+
+### Route Definitions (`app.routes.ts`)
+```ts
+export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect
+  { path: 'home', component: HomeComponent },           // Standard Route
+  { path: 'product/:id', component: ProductDetailComponent }, // Param Route
+  { 
+    path: 'admin', 
+    loadComponent: () => import('./admin.component').then(m => m.AdminComponent), // Lazy Load
+    canActivate: [authGuard] // Route Guard
+  },
+  { path: '**', component: NotFoundComponent }          // Wildcard 404 (Must be last)
+];
+```
+
+### Template Directives
+```html
+<!-- Import RouterLink, RouterLinkActive, RouterOutlet in component -->
+
+<!-- Basic Link -->
+<a routerLink="/about">About</a>
+
+<!-- Dynamic Link with Params -->
+<a [routerLink]="['/product', product.id]">View Product</a>
+
+<!-- Active Styling -->
+<a routerLink="/dashboard" routerLinkActive="active-class">Dashboard</a>
+
+<!-- Exact Active Matching (for root) -->
+<a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+
+<!-- Router Outlet -->
+<router-outlet></router-outlet>
+```
+
+### Accessing Route Parameters (Modern)
+```ts
+import { Component, input } from '@angular/core';
+
+@Component({...})
+export class ProductComponent {
+  // Requires withComponentInputBinding()
+  id = input.required<string>();        // Route param: /product/123 -> '123'
+  search = input<string>('');           // Query param: ?search=term -> 'term'
+}
+```
+
+### Programmatic Navigation
+```ts
+import { Router } from '@angular/router';
+import { inject } from '@angular/core';
+
+export class MyComponent {
+  private router = inject(Router);
+
+  goToProduct(id: string) {
+    this.router.navigate(['/product', id]);
+  }
+}
+```
+
+---
+
+## 11. 📌 Key Takeaways
 
 - Angular routing requires THREE pieces: route definitions, `provideRouter()`, and `<router-outlet>`.
 - `routerLink` navigates WITHOUT reloading the page — never use `href` for in-app navigation.

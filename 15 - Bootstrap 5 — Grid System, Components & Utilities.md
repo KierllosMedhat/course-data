@@ -41,11 +41,9 @@ By the end of this lecture, you will be able to:
 
 ## 1. What Is Bootstrap?
 
-### Plain English First
+### What is Bootstrap?
 
-Imagine you're building a house. You could craft every door, window, and cabinet from raw lumber — or you could buy pre-made components from a hardware store that are already standardised, beautiful, and consistent.
-
-**Bootstrap** is that hardware store for web UI. It's a collection of pre-written CSS classes and JavaScript that gives you ready-to-use components (navbars, cards, buttons, modals) and a powerful layout system — all without writing custom CSS for every element.
+Bootstrap is a collection of pre-written CSS classes and JavaScript that gives you ready-to-use components and a powerful layout system without writing custom CSS.
 
 ### Why Use a CSS Framework?
 
@@ -73,38 +71,30 @@ Imagine you're building a house. You could craft every door, window, and cabinet
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- This meta tag is CRITICAL for responsive design — without it, Bootstrap won't work on mobile -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Bootstrap Page</title>
 
-  <!-- Step 1: Bootstrap CSS — goes in <head> so styles load before content -->
-  <link
+    <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
     crossorigin="anonymous"
   >
 
-  <!-- Step 1b: Bootstrap Icons (optional, but great for UI) -->
-  <link rel="stylesheet"
+    <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
 
-  <!-- Your content here -->
-
-  <!-- Step 2: Bootstrap JS Bundle — goes at end of <body> BEFORE your script -->
-  <!-- 'bundle' includes Popper.js — required for dropdowns, tooltips, popovers -->
-  <!-- 'defer' means it loads without blocking page rendering -->
-  <script
+  
+        <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmx0xRJ5M9MnEuQ5fGRXkJwqXn6"
     crossorigin="anonymous"
     defer
   ></script>
 
-  <!-- Step 3: Your custom JS AFTER Bootstrap (so Bootstrap is available) -->
-  <script defer src="app.js"></script>
+    <script defer src="app.js"></script>
 </body>
 </html>
 ```
@@ -145,11 +135,9 @@ Or if using Sass (for customisation — covered in Lecture 16):
 
 ## 2. The Bootstrap Grid System
 
-### Why a Grid? (Plain English)
+### Why a Grid?
 
-Before CSS Grid and Flexbox matured, creating column-based layouts was notoriously painful. Bootstrap's grid system solved this with a simple, consistent system based on 12 columns. 12 was chosen because it divides evenly into halves (6), thirds (4), quarters (3), sixths (2), and twelfths (1) — very flexible for layouts.
-
-**Analogy:** Think of the grid like a printing press typesetter. A page is divided into 12 equal columns. A "full-width" story uses all 12. A "two-column" layout uses 6 + 6. A sidebar layout uses 8 + 4 (body + sidebar). You decide how many columns each piece of content gets.
+Bootstrap\'s grid system provides a consistent 12-column layout. 12 is flexible because it divides evenly into halves, thirds, quarters, and sixths.
 
 ### The Three Required Layers
 
@@ -162,16 +150,11 @@ LAYER 1: Container — limits max width and centers content on the page
 ```
 
 ```html
-<!-- Layer 1: Container — always needed as the grid's parent -->
 <div class="container">
 
-  <!-- Layer 2: Row — wraps columns; handles the flexbox layout -->
-  <div class="row">
+    <div class="row">
 
-    <!-- Layer 3: Columns — each gets a specific width via column classes -->
-    <div class="col-6">Left Half</div>    <!-- 6 of 12 columns = 50% -->
-    <div class="col-6">Right Half</div>   <!-- 6 of 12 columns = 50% -->
-
+        <div class="col-6">Left Half</div>        <div class="col-6">Right Half</div>   
   </div>
 
 </div>
@@ -190,16 +173,10 @@ LAYER 1: Container — limits max width and centers content on the page
 ### Container Types
 
 ```html
-<!-- .container — Fixed max-width at each breakpoint (most common) -->
-<!-- Width: 576→540px, 768→720px, 992→960px, 1200→1140px, 1400→1320px -->
 <div class="container">...</div>
 
-<!-- .container-fluid — Always 100% width, no max-width cap -->
-<!-- Use for full-bleed sections (hero sections, navbars) -->
 <div class="container-fluid">...</div>
 
-<!-- .container-{breakpoint} — Full-width BELOW the breakpoint, fixed ABOVE it -->
-<!-- Example: .container-md — 100% wide on mobile, 720px max on tablets+ -->
 <div class="container-md">...</div>
 ```
 
@@ -209,18 +186,14 @@ LAYER 1: Container — limits max width and centers content on the page
 ### Auto-Width Columns
 
 ```html
-<!-- Equal-width columns — no numbers needed! -->
-<!-- Three .col elements → each gets exactly 1/3 of the row -->
 <div class="row">
   <div class="col">Auto 1/3</div>
   <div class="col">Auto 1/3</div>
   <div class="col">Auto 1/3</div>
 </div>
 
-<!-- Mix fixed-width with auto-width -->
 <div class="row">
-  <div class="col-4">Fixed 4/12</div>    <!-- Always 33% -->
-  <div class="col">Auto — fills remaining 8/12 = 67%</div>
+  <div class="col-4">Fixed 4/12</div>      <div class="col">Auto — fills remaining 8/12 = 67%</div>
 </div>
 ```
 
@@ -229,10 +202,6 @@ LAYER 1: Container — limits max width and centers content on the page
 The most powerful feature: columns change size at different screen widths.
 
 ```html
-<!-- This card changes its column size at different breakpoints: -->
-<!-- Mobile (< 576px): full width (col = 12/12 = 100%) — stacks vertically -->
-<!-- Tablet (≥ 768px): half width (col-md-6 = 6/12 = 50%) — 2 per row -->
-<!-- Desktop (≥ 992px): one-third (col-lg-4 = 4/12 = 33%) — 3 per row -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   <div class="col">
     <div class="card h-100">Card 1</div>
@@ -254,16 +223,12 @@ The most powerful feature: columns change size at different screen widths.
 The `g-*` utility adds gap (spacing) between columns:
 
 ```html
-<!-- g-4 = 1.5rem gap on all sides -->
 <div class="row g-4">
 
-<!-- gx-4 = horizontal gap only -->
 <div class="row gx-4">
 
-<!-- gy-2 = vertical gap only -->
 <div class="row gy-2">
 
-<!-- g-0 = no gap at all -->
 <div class="row g-0">
 ```
 
@@ -274,15 +239,12 @@ You can nest a row inside a column to create complex sub-layouts:
 ```html
 <div class="container">
   <div class="row">
-    <!-- Sidebar — 3/12 wide on desktop -->
-    <div class="col-lg-3">
+        <div class="col-lg-3">
       <nav>Sidebar navigation</nav>
     </div>
 
-    <!-- Main content — 9/12 wide on desktop -->
-    <div class="col-lg-9">
-      <!-- Nested grid inside the main content area -->
-      <div class="row g-3">
+        <div class="col-lg-9">
+            <div class="row g-3">
         <div class="col-md-4">Widget 1</div>
         <div class="col-md-4">Widget 2</div>
         <div class="col-md-4">Widget 3</div>
@@ -295,24 +257,19 @@ You can nest a row inside a column to create complex sub-layouts:
 ### Column Ordering and Offsetting
 
 ```html
-<!-- ORDER: Visually reorder columns without changing HTML -->
 <div class="row">
   <div class="col order-last">I appear last visually (but first in HTML)</div>
   <div class="col order-first">I appear first visually (but second in HTML)</div>
 </div>
 
-<!-- ORDER BY BREAKPOINT: First on desktop, reversed on mobile -->
 <div class="row">
   <div class="col-12 col-md-6 order-2 order-md-1">Content (appears second on mobile)</div>
   <div class="col-12 col-md-6 order-1 order-md-2">Image (appears first on mobile)</div>
 </div>
 
-<!-- OFFSET: Push a column right by adding empty space to its left -->
-<!-- Useful for centering a column without using margin: auto -->
 <div class="row">
   <div class="col-md-6 offset-md-3">
-    <!-- offset-md-3 = push 3 columns right → centered within 12 columns -->
-    Centered content (3 + 6 + 3 = 12)
+        Centered content (3 + 6 + 3 = 12)
   </div>
 </div>
 ```
@@ -322,13 +279,11 @@ You can nest a row inside a column to create complex sub-layouts:
 **Mistake 1: Forgetting the `.row` wrapper**
 
 ```html
-<!-- ❌ Columns directly in container — layout will break! -->
 <div class="container">
   <div class="col-6">Item</div>
   <div class="col-6">Item</div>
 </div>
 
-<!-- ✅ Always wrap columns in a row -->
 <div class="container">
   <div class="row">
     <div class="col-6">Item</div>
@@ -340,16 +295,13 @@ You can nest a row inside a column to create complex sub-layouts:
 **Mistake 2: Nesting a `.container` inside another `.container`**
 
 ```html
-<!-- ❌ Containers should not be nested -->
 <div class="container">
   <div class="row">
     <div class="col">
-      <div class="container">Inner container!</div> <!-- Don't do this -->
-    </div>
+      <div class="container">Inner container!</div>     </div>
   </div>
 </div>
 
-<!-- ✅ Nest rows inside columns, not containers -->
 <div class="container">
   <div class="row">
     <div class="col">
@@ -397,7 +349,6 @@ Mobile-first: Think of rules STACKING UP as screen gets WIDER
 | Extra extra large | Wide screens | `xxl` | ≥ 1400px | 1320px |
 
 ```html
-<!-- Real-world responsive column example: -->
 <div class="row g-3">
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xxl-2">
     <!--
@@ -417,21 +368,16 @@ Mobile-first: Think of rules STACKING UP as screen gets WIDER
 Show or hide elements at specific breakpoints:
 
 ```html
-<!-- Show ONLY on mobile (hidden on sm and above) -->
 <div class="d-block d-sm-none">📱 Mobile only</div>
 
-<!-- Show ONLY on desktop (hidden below lg) -->
 <div class="d-none d-lg-block">🖥️ Desktop only</div>
 
-<!-- Hide on mobile, show on tablet and above -->
 <div class="d-none d-md-block">Tablet and desktop</div>
 
-<!-- Common pattern: hamburger button visible only on mobile -->
 <button class="navbar-toggler d-lg-none" ...>
   <span class="navbar-toggler-icon"></span>
 </button>
 
-<!-- Full nav visible only on desktop -->
 <div class="d-none d-lg-flex">
   <a href="#" class="nav-link">Home</a>
   <a href="#" class="nav-link">About</a>
@@ -453,36 +399,24 @@ Show or hide elements at specific breakpoints:
 The Navbar is a responsive navigation header. On mobile (below the `navbar-expand-{breakpoint}` threshold), it collapses into a hamburger menu. On larger screens, it expands to show links horizontally.
 
 ```html
-<!-- navbar-expand-lg: collapses into hamburger on screens < 992px -->
-<!-- bg-body-tertiary: adapts to light/dark mode automatically -->
-<!-- sticky-top: sticks to the top when scrolling -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
-  <div class="container"> <!-- Center and limit width -->
-
-    <!-- Brand/Logo — always visible -->
-    <a class="navbar-brand fw-bold" href="#">
+  <div class="container"> 
+        <a class="navbar-brand fw-bold" href="#">
       <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
       AppName
     </a>
 
-    <!-- Hamburger button — ONLY visible on mobile (d-lg-none is implicit) -->
-    <button
+        <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"          <!-- Tells Bootstrap what to do -->
-      data-bs-target="#mainNavbar"        <!-- Which element to collapse/expand -->
-      aria-controls="mainNavbar"          <!-- Accessibility -->
-      aria-expanded="false"
+      data-bs-toggle="collapse"                data-bs-target="#mainNavbar"              aria-controls="mainNavbar"                aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span> <!-- Hamburger icon (Bootstrap draws it) -->
-    </button>
+      <span class="navbar-toggler-icon"></span>     </button>
 
-    <!-- Collapsible content — hidden on mobile, shown on desktop -->
-    <div class="collapse navbar-collapse" id="mainNavbar">
+        <div class="collapse navbar-collapse" id="mainNavbar">
 
-      <!-- Left-aligned links (ms-auto would push right) -->
-      <ul class="navbar-nav me-auto">
+            <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
@@ -502,8 +436,7 @@ The Navbar is a responsive navigation header. On mobile (below the `navbar-expan
         </li>
       </ul>
 
-      <!-- Right-aligned buttons (ms-auto pushes to the right) -->
-      <div class="d-flex gap-2 ms-auto">
+            <div class="d-flex gap-2 ms-auto">
         <a href="#" class="btn btn-outline-primary">Log In</a>
         <a href="#" class="btn btn-primary">Sign Up</a>
       </div>
@@ -521,14 +454,11 @@ The Navbar is a responsive navigation header. On mobile (below the `navbar-expan
 Cards are the most versatile content containers in Bootstrap. Use them for products, blog posts, user profiles, feature highlights, etc.
 
 ```html
-<!-- Basic card structure -->
 <div class="card shadow-sm">
-  <!-- Optional: card image at the top -->
-  <img src="product.jpg" class="card-img-top" alt="Product image">
+    <img src="product.jpg" class="card-img-top" alt="Product image">
 
   <div class="card-body">
-    <!-- Optional: badge for categories or tags -->
-    <span class="badge bg-primary mb-2">Electronics</span>
+        <span class="badge bg-primary mb-2">Electronics</span>
 
     <h5 class="card-title">Wireless Headphones</h5>
     <p class="card-text text-muted">
@@ -543,16 +473,13 @@ Cards are the most versatile content containers in Bootstrap. Use them for produ
     </div>
   </div>
 
-  <!-- Optional: card footer -->
-  <div class="card-footer text-muted">
+    <div class="card-footer text-muted">
     <small>Free shipping on orders over $50</small>
   </div>
 </div>
 
-<!-- Horizontal card (image on the left, content on the right) -->
 <div class="card">
-  <div class="row g-0"> <!-- g-0 removes gutters for seamless join -->
-    <div class="col-md-4">
+  <div class="row g-0">     <div class="col-md-4">
       <img src="..." class="img-fluid rounded-start h-100 object-fit-cover" alt="...">
     </div>
     <div class="col-md-8">
@@ -568,11 +495,9 @@ Cards are the most versatile content containers in Bootstrap. Use them for produ
 ### Equal-Height Card Columns
 
 ```html
-<!-- row-cols-* + h-100 on cards = all cards in a row have the same height -->
 <div class="row row-cols-1 row-cols-md-3 g-4">
   <div class="col">
-    <div class="card h-100"> <!-- h-100 makes the card fill its column's height -->
-      <div class="card-body">
+    <div class="card h-100">       <div class="card-body">
         <h5 class="card-title">Short Card</h5>
         <p>A little text.</p>
       </div>
@@ -593,7 +518,6 @@ Cards are the most versatile content containers in Bootstrap. Use them for produ
 ### 4.3 Buttons
 
 ```html
-<!-- Color variants -->
 <button class="btn btn-primary">Primary</button>
 <button class="btn btn-secondary">Secondary</button>
 <button class="btn btn-success">Success</button>
@@ -603,30 +527,24 @@ Cards are the most versatile content containers in Bootstrap. Use them for produ
 <button class="btn btn-dark">Dark</button>
 <button class="btn btn-light">Light</button>
 
-<!-- Outline variants (transparent background, colored border) -->
 <button class="btn btn-outline-primary">Outline Primary</button>
 <button class="btn btn-outline-danger">Outline Danger</button>
 
-<!-- Size variants -->
 <button class="btn btn-primary btn-lg">Large</button>
 <button class="btn btn-primary">Default</button>
 <button class="btn btn-primary btn-sm">Small</button>
 
-<!-- Full-width button (stretch to container width) -->
 <button class="btn btn-primary w-100">Full Width</button>
 
-<!-- Button with icon -->
 <button class="btn btn-success">
   <i class="bi bi-check-circle me-2"></i>Confirm Order
 </button>
 
-<!-- Loading state button -->
 <button class="btn btn-primary" disabled>
   <span class="spinner-border spinner-border-sm me-2" role="status"></span>
   Loading...
 </button>
 
-<!-- Button group (side by side without gaps) -->
 <div class="btn-group" role="group">
   <button class="btn btn-outline-secondary">Left</button>
   <button class="btn btn-outline-secondary">Middle</button>
@@ -639,7 +557,6 @@ Cards are the most versatile content containers in Bootstrap. Use them for produ
 Alerts show important messages. They can be dismissible:
 
 ```html
-<!-- Static alerts (informational messages) -->
 <div class="alert alert-primary" role="alert">
   <i class="bi bi-info-circle me-2"></i>
   <strong>Info:</strong> This is an informational message.
@@ -660,11 +577,9 @@ Alerts show important messages. They can be dismissible:
   <strong>Warning:</strong> Your subscription expires in 3 days.
 </div>
 
-<!-- Dismissible alert (user can close it with X button) -->
 <div class="alert alert-info alert-dismissible fade show" role="alert">
   <strong>New feature!</strong> Dark mode is now available.
-  <!-- data-bs-dismiss="alert" makes the X button close this alert -->
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 ```
 
@@ -673,37 +588,29 @@ Alerts show important messages. They can be dismissible:
 Small count or label indicators:
 
 ```html
-<!-- Inline badges in headings -->
 <h4>Messages <span class="badge bg-danger rounded-pill">12</span></h4>
 <h4>Notifications <span class="badge bg-primary">New</span></h4>
 
-<!-- Status badges -->
 <span class="badge bg-success">Active</span>
 <span class="badge bg-warning text-dark">Pending</span>
 <span class="badge bg-secondary">Archived</span>
 <span class="badge bg-danger">Overdue</span>
 
-<!-- Pill shape (more rounded) -->
 <span class="badge bg-primary rounded-pill">42 items</span>
 ```
 
 ### 4.6 Spinners (Loading Indicators)
 
 ```html
-<!-- Border spinner (circular) -->
 <div class="spinner-border text-primary" role="status">
-  <span class="visually-hidden">Loading...</span> <!-- Screen reader text -->
-</div>
+  <span class="visually-hidden">Loading...</span> </div>
 
-<!-- Growing spinner (pulsing dot) -->
 <div class="spinner-grow text-success" role="status">
   <span class="visually-hidden">Loading...</span>
 </div>
 
-<!-- Small spinner (for inline use) -->
 <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
 
-<!-- Centered full-page loading state -->
 <div class="d-flex justify-content-center align-items-center" style="min-height: 200px">
   <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading...</span>
@@ -743,14 +650,12 @@ Sides:
 ```
 
 ```html
-<!-- Common spacing patterns: -->
 <div class="mt-3 mb-4">Margin top + bottom</div>
 <div class="px-4 py-3">Horizontal + vertical padding</div>
 <div class="m-auto">Horizontally centered (works on block elements with width)</div>
 <div class="ms-auto">Push element to the right in flex containers</div>
 <div class="p-0">Remove all padding</div>
 
-<!-- Responsive spacing (add more space on larger screens): -->
 <div class="p-3 p-md-5">Small padding on mobile, large on tablet+</div>
 <section class="mb-4 mb-lg-6">Different bottom margin per breakpoint</section>
 ```
@@ -758,7 +663,6 @@ Sides:
 ### Colors and Backgrounds
 
 ```html
-<!-- Background colors -->
 <div class="bg-primary text-white p-3">Primary blue background</div>
 <div class="bg-success text-white p-3">Success green</div>
 <div class="bg-danger text-white p-3">Danger red</div>
@@ -766,7 +670,6 @@ Sides:
 <div class="bg-body-tertiary p-3">Adaptive surface color (light/dark mode)</div>
 <div class="bg-transparent p-3">No background color</div>
 
-<!-- Text colors -->
 <p class="text-primary">Primary blue text</p>
 <p class="text-muted">Muted/secondary text</p>
 <p class="text-danger">Error/warning text</p>
@@ -777,31 +680,25 @@ Sides:
 ### Typography Utilities
 
 ```html
-<!-- Font size -->
 <p class="fs-1">Largest (h1 size)</p>
 <p class="fs-3">Medium (h3 size)</p>
 <p class="fs-6">Smallest (small text)</p>
 
-<!-- Font weight -->
 <p class="fw-bold">Bold text (700)</p>
 <p class="fw-semibold">Semi-bold (600)</p>
 <p class="fw-normal">Normal (400)</p>
 <p class="fw-light">Light (300)</p>
 
-<!-- Text alignment -->
 <p class="text-start">Left aligned</p>
 <p class="text-center">Center aligned</p>
 <p class="text-end">Right aligned</p>
 
-<!-- Responsive text alignment -->
 <p class="text-center text-md-start">Centered on mobile, left on tablets+</p>
 
-<!-- Text decoration -->
 <p class="text-decoration-none">No underline (useful on links)</p>
 <p class="text-uppercase">ALL UPPERCASE</p>
 <p class="text-capitalize">Capitalize First Letter</p>
 
-<!-- Truncate text with ellipsis (requires fixed width!) -->
 <p class="text-truncate" style="max-width: 200px">
   Very long text that will be cut off with an ellipsis...
 </p>
@@ -810,19 +707,16 @@ Sides:
 ### Border Utilities
 
 ```html
-<!-- Adding borders -->
 <div class="border">Border on all sides</div>
 <div class="border border-primary">Primary colored border</div>
 <div class="border-top border-danger">Top border only, red</div>
 
-<!-- Border radius (rounded corners) -->
 <div class="rounded">Default rounded corners</div>
 <div class="rounded-circle">Perfect circle (make width = height)</div>
 <div class="rounded-pill">Pill/capsule shape</div>
 <div class="rounded-0">No rounding (square corners)</div>
 <div class="rounded-3">More pronounced rounding</div>
 
-<!-- Practical example: avatar image -->
 <img src="avatar.jpg" class="rounded-circle" width="48" height="48" alt="User avatar">
 ```
 
@@ -831,15 +725,12 @@ Sides:
 Bootstrap provides full Flexbox control through utility classes:
 
 ```html
-<!-- Enable flex on a container -->
 <div class="d-flex">...</div>
 
-<!-- Direction -->
 <div class="d-flex flex-row">Horizontal (default)</div>
 <div class="d-flex flex-column">Vertical</div>
 <div class="d-flex flex-row-reverse">Horizontal, reversed</div>
 
-<!-- Justify-content (main axis alignment) -->
 <div class="d-flex justify-content-start">Pack items to start</div>
 <div class="d-flex justify-content-end">Pack items to end</div>
 <div class="d-flex justify-content-center">Center items</div>
@@ -847,27 +738,22 @@ Bootstrap provides full Flexbox control through utility classes:
 <div class="d-flex justify-content-around">Space around items</div>
 <div class="d-flex justify-content-evenly">Equal space between and around</div>
 
-<!-- Align-items (cross axis alignment) -->
 <div class="d-flex align-items-start">Align to top</div>
 <div class="d-flex align-items-center">Align to center (vertical centering!)</div>
 <div class="d-flex align-items-end">Align to bottom</div>
 <div class="d-flex align-items-stretch">Stretch to fill height (default)</div>
 
-<!-- Gap (spacing between flex items) -->
 <div class="d-flex gap-3">16px gap between items</div>
 <div class="d-flex gap-2">8px gap</div>
 
-<!-- Flex wrap -->
 <div class="d-flex flex-wrap">Items wrap to next line when they don't fit</div>
 <div class="d-flex flex-nowrap">Items never wrap (may overflow)</div>
 
-<!-- Auto margin — powerful for pushing items apart -->
 <div class="d-flex">
   <span>Logo</span>
   <span class="ms-auto">This pushes to the RIGHT end</span>
 </div>
 
-<!-- Centering a card both horizontally and vertically on the page -->
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="card p-4">Perfectly centered card</div>
 </div>
@@ -883,35 +769,29 @@ Bootstrap provides full Flexbox control through utility classes:
 <div class="d-flex">Flex container</div>
 <div class="d-grid">Grid container</div>
 
-<!-- Responsive: show on mobile, hide on desktop -->
 <div class="d-block d-md-none">Mobile only</div>
 
-<!-- Responsive: hide on mobile, show on desktop -->
 <div class="d-none d-md-block">Desktop only</div>
 ```
 
 ### Shadow and Width/Height Utilities
 
 ```html
-<!-- Shadows -->
 <div class="shadow-none">No shadow</div>
 <div class="shadow-sm">Small shadow</div>
 <div class="shadow">Medium shadow</div>
 <div class="shadow-lg">Large shadow</div>
 
-<!-- Width -->
 <div class="w-25">25% width</div>
 <div class="w-50">50% width</div>
 <div class="w-75">75% width</div>
 <div class="w-100">100% width</div>
 <div class="mw-100">max-width: 100%</div>
 
-<!-- Height -->
 <div class="h-100">100% height of parent</div>
 <div class="vh-100">100% viewport height</div>
 <div class="min-vh-100">min-height: 100vh (full-page sections)</div>
 
-<!-- Position utilities -->
 <div class="position-relative">For positioning child elements</div>
 <div class="position-absolute top-0 start-0">Top-left corner</div>
 <div class="position-absolute top-50 start-50 translate-middle">Exact center</div>
@@ -923,22 +803,18 @@ Bootstrap provides full Flexbox control through utility classes:
 **Mistake 1: Using `text-danger` for success messages**
 
 ```html
-<!-- ❌ Semantically wrong, confusing to screen reader users -->
 <p class="text-danger">Your purchase was successful!</p>
 
-<!-- ✅ Correct semantic color -->
 <p class="text-success">Your purchase was successful!</p>
 ```
 
 **Mistake 2: Using `ms-5` for large gaps when structure is the issue**
 
 ```html
-<!-- ❌ Using margin to patch a layout problem -->
 <div class="d-flex">
   <div class="ms-5">This shouldn't need a hack</div>
 </div>
 
-<!-- ✅ Use gap or justify-content on the flex parent -->
 <div class="d-flex justify-content-between">
   <div>Left</div>
   <div>Right</div>
@@ -963,16 +839,12 @@ Bootstrap 5.3 introduced native dark mode support using the `data-bs-theme` attr
 ### How to Enable Dark Mode
 
 ```html
-<!-- Force dark mode for the ENTIRE page -->
 <html lang="en" data-bs-theme="dark">
-  <!-- ALL Bootstrap components automatically switch to dark styling -->
-</html>
+  </html>
 
-<!-- Force light mode for the entire page -->
 <html lang="en" data-bs-theme="light">
 </html>
 
-<!-- Apply dark mode only to a SPECIFIC component -->
 <div class="card" data-bs-theme="dark">
   <div class="card-body">This card is dark, even if the page is light</div>
 </div>
@@ -1010,7 +882,6 @@ toggleBtn.addEventListener('click', () => {
 ```
 
 ```html
-<!-- Theme toggle button -->
 <button id="theme-toggle" class="btn btn-outline-secondary">
   <i class="bi bi-moon-stars-fill"></i> Dark Mode
 </button>
@@ -1024,19 +895,14 @@ toggleBtn.addEventListener('click', () => {
 These Bootstrap colors automatically adapt to the current theme:
 
 ```html
-<!-- bg-body: adapts (white in light, dark gray in dark) -->
 <div class="bg-body">Adaptive background</div>
 
-<!-- bg-body-secondary: slightly darker/lighter than bg-body -->
 <div class="bg-body-secondary">Subtle surface</div>
 
-<!-- text-body: adapts (dark in light, light in dark) -->
 <p class="text-body">Adaptive text</p>
 
-<!-- text-body-secondary: muted text, adapts to theme -->
 <p class="text-body-secondary">Secondary text</p>
 
-<!-- border-body: adaptive border color -->
 <div class="border border-body">Adaptive border</div>
 ```
 
@@ -1055,13 +921,9 @@ Bootstrap Icons is a free, open-source icon library with 2,000+ SVG icons, desig
 ### Adding Bootstrap Icons
 
 ```html
-<!-- Method 1: CDN (add to <head>) -->
 <link rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-<!-- Method 2: npm -->
-<!-- npm install bootstrap-icons -->
-<!-- Then in main.js: import 'bootstrap-icons/font/bootstrap-icons.css'; -->
 ```
 
 ### Using Icons
@@ -1069,20 +931,8 @@ Bootstrap Icons is a free, open-source icon library with 2,000+ SVG icons, desig
 Icons render as `<i>` tags with `bi bi-{icon-name}` classes:
 
 ```html
-<!-- Basic icons -->
-<i class="bi bi-heart"></i>          <!-- ♡ -->
-<i class="bi bi-heart-fill"></i>     <!-- ♥ (filled) -->
-<i class="bi bi-star-fill"></i>      <!-- ★ -->
-<i class="bi bi-trash"></i>          <!-- 🗑 -->
-<i class="bi bi-pencil"></i>         <!-- ✏ -->
-<i class="bi bi-person-circle"></i>  <!-- 👤 -->
-
-<!-- Control icon color with text utilities -->
-<i class="bi bi-check-circle-fill text-success fs-4"></i>   <!-- Green checkmark -->
-<i class="bi bi-exclamation-triangle text-warning"></i>      <!-- Warning -->
-<i class="bi bi-x-circle-fill text-danger"></i>              <!-- Red X -->
-
-<!-- Icons in buttons — use me-* for spacing before text -->
+<i class="bi bi-heart"></i>          <i class="bi bi-heart-fill"></i>     <i class="bi bi-star-fill"></i>      <i class="bi bi-trash"></i>          <i class="bi bi-pencil"></i>         <i class="bi bi-person-circle"></i>  
+<i class="bi bi-check-circle-fill text-success fs-4"></i>   <i class="bi bi-exclamation-triangle text-warning"></i>      <i class="bi bi-x-circle-fill text-danger"></i>              
 <button class="btn btn-primary">
   <i class="bi bi-save me-2"></i>Save Changes
 </button>
@@ -1091,12 +941,10 @@ Icons render as `<i>` tags with `bi bi-{icon-name}` classes:
   <i class="bi bi-trash me-2"></i>Delete
 </button>
 
-<!-- Icon-only button (add aria-label for accessibility!) -->
 <button class="btn btn-outline-secondary" aria-label="Edit item">
   <i class="bi bi-pencil"></i>
 </button>
 
-<!-- Icons in inputs (using input-group) -->
 <div class="input-group mb-3">
   <span class="input-group-text">
     <i class="bi bi-search"></i>
@@ -1104,7 +952,6 @@ Icons render as `<i>` tags with `bi bi-{icon-name}` classes:
   <input type="text" class="form-control" placeholder="Search...">
 </div>
 
-<!-- Icons in cards or list items -->
 <ul class="list-unstyled">
   <li class="mb-2">
     <i class="bi bi-check2-circle text-success me-2"></i>Free forever plan
@@ -1126,11 +973,7 @@ Icons render as `<i>` tags with `bi bi-{icon-name}` classes:
 Bootstrap icons inherit `font-size`. Use Bootstrap's `fs-*` utilities to control size:
 
 ```html
-<i class="bi bi-star fs-1"></i>  <!-- Very large -->
-<i class="bi bi-star fs-3"></i>  <!-- Medium -->
-<i class="bi bi-star fs-6"></i>  <!-- Small (default body text size) -->
-
-<!-- Or with custom font-size -->
+<i class="bi bi-star fs-1"></i>  <i class="bi bi-star fs-3"></i>  <i class="bi bi-star fs-6"></i>  
 <i class="bi bi-github" style="font-size: 2rem;"></i>
 ```
 
@@ -1138,64 +981,17 @@ Bootstrap icons inherit `font-size`. Use Bootstrap's `fs-*` utilities to control
 
 ## ⚠️ Common Mistakes & How to Avoid Them (Summary)
 
-### Mistake 1: Using `px` Sizing for Column Widths
+### Mistake 1: Using px Sizing
+Use Bootstrap's column classes instead of mixing grid with manual pixel widths.
 
-```html
-<!-- ❌ Don't mix Bootstrap grid with manual pixel widths -->
-<div class="row">
-  <div style="width: 300px;">Sidebar</div>
-  <div style="width: calc(100% - 300px);">Content</div>
-</div>
+### Mistake 2: Missing Bootstrap JS
+Modals, dropdowns, and navbars won't work without the JS bundle.
 
-<!-- ✅ Use Bootstrap's column classes -->
-<div class="row">
-  <div class="col-lg-3">Sidebar</div>
-  <div class="col-lg-9">Content</div>
-</div>
-```
+### Mistake 3: Columns > 12
+Ensure column numbers per row add up to 12 or less.
 
-### Mistake 2: Not Including Bootstrap JS for Interactive Components
-
-```html
-<!-- ❌ No JS — modals, dropdowns, navbars won't work! -->
-<link rel="stylesheet" href="bootstrap.min.css">
-<!-- No script tag -->
-
-<!-- ✅ Include the bundle (with Popper) for interactive components -->
-<link rel="stylesheet" href="bootstrap.min.css">
-<script src="bootstrap.bundle.min.js" defer></script>
-```
-
-### Mistake 3: Column Numbers Not Adding to 12
-
-```html
-<!-- ❌ Adds to 14 — extra columns wrap to the next line unexpectedly -->
-<div class="row">
-  <div class="col-8">Main</div>
-  <div class="col-6">Sidebar</div>  <!-- 8 + 6 = 14! -->
-</div>
-
-<!-- ✅ Must add to 12 (or less) -->
-<div class="row">
-  <div class="col-8">Main</div>
-  <div class="col-4">Sidebar</div>  <!-- 8 + 4 = 12 ✅ -->
-</div>
-```
-
-### Mistake 4: Using `<br>` for Vertical Spacing
-
-```html
-<!-- ❌ Using <br> tags for spacing — fragile and semantic abuse -->
-<h1>Title</h1>
-<br><br><br>
-<p>Content</p>
-
-<!-- ✅ Use margin utilities -->
-<h1>Title</h1>
-<p class="mt-4">Content</p>
-```
-
----
+### Mistake 4: <br> for Spacing
+Use margin utilities (mt-4) instead of fragile <br> tags.
 
 ## 🧪 Practice Labs
 

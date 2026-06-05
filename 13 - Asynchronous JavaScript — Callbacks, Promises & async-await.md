@@ -6,6 +6,16 @@
 
 ---
 
+## 🛑 Prerequisites
+
+Before starting this lecture, you should be familiar with:
+- **JavaScript Basics:** Variables, data types, and operators.
+- **Functions:** Function declarations, arrow functions, and returning values.
+- **DOM Manipulation:** Selecting elements, adding event listeners, and updating the DOM.
+- **Basic HTTP Concepts:** Understanding what an HTTP request/response is (helpful but not strictly required).
+
+---
+
 ## 🎯 Learning Objectives
 
 By the end of this lecture, you will be able to:
@@ -39,7 +49,9 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 1. Synchronous vs Asynchronous
+## 🧠 Deep Dive
+
+### 1. Synchronous vs Asynchronous
 
 ### The Problem: JavaScript Is Single-Threaded
 
@@ -99,7 +111,7 @@ console.log("After"); // This runs IMMEDIATELY — doesn't wait!
 
 ---
 
-## 2. The Event Loop
+### 2. The Event Loop
 
 ### How JavaScript Handles Async Code
 
@@ -166,7 +178,7 @@ When the call stack is empty, the event loop checks queues in this order:
 
 ---
 
-## 3. Callbacks
+### 3. Callbacks
 
 ### What Is a Callback?
 
@@ -230,7 +242,7 @@ Promises were invented specifically to solve this problem.
 
 ---
 
-## 4. Promises
+### 4. Promises
 
 ### What Is a Promise?
 
@@ -333,7 +345,7 @@ readFilePromise("data.txt")
 
 ---
 
-## 5. Modern Promises — Combinators & `withResolvers`
+### 5. Modern Promises — Combinators & `withResolvers`
 
 ### Promise Combinators
 
@@ -446,7 +458,7 @@ promise
 
 ---
 
-## 6. `async` / `await`
+### 6. `async` / `await`
 
 ### What Is `async`/`await`? (Plain English)
 
@@ -567,7 +579,7 @@ async function loadDataFast() {
 
 ---
 
-## 7. The Fetch API & Cancelling Requests
+### 7. The Fetch API & Cancelling Requests
 
 ### What Is the Fetch API?
 
@@ -728,6 +740,77 @@ export const api = {
   updateUser: (id, data) => apiFetch(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteUser: (id) => apiFetch(`/users/${id}`, { method: 'DELETE' }),
 };
+```
+
+---
+
+---
+
+## 💡 Think Like a Dev
+
+When writing asynchronous code, professionals focus on **predictability and resilience**.
+
+1. **Assume the Network Will Fail:** Never assume an API request will succeed. Always handle timeouts, offline states, and 500 server errors gracefully. Provide fallback UI or retry mechanisms.
+2. **Beware of Race Conditions:** When multiple async operations update the same UI state, the last one to finish wins (not necessarily the last one started). This is why cancelling outdated requests is crucial.
+3. **Keep the Event Loop Clear:** Heavy synchronous computations (like processing massive arrays) will block the Event Loop, causing the UI to freeze. Offload heavy work to Web Workers or break it into smaller chunks using `setTimeout`.
+4. **Don't Over-Sequentialize:** If two API calls don't depend on each other, fetch them at the same time using `Promise.all()`. Making them sequential needlessly slows down your app.
+
+---
+
+## 🔄 Before/After
+
+How the evolution of asynchronous JavaScript has drastically improved code readability.
+
+### Before: Callback Hell (2010s)
+```js
+function getDashboardData(userId, callback) {
+  getUser(userId, (userErr, user) => {
+    if (userErr) return callback(userErr);
+    getPosts(user.id, (postsErr, posts) => {
+      if (postsErr) return callback(postsErr);
+      getComments(posts[0].id, (commentsErr, comments) => {
+        if (commentsErr) return callback(commentsErr);
+        callback(null, { user, posts, comments });
+      });
+    });
+  });
+}
+```
+
+### Transition: Promise Chains (ES6 - 2015)
+```js
+function getDashboardData(userId) {
+  let userData, postsData;
+  return getUser(userId)
+    .then(user => {
+      userData = user;
+      return getPosts(user.id);
+    })
+    .then(posts => {
+      postsData = posts;
+      return getComments(posts[0].id);
+    })
+    .then(comments => {
+      return { user: userData, posts: postsData, comments };
+    })
+    .catch(err => console.error(err));
+}
+```
+
+### After: async/await (ES8 - 2017)
+```js
+async function getDashboardData(userId) {
+  try {
+    const user = await getUser(userId);
+    // Fetching posts and comments sequentially (if comments depend on posts)
+    const posts = await getPosts(user.id);
+    const comments = await getComments(posts[0].id);
+    return { user, posts, comments };
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 ```
 
 ---
@@ -918,6 +1001,65 @@ async function saveAndRender() {
 | MDN — Fetch API | https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API |
 | MDN — Event Loop | https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop |
 | JSONPlaceholder (Free test API) | https://jsonplaceholder.typicode.com |
+
+---
+
+---
+
+## 💼 Interview Prep
+
+Expect these questions in any mid-level frontend or full-stack interview:
+
+1. **What is the Event Loop?**
+   *Answer:* The Event Loop is the mechanism that allows JavaScript to perform non-blocking operations. It continuously checks if the Call Stack is empty, and if so, it moves callbacks from the Microtask Queue (Promises) and Macrotask Queue (setTimeout) onto the Call Stack to be executed.
+2. **What's the difference between Microtasks and Macrotasks?**
+   *Answer:* Microtasks (like Promise `.then()`) have higher priority and are executed before Macrotasks (like `setTimeout`). The Event Loop clears the entire Microtask queue before picking up the next Macrotask.
+3. **How does `Promise.all` handle rejections?**
+   *Answer:* `Promise.all` fails fast. If any single promise in the array rejects, the entire `Promise.all` immediately rejects with that error, ignoring the successful resolution of the others. To avoid this, you can use `Promise.allSettled`.
+4. **Why do we need `AbortController`?**
+   *Answer:* Fetch requests don't provide a native way to cancel them once fired. `AbortController` provides a signal that can be passed to `fetch()` and an `.abort()` method to cancel the network request, preventing race conditions or unnecessary bandwidth usage.
+
+---
+
+## 📄 Cheat Sheet
+
+### Promises & Combinators
+```js
+// Create
+const p = new Promise((resolve, reject) => { /* ... */ });
+
+// Consume
+p.then(res => {}).catch(err => {}).finally(() => {});
+
+// Combinators
+await Promise.all([p1, p2])        // Wait for all, fail if any fail
+await Promise.allSettled([p1, p2]) // Wait for all, never fail
+await Promise.race([p1, p2])       // Return first to settle (success or fail)
+await Promise.any([p1, p2])        // Return first to succeed
+```
+
+### `async` / `await`
+```js
+async function doWork() {
+  try {
+    const result = await someAsyncCall();
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+}
+```
+
+### Fetch API
+```js
+const res = await fetch('url', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+});
+if (!res.ok) throw new Error('HTTP Error');
+const data = await res.json();
+```
 
 ---
 

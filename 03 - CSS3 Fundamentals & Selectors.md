@@ -1,8 +1,18 @@
 # Lecture 03 — CSS3 Fundamentals & Selectors
 
-**Course:** Full-Stack Web Development
-**Instructor:** Kyrillos Medhat
+**Course:** Full-Stack Web Development  
+**Instructor:** Kyrillos Medhat  
 **Duration:** 3 hours (Theory + Lab)
+
+---
+
+## 📋 Prerequisites
+
+> Before starting this lecture, make sure you have:
+> - ✅ Completed Lecture 02 (HTML5 Forms, Tables & Multimedia)
+> - ✅ Basic understanding of HTML tags, elements, attributes, and nesting
+> - ✅ A code editor (like VS Code) installed and running
+> - ✅ The **Live Server** extension installed for automatic reloading
 
 ---
 
@@ -58,20 +68,18 @@ Imagine a skeleton (your bones = HTML). On its own, a skeleton tells you the *st
 
 ### What Can CSS Control?
 
-```
-Without CSS                    With CSS
-──────────────                 ──────────────────────────────
-Plain black text               Coloured, styled fonts
-White background               Custom background colours, gradients, images
-No spacing                     Precise padding, margins, gutters
-Stacked elements only          Complex multi-column layouts
-No hover effects               Smooth hover animations
-No dark mode                   System-aware dark/light themes
-```
+| Without CSS | With CSS |
+|-------------|----------|
+| Plain black text | Coloured, styled fonts |
+| White background | Custom background colours, gradients, images |
+| No spacing | Precise padding, margins, gutters |
+| Stacked elements only | Complex multi-column layouts |
+| No hover effects | Smooth hover animations |
+| No dark mode | System-aware dark/light themes |
 
 ### CSS is a Separate Language from HTML
 
-HTML = the *what* (structure, content)
+HTML = the *what* (structure, content)  
 CSS = the *how it looks* (presentation)
 
 They are always separate concerns. You write HTML for content, CSS for appearance. This separation makes both easier to maintain and understand.
@@ -128,7 +136,7 @@ They are always separate concerns. You write HTML for content, CSS for appearanc
 </html>
 ```
 
-**When to use:** Single-page projects, email templates, quick prototypes.
+**When to use:** Single-page projects, email templates, quick prototypes.  
 **Limitation:** Styles don't apply to other pages.
 
 ### Method 3: External Stylesheets (Always Use This for Real Projects)
@@ -684,20 +692,19 @@ utilities > components > base > reset
 
 Every single HTML element — whether it's a paragraph, a button, a heading, or an image — is rendered as a rectangular box. Understanding this is fundamental to understanding layout.
 
-```
-┌────────────────────────────────────────────────┐
-│                  MARGIN                        │  ← Space OUTSIDE the element
-│   ┌────────────────────────────────────────┐   │     (transparent, pushes other elements away)
-│   │              BORDER                   │   │  ← The border line (can be coloured)
-│   │   ┌────────────────────────────────┐  │   │
-│   │   │           PADDING              │  │   │  ← Space INSIDE the border
-│   │   │   ┌──────────────────────┐     │  │   │     (shows background colour)
-│   │   │   │      CONTENT         │     │  │   │  ← The actual text/image
-│   │   │   │  (text, image, etc.) │     │  │   │
-│   │   │   └──────────────────────┘     │  │   │
-│   │   └────────────────────────────────┘  │   │
-│   └────────────────────────────────────────┘   │
-└────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph margin[Margin - Space OUTSIDE]
+        subgraph border[Border - The visible boundary]
+            subgraph padding[Padding - Space INSIDE]
+                content[Content Box: Width & Height]
+            end
+        end
+    end
+    style margin fill:#f9f9f9,stroke:#e6e6e6,stroke-width:2px,stroke-dasharray: 5, 5
+    style border fill:#ffecd1,stroke:#fca311,stroke-width:2px
+    style padding fill:#e0e1dd,stroke:#778da9,stroke-width:2px
+    style content fill:#415a77,stroke:#1b263b,stroke-width:2px,color:#fff
 ```
 
 ### Box Model Properties
@@ -1053,7 +1060,55 @@ p {
 
 ---
 
-## Common Mistakes & How to Avoid Them
+## 🧠 Think Like a Developer
+
+### Scenario 1: Avoiding "Magic Numbers"
+> You're styling a dashboard and you find yourself typing `margin: 14px;` in one place, `margin: 16px;` in another, and `padding: 15px;` somewhere else. 
+
+**Decision:** Establish a design system. A developer doesn't guess spacing values. You define a set of custom properties (`--space-sm: 8px;`, `--space-md: 16px;`, `--space-lg: 24px;`) and strictly stick to them. This ensures the entire application looks mathematically consistent. 
+
+### Scenario 2: Overriding Vendor Styles
+> You installed a third-party datepicker library, but its default blue colour clashes with your brand's orange theme. You try `.datepicker { background: orange; }` but it doesn't work because the library uses `#calendar .datepicker`.
+
+**Decision:** You don't immediately reach for `!important`. You understand **specificity**. The library's selector `(1, 1, 0)` beats your `(0, 1, 0)`. You win the specificity war cleanly by matching or exceeding it: `#calendar .datepicker.brand-theme { background: orange; }`. Alternatively, in modern CSS, you wrap the library in a lower-priority `@layer`.
+
+---
+
+## ❌→✅ Before vs After
+
+### 1. Specificity Management
+```css
+/* ❌ Before: A specificity nightmare */
+div#header ul.nav li a.active {
+  color: blue;
+}
+
+/* ✅ After: Flat, simple class selectors */
+.nav-link.is-active {
+  color: blue;
+}
+```
+
+### 2. Repeated Values vs Variables
+```css
+/* ❌ Before: Hardcoded values everywhere */
+.btn { background: #007bff; color: white; border-radius: 4px; }
+.card { border-top: 4px solid #007bff; border-radius: 4px; }
+.alert { color: #007bff; }
+
+/* ✅ After: Single source of truth */
+:root {
+  --brand: #007bff;
+  --radius: 4px;
+}
+.btn { background: var(--brand); color: white; border-radius: var(--radius); }
+.card { border-top: 4px solid var(--brand); border-radius: var(--radius); }
+.alert { color: var(--brand); }
+```
+
+---
+
+## ⚠️ Common Mistakes & How to Avoid Them
 
 | ❌ Mistake | ✅ Fix |
 |-----------|--------|
@@ -1120,6 +1175,52 @@ Add global design tokens and base styles to your Developer Portfolio.
 - Set up cascade layers: `@layer reset, base, layout, components, utilities;`
 - Implement basic dark mode with `@media (prefers-color-scheme: dark)`
 - Add Google Fonts (Inter or Roboto) for typography
+
+---
+
+## 💼 Interview Prep
+
+**Q1: What does `box-sizing: border-box` do and why should you use it?**
+> By default, a browser calculates an element's total width by adding padding and borders to the declared `width` (content-box). This breaks layouts when you add padding. `box-sizing: border-box` forces the browser to include padding and borders *inside* the declared width, making layout math predictable and preventing elements from expanding unexpectedly.
+
+**Q2: Explain CSS Specificity and how it is calculated.**
+> Specificity determines which CSS rule is applied when multiple rules target the same element. It's calculated based on a weighted scoring system: `(IDs, Classes/Attributes/Pseudo-classes, Elements/Pseudo-elements)`. An ID `(1,0,0)` beats any number of classes `(0,x,0)`. Inline styles beat all external rules, and `!important` beats everything.
+
+**Q3: What are CSS Custom Properties (variables) and how are they useful?**
+> Custom properties allow you to store values (like colours or spacing) in a central place, usually the `:root` pseudo-class. You recall them using `var(--name)`. They are incredibly useful for maintaining design consistency (Design Tokens), avoiding "magic numbers" in code, and making features like dark mode extremely easy to implement by simply re-declaring the variables inside a media query.
+
+**Q4: Why should you use `rem` over `px` for font sizing?**
+> `px` is an absolute unit. If a user changes their browser's default font size for accessibility reasons (e.g., they have poor vision and need larger text), `px` values will ignore this setting. `rem` (root em) scales relative to the browser's root font size, ensuring the layout remains perfectly accessible and scales up proportionally.
+
+---
+
+## 📄 Cheat Sheet
+
+### Essential Selectors
+| Selector | Syntax | Example |
+|----------|--------|---------|
+| Element | `tag` | `p { }` |
+| Class | `.class` | `.card { }` |
+| ID | `#id` | `#header { }` |
+| Universal | `*` | `* { }` |
+| Descendant | `A B` | `nav a { }` |
+| Direct Child | `A > B` | `ul > li { }` |
+| Hover State | `:hover` | `a:hover { }` |
+
+### The CSS Box Model Reset
+```css
+/* Include this at the top of every CSS file */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+```
+
+### Font Units
+| Unit | Relative To | Use Case |
+|------|-------------|----------|
+| `px` | Absolute pixels | Small borders, shadows |
+| `rem`| Root font size | Typography, layout spacing |
+| `em` | Parent font size | Component-specific scaling |
 
 ---
 

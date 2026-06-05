@@ -6,6 +6,16 @@
 
 ---
 
+## 📋 Prerequisites
+
+> Before starting this lecture, make sure you have:
+> - ✅ Completed Lecture 01
+> - ✅ A strong grasp of the basic HTML5 boilerplate and semantic elements
+> - ✅ Familiarity with absolute vs relative file paths
+> - ✅ VS Code with Live Server extension running
+
+---
+
 ## 🎯 Learning Objectives
 
 By the end of this lecture, you will be able to:
@@ -58,31 +68,27 @@ Without forms, websites could only **show** information — they couldn't **rece
 
 ### How a Form Submission Works (Step by Step)
 
-```
 1. User fills in the form fields
 2. User clicks the Submit button
 3. The browser packages all the field values into a "request"
-4. The browser sends the request to a URL (defined in the form's action attribute)
+4. The browser sends the request to a URL (defined in the form's `action` attribute)
 5. The server receives the data, processes it, and sends back a response
 6. The browser displays the response to the user
-```
 
 Visually:
 
-```
-┌──────────────────────────────────────┐
-│         BROWSER (Client)             │
-│                                      │
-│  [Name: Alice] [Email: a@b.com]      │
-│  [Submit Button] ──────────────────► │ HTTP POST /api/contact
-└──────────────────────────────────────┘
-                                        │
-                                        ▼
-                              ┌─────────────────┐
-                              │  SERVER          │
-                              │  Receives data   │
-                              │  Sends response  │
-                              └─────────────────┘
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant B as Browser (Client)
+    participant S as Server
+    
+    U->>B: Fills out Name & Email
+    U->>B: Clicks Submit
+    B->>S: HTTP POST /api/contact (Sends form data)
+    Note right of S: Server processes data
+    S-->>B: HTTP 200 OK + Success Page
+    B-->>U: Displays Success Page
 ```
 
 ---
@@ -593,32 +599,20 @@ Tables display **tabular data** — information that naturally belongs in rows a
 
 ### The Complete Table Structure
 
-```
-HTML Table Anatomy:
-┌──────────────────────────────────────┐
-│  <table>                             │
-│  ┌─────────────────────────────────┐ │
-│  │  <thead>  (table header)        │ │
-│  │  ┌───────────────────────────┐  │ │
-│  │  │  <tr> (table row)         │  │ │
-│  │  │  ┌──────┬──────┬────────┐ │  │ │
-│  │  │  │ <th> │ <th> │  <th>  │ │  │ │
-│  │  │  └──────┴──────┴────────┘ │  │ │
-│  │  └───────────────────────────┘  │ │
-│  └─────────────────────────────────┘ │
-│  ┌─────────────────────────────────┐ │
-│  │  <tbody>  (table body)          │ │
-│  │  ┌───────────────────────────┐  │ │
-│  │  │  <tr>                     │  │ │
-│  │  │  ┌──────┬──────┬────────┐ │  │ │
-│  │  │  │ <td> │ <td> │  <td>  │ │  │ │
-│  │  │  └──────┴──────┴────────┘ │  │ │
-│  │  └───────────────────────────┘  │ │
-│  └─────────────────────────────────┘ │
-│  ┌─────────────────────────────────┐ │
-│  │  <tfoot>  (table footer)        │ │
-│  └─────────────────────────────────┘ │
-└──────────────────────────────────────┘
+```mermaid
+graph TD
+    TBL["&lt;table&gt;"]
+    TBL --> THD["&lt;thead&gt; (Header section)"]
+    TBL --> TBD["&lt;tbody&gt; (Data section)"]
+    TBL --> TFT["&lt;tfoot&gt; (Footer section)"]
+    
+    THD --> TR1["&lt;tr&gt; (Row)"]
+    TR1 --> TH1["&lt;th&gt; (Heading cell)"]
+    TR1 --> TH2["&lt;th&gt; (Heading cell)"]
+    
+    TBD --> TR2["&lt;tr&gt; (Row)"]
+    TR2 --> TD1["&lt;td&gt; (Data cell)"]
+    TR2 --> TD2["&lt;td&gt; (Data cell)"]
 ```
 
 ### Full Table Example
@@ -840,7 +834,67 @@ Use these to add a caption to any media:
 
 ---
 
-## Common Mistakes & How to Avoid Them
+## 🧠 Think Like a Developer
+
+### Scenario 1: Structuring a Complex Form
+> You need to build a massive checkout form that collects shipping, billing, and payment details.
+
+**Decision:** Don't just dump 30 inputs into a single `<form>` block. Use `<fieldset>` to group them logically (Shipping, Billing, Payment). Use `<legend>` to title each group. This makes the code readable and ensures screen readers announce the form sections clearly.
+
+### Scenario 2: Selecting the Correct Input Type
+> You need to ask the user for their age. Should you use `<input type="text">` or `<input type="number">`?
+
+**Decision:** Always use the most specific type available. `<input type="number">` prevents the user from typing "Twenty", automatically provides up/down arrows in the browser, brings up the numeric keypad on mobile devices, and allows you to use `min` and `max` attributes for validation.
+
+### Scenario 3: To AutoPlay or Not to AutoPlay?
+> Your client wants a promotional video to play immediately when the user lands on the site.
+
+**Decision:** Explain to the client that autoplaying video with sound is a terrible user experience and is often blocked by browsers natively. Suggest autoplaying *muted* video as a background element, or better yet, using a compelling `poster` image and letting the user press play.
+
+---
+
+## ❌→✅ Before vs After
+
+### 1. Form Labels
+```html
+<!-- ❌ Before: Unlinked text next to input -->
+<span>Email: </span> <input type="email" name="userEmail">
+
+<!-- ✅ After: Properly linked label for accessibility -->
+<label for="userEmail">Email: </label>
+<input type="email" id="userEmail" name="userEmail">
+```
+
+### 2. Table Data Flow
+```html
+<!-- ❌ Before: Using tables for layout -->
+<table>
+  <tr>
+    <td><img src="logo.png" alt="Logo"></td>
+    <td>Welcome to our site!</td>
+  </tr>
+</table>
+
+<!-- ✅ After: Using tables only for tabular data -->
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Apples</td>
+      <td>$2.00</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+---
+
+## ⚠️ Common Mistakes & How to Avoid Them
 
 | ❌ Mistake | ✅ Fix |
 |-----------|--------|
@@ -870,28 +924,6 @@ Build a complete job application form using modern input types and validation.
    - **Experience:** Years of experience (`<select>` with options: 0-1, 1-3, 3-5, 5+), Short bio (`<textarea>`)
 4. Add `required` to all critical fields
 5. Add a Submit button and a Reset button
-
-**Expected Output:**
-```
-┌──────────────────────────────────┐
-│  Job Application                 │
-│                                  │
-│  ┌─ Personal Info ──────────────┐│
-│  │ Full Name: [____________]    ││
-│  │ Email:     [____________]    ││
-│  │ Phone:     [____________]    ││
-│  │ DOB:       [date picker]     ││
-│  └─────────────────────────────┘│
-│                                  │
-│  ┌─ Job Preferences ────────────┐│
-│  │ Role:      [____________▼]   ││
-│  │ Start:     [date picker]     ││
-│  │ Salary:    [____________]    ││
-│  └─────────────────────────────┘│
-│                                  │
-│  [Submit Application] [Clear]    │
-└──────────────────────────────────┘
-```
 
 ### Lab 2: Interactive Modal Dialog (20 min)
 
@@ -944,6 +976,59 @@ Continue building your Developer Portfolio from Lecture 01.
 
 ---
 
+## 💼 Interview Prep
+
+**Q1: What is the difference between the GET and POST methods in an HTML form?**
+> GET sends the form data by appending it to the URL, making it visible and bookmarkable. It should only be used for non-sensitive data, like search queries. POST sends the form data inside the HTTP request body, keeping it hidden from the URL. It is used for submitting sensitive data like passwords or when uploading files.
+
+**Q2: How do you make an HTML form accessible?**
+> Forms are made accessible primarily by pairing every `<input>` with a descriptive `<label>` using the `for` and `id` attributes. Additionally, using `<fieldset>` and `<legend>` groups related inputs logically, and using ARIA attributes like `aria-describedby` links error messages directly to the fields they describe.
+
+**Q3: When should you use an HTML table?**
+> HTML tables should be used strictly for presenting tabular data—data that inherently belongs in rows and columns, such as financial reports or schedules. Tables should *never* be used for page layout, as this breaks accessibility and responsive design.
+
+**Q4: What is the difference between `<select>` and `<datalist>`?**
+> A `<select>` element restricts the user to choosing only from the predefined options in the dropdown. A `<datalist>` provides autocomplete suggestions as the user types, but still allows the user to input a custom value that isn't on the list.
+
+**Q5: Why is `loading="lazy"` important for `<iframe>` elements?**
+> `loading="lazy"` defers the loading of the iframe (such as a heavy YouTube video or Google Map) until the user scrolls near it. Without it, the browser downloads all the iframe content immediately on page load, which drastically hurts performance and increases load times.
+
+---
+
+## 📄 Cheat Sheet
+
+### Form Inputs
+| Type | Use |
+|------|-----|
+| `<input type="text">` | Standard single-line text |
+| `<input type="email">` | Email validation |
+| `<input type="password">`| Obscured text |
+| `<input type="number">`| Numeric input with arrows |
+| `<input type="date">` | Calendar picker |
+| `<input type="checkbox">`| Multi-select options |
+| `<input type="radio">` | Single-select options (group by `name`) |
+| `<input type="file">` | File upload |
+
+### Table Elements
+| Tag | Purpose |
+|-----|---------|
+| `<table>` | Container for the entire table |
+| `<thead>` | Container for the header row(s) |
+| `<tbody>` | Container for the main data rows |
+| `<tr>` | A single table row |
+| `<th>` | A header cell |
+| `<td>` | A data cell |
+
+### Multimedia
+| Tag | Purpose |
+|-----|---------|
+| `<video controls>` | Embeds native video player |
+| `<audio controls>` | Embeds native audio player |
+| `<track>` | Subtitles/captions for video |
+| `<iframe src="...">` | Embeds external content |
+
+---
+
 ## 🔗 Resources
 
 | Resource | Link |
@@ -952,8 +1037,6 @@ Continue building your Developer Portfolio from Lecture 01.
 | MDN — `<input>` types | https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input |
 | MDN — `<dialog>` element | https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog |
 | MDN — Popover API | https://developer.mozilla.org/en-US/docs/Web/API/Popover_API |
-| MDN — `<video>` element | https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video |
-| MDN — Table accessibility | https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced |
 | WebAIM — Accessible Forms | https://webaim.org/techniques/forms/ |
 
 ---

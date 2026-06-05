@@ -6,7 +6,15 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 1. 🚦 Prerequisites
+Before starting this lecture, you should:
+- Understand basic TypeScript types, interfaces, and generics (from previous lectures).
+- Be familiar with Node.js and npm package management.
+- Know the basics of ES Modules (`import`/`export`).
+
+---
+
+## 2. 🎯 Objectives
 
 By the end of this lecture, you will be able to:
 - Choose the right TypeScript build tool for your use case: Vite, `tsc`, or `tsx`
@@ -19,24 +27,21 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 📋 Agenda
-
-### Part 1 — Theory (~90 min)
-1. Build pipeline: Vite with TypeScript, `tsc`, `tsx`
-2. Testing: Vitest & Type Testing
-3. Linting: ESLint 9 Flat Config (`eslint.config.js`)
-4. Pre-commit hooks: Husky & lint-staged
-5. Type narrowing: `typeof`, `instanceof`, type predicates, discriminated unions
-6. Advanced types: mapped types and conditional types
-
-### Part 2 — Practice & Lab (~90–120 min)
-1. Set up a complete Vitest testing suite
-2. Configure ESLint 9 Flat Config for a TypeScript project
-3. DataForge Project Part 4: Testing & Tooling
+## 3. 📋 Agenda
+1. **TypeScript Build Pipeline** (Vite, `tsc`, `tsx`)
+2. **Testing with Vitest** (Setup, Writing Tests, Mocking)
+3. **Linting with ESLint 9** (Flat Config, Rules)
+4. **Pre-Commit Hooks** (Husky, lint-staged)
+5. **Type Narrowing** (`typeof`, `instanceof`, Type Predicates, Discriminated Unions)
+6. **Advanced Types** (Mapped & Conditional Types)
+7. **Labs & Practice**
+8. **Interview Prep & Cheat Sheet**
 
 ---
 
-## 1. TypeScript Build Pipeline
+## 4. 🧠 Deep Dive
+
+### 4.1 TypeScript Build Pipeline
 
 ### Why Do You Need a Build Tool?
 
@@ -152,7 +157,7 @@ npx tsx watch src/index.ts
 
 ---
 
-## 2. Testing TypeScript with Vitest
+### 4.2 Testing TypeScript with Vitest
 
 ### Why Do We Write Tests?
 
@@ -415,7 +420,7 @@ it('sends a welcome email on registration', async () => {
 
 ---
 
-## 3. Linting — ESLint 9 Flat Config
+### 4.3 Linting — ESLint 9 Flat Config
 
 ### What Is a Linter?
 
@@ -556,7 +561,7 @@ function calculate(a: number, b: number, _context?: string): number {
 
 ---
 
-## 4. Pre-Commit Hooks — Husky & lint-staged
+### 4.4 Pre-Commit Hooks — Husky & lint-staged
 
 ### The Problem
 
@@ -641,7 +646,7 @@ Developer runs: git commit -m "feat: add cart service"
 
 ---
 
-## 5. Type Narrowing — Working with Union Types Safely
+### 4.5 Type Narrowing — Working with Union Types Safely
 
 ### What Is Type Narrowing?
 
@@ -817,7 +822,7 @@ type FetchState = LoadingState | SuccessState | ErrorState | OfflineState;
 
 ---
 
-## 6. Advanced Types: Mapped & Conditional Types
+### 4.6 Advanced Types: Mapped & Conditional Types
 
 ### Mapped Types — Transforming Properties
 
@@ -911,7 +916,51 @@ type FetchResult = ReturnTypeOf<typeof fetchUser>; // Promise<User>
 
 ---
 
-## 🧪 Practice Labs
+## 5. 💡 Think Like a Dev
+When setting up tooling for a new project, professional developers prioritize **automation over discipline**. 
+- A developer doesn't just say "I will run my tests before pushing code." Instead, they configure Git hooks to **force** tests to run before a commit. 
+- A developer doesn't argue about code style during a PR review. They configure ESLint and Prettier so code style is standardized automatically.
+Tooling exists to remove cognitive load so you can focus on building features instead of formatting syntax or manually catching typos.
+
+---
+
+## 6. 🔄 Before / After
+
+### Before (Manual Testing & Loose Typing)
+```ts
+// Developer just hopes it works, leaves 'any', and manually tests in browser
+function calculateDiscount(user: any, cart: any) {
+  if (user.isPremium) return cart.total * 0.9;
+  return cart.total;
+}
+console.log("discount works"); // debugging leftover
+```
+
+### After (Strong Typing, Automated Linting & Testing)
+```ts
+// Strong types, linted automatically, tested with Vitest
+interface Cart { total: number; }
+interface User { kind: "premium" | "standard"; }
+
+export function calculateDiscount(user: User, cart: Cart): number {
+  if (user.kind === "premium") return cart.total * 0.9;
+  return cart.total;
+}
+// Vitest Test:
+// expect(calculateDiscount({kind: "premium"}, {total: 100})).toBe(90);
+```
+
+---
+
+## 7. ⚠️ Common Mistakes
+1. **Using `--no-verify` on Git Commits:** Skipping hooks defeats their purpose. Always fix broken tests instead of skipping them.
+2. **Mixing `jest` and `vitest` globals:** Make sure you don't accidentally import `jest` methods when running Vitest.
+3. **Overusing `any`:** Disabling ESLint's `no-explicit-any` rule instead of taking the time to define proper types.
+4. **Not returning exhaustive checks:** Forgetting the `default` case with `never` in discriminated union switches.
+
+---
+
+## 8. 🧪 Labs
 
 ### Lab 1: Vitest Testing Suite (45 min)
 
@@ -956,6 +1005,47 @@ We need to make sure DataForge is stable before moving to Angular! Let's add mod
 
 ---
 
+## 9. 💼 Interview Prep
+**Q: Why use Vite over Webpack or `tsc` for frontend development?**
+A: Vite uses esbuild (written in Go) to transpile code extremely fast and offers near-instant Hot Module Replacement (HMR) because it serves files over native ES modules, whereas traditional bundlers rebuild the entire bundle.
+
+**Q: Explain the difference between `interface` and `type` in TypeScript.**
+A: Both can define object shapes. `interface` is better for declaration merging and defining class contracts. `type` is required for defining unions, intersections, and mapped types.
+
+**Q: What is a discriminated union?**
+A: A discriminated union is a pattern where multiple types share a common literal property (the "discriminant"). A `switch` statement on that property allows TypeScript to narrow down the exact type securely.
+
+**Q: What are pre-commit hooks?**
+A: Scripts that run automatically before a `git commit` completes. They are used to enforce code formatting and pass tests, preventing broken code from entering the repository.
+
+---
+
+## 10. 📝 Cheat Sheet
+
+### Vitest Commands
+- `vitest run` — Run once.
+- `vitest` — Run in watch mode.
+- `vitest run --coverage` — Run with code coverage.
+
+### ESLint Flat Config (`eslint.config.js`)
+```js
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  { rules: { '@typescript-eslint/no-explicit-any': 'error' } }
+);
+```
+
+### Type Narrowing Snippets
+- **typeof:** `if (typeof val === "string")`
+- **instanceof:** `if (err instanceof Error)`
+- **Predicate:** `function isString(val: any): val is string`
+- **Discriminated Union:** `switch (state.kind) { case "loading": ... }`
+
+---
+
 ## 🔗 Resources
 
 | Resource | Link |
@@ -968,7 +1058,7 @@ We need to make sure DataForge is stable before moving to Angular! Let's add mod
 
 ---
 
-## 📌 Key Takeaways
+## 11. 📌 Key Takeaways
 
 - Use **Vite** for web apps, **`tsc`** for libraries/backends, and **`tsx`** for quick scripts.
 - **Vitest** is the modern alternative to Jest — native ESM, fast, and Jest-compatible API.

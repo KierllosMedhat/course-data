@@ -4,6 +4,13 @@
 **Instructor:** Kyrillos Medhat  
 **Duration:** 3 hours (Theory + Lab)
 
+
+## 🛑 Prerequisites (What to know before starting)
+- **JavaScript Fundamentals:** ES6 syntax, functions, arrays, and objects.
+- **TypeScript Basics:** Primitive types, basic interfaces, and compilation process.
+- **Object-Oriented Concepts:** Basic understanding of objects and methods.
+
+---
 ---
 
 ## 🎯 Learning Objectives
@@ -35,23 +42,6 @@ By the end of this lecture, you will be able to:
 ---
 
 ## 1. Function Types & Overloads
-
-### What is a Function Type?
-
-Before we dive into code, let's understand the concept from the ground up.
-
-In TypeScript, a function is not just a set of instructions — it also has a **type signature** that precisely describes:
-- What **parameters** it accepts (and what types those parameters must be)
-- What **value** it returns (and what type that return value will be)
-
-**Why does this matter?**  
-Without type signatures, TypeScript cannot warn you when you accidentally pass a number where a string is expected. With them, TypeScript acts as a safety net that catches entire categories of bugs *before your code runs*, saving you from debugging sessions that could take hours.
-
-**Real-world analogy:** Think of a function type like a **job description** posted by a company. The description tells you:
-- What qualifications (inputs) the applicant must have
-- What the applicant will produce (output)
-
-If a candidate shows up without the right qualifications, they are rejected immediately — just like TypeScript rejects a function call with wrong argument types.
 
 ### Optional & Default Parameters
 
@@ -116,19 +106,9 @@ console.log(sumAll());               // Output: 0    (empty array → reduce ret
 4. When TypeScript checks a call, it uses the overload signatures, not the implementation signature
 
 ```ts
-// ═══════════════════════════════════════════════════════════
-// STEP 1: Declare the OVERLOAD SIGNATURES.
-//   These tell callers: "You can call format() with a string OR a number."
-//   Notice: NO curly braces — no function body here.
-// ═══════════════════════════════════════════════════════════
 function format(value: string): string;  // Overload 1: string in → string out
 function format(value: number): string;  // Overload 2: number in → string out
 
-// ═══════════════════════════════════════════════════════════
-// STEP 2: Write the IMPLEMENTATION SIGNATURE.
-//   The parameter type must be broad enough to cover BOTH overloads.
-//   This is the only version that has a body (curly braces).
-// ═══════════════════════════════════════════════════════════
 function format(value: string | number): string {
   // 'typeof' checks the runtime type of 'value'
   if (typeof value === "string") {
@@ -152,46 +132,6 @@ console.log(price);     // "3.14"
 > [!NOTE]
 > The implementation signature is **not callable directly** from outside the function. Callers can only use the overload signatures. The implementation is TypeScript's internal way of saying "here's how I handle all cases."
 
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Forgetting the return type annotation on complex functions
-// TypeScript can infer it, but inference can be wrong or misleading.
-function getUserName(id: number) {
-  if (id === 0) return null;  // Sometimes returns null — TypeScript infers string | null
-  return "Alice";             // But the caller might not expect null!
-}
-
-// ✅ FIX: Always annotate return types explicitly on public/exported functions.
-// This forces YOU to think about all possible return values.
-function getUserNameSafe(id: number): string | null {
-  if (id === 0) return null;
-  return "Alice";
-}
-
-// ❌ MISTAKE 2: Using overloads when a union type alone is cleaner.
-// Overloads are only worth the extra code when the return TYPE changes.
-function printBad(val: string): void;
-function printBad(val: number): void;
-function printBad(val: string | number): void {
-  console.log(val); // Both cases do the same thing — overloads add zero value here!
-}
-
-// ✅ FIX: Use a union type directly. Much simpler!
-function print(val: string | number): void {
-  console.log(val);
-}
-
-// ❌ MISTAKE 3: Putting optional parameters BEFORE required ones
-// function greetWrong(greeting = "Hello", name: string) → ERROR!
-// The call greetWrong("Alice") is ambiguous: is "Alice" the greeting or the name?
-
-// ✅ FIX: Required parameters always come first
-function greetRight(name: string, greeting = "Hello") {
-  return `${greeting}, ${name}`;
-}
-```
-
 ### Section Recap
 - Every TypeScript function has a **type signature**: parameter types + return type.
 - **Default parameters** (`param = value`) make a parameter optional with a fallback.
@@ -212,8 +152,6 @@ A **class** is a **blueprint** for creating objects. The blueprint describes:
 - What **actions** (methods) an object can perform
 
 From one blueprint, you can create many individual objects (called **instances**). Each instance has its own copy of the data.
-
-**Real-world analogy:** Imagine a cookie cutter (the class/blueprint). You press it into dough (use `new`) and get individual cookies (instances). Each cookie is shaped the same, but they can have different frosting (different property values).
 
 ```
 Class (Blueprint)        Instances (Objects)
@@ -238,9 +176,6 @@ Think of them as **permission levels**:
 | `protected` | Inside this class + any subclasses | A family recipe — shared with relatives, not strangers |
 | `readonly` | Can be read anywhere, but only set in the constructor | Your date of birth — set once, never changed |
 
-**ASCII diagram: Access levels**
-
-```
                     BankAccount class    BankAccount subclass    Outside code
                     ──────────────────   ─────────────────────   ─────────────
 public  owner       ✅ Accessible        ✅ Accessible           ✅ Accessible
@@ -393,47 +328,6 @@ dog.bark();
 > }
 > ```
 
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Calling 'this' before 'super()' in a subclass constructor
-class Cat extends Animal {
-  constructor(name: string) {
-    this.speak(); // ❌ Error! 'this' is not available until super() has run.
-    super(name, 10);
-  }
-  speak() { console.log("Meow"); }
-}
-// ✅ FIX: Always call super() as the very first line in a subclass constructor.
-
-// ❌ MISTAKE 2: Forgetting to use access modifiers on sensitive data
-class UserProfile {
-  password: string; // ❌ Public by default! Any code can read this.
-  constructor(public username: string, password: string) {
-    this.password = password;
-  }
-}
-// ✅ FIX: Mark sensitive fields as private
-class SafeUserProfile {
-  private passwordHash: string;
-  constructor(public username: string, password: string) {
-    this.passwordHash = this.hashPassword(password); // Never store plain passwords!
-  }
-  private hashPassword(p: string): string { return `hashed_${p}`; }
-}
-
-// ❌ MISTAKE 3: Trying to modify a readonly property after construction
-class Config {
-  readonly apiUrl: string;
-  constructor(url: string) {
-    this.apiUrl = url; // ✅ OK in constructor
-  }
-  updateUrl(newUrl: string): void {
-    // this.apiUrl = newUrl; // ❌ Error: Cannot assign to 'apiUrl' because it is read-only
-  }
-}
-```
-
 ### Section Recap
 - A **class** is a blueprint — use `new ClassName()` to create instances from it.
 - **`public`** = accessible everywhere (the default), **`private`** = only inside this class, **`protected`** = this class + subclasses, **`readonly`** = no reassignment after the constructor.
@@ -487,6 +381,11 @@ console.log(emp.name); // Calls the auto-generated getter → "Alice"
 
 The real power of `accessor` comes when combined with **decorators**. A decorator on an `accessor` field can wrap both the getter and setter with additional logic (e.g., validation, logging, caching).
 
+
+### 🧠 Think Like a Developer: Handling Resource Leaks
+**Scenario:** A background job occasionally crashes, leaving orphaned database connections that eventually bring down the server.
+**Decision:** You refactor the connection logic to use `using` (or `await using`) instead of manual `try/finally` blocks. This guarantees the `[Symbol.dispose]()` method is called the exact moment the connection variable leaves scope, making resource leaks virtually impossible.
+
 ### Explicit Resource Management — The `using` Keyword
 
 **The real-world problem:**  
@@ -498,9 +397,6 @@ Many programming tasks involve resources that must be "cleaned up" after use:
 
 In JavaScript, you must manually remember to call `.close()`, `.disconnect()`, or `.delete()`. If an exception (error) is thrown before you reach the cleanup code, the resource **leaks forever** — like leaving the water running when you leave the house.
 
-**Real-world analogy:**  
-Imagine renting a hotel room. You must return the key card when you check out. The `using` keyword is like hiring a hotel robot that automatically returns the key card the moment you leave the room — even if you forget, and even if you leave in an emergency.
-
 **The solution (TypeScript 5.2+):**  
 The `using` keyword ensures cleanup by calling a special method `[Symbol.dispose]()` automatically when the variable goes **out of scope** — no matter what.
 
@@ -510,10 +406,6 @@ The `using` keyword ensures cleanup by calling a special method `[Symbol.dispose
 3. When the surrounding function or block finishes (normally or via an error), TypeScript automatically calls `[Symbol.dispose]()` on the variable
 
 ```ts
-// ═══════════════════════════════════════════════════════════
-// STEP 1: Create a class with a [Symbol.dispose]() cleanup method.
-//   This is Angular for: "here's what to do when I'm no longer needed."
-// ═══════════════════════════════════════════════════════════
 class DatabaseConnection {
   private url: string;
 
@@ -536,10 +428,6 @@ class DatabaseConnection {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-// STEP 2: Use 'using' to declare the variable.
-//   When processOrders() ends, db[Symbol.dispose]() WILL be called — guaranteed.
-// ═══════════════════════════════════════════════════════════
 function processOrders(): void {
   using db = new DatabaseConnection("postgres://localhost:5432/shop");
   //    ↑ The 'using' keyword is the magic!
@@ -575,27 +463,6 @@ processOrders();
 > }  // conn[Symbol.asyncDispose]() is automatically awaited here
 > ```
 
-### Visual: How `using` Compares to Manual Cleanup
-
-```
-WITHOUT 'using'                          WITH 'using'
-═══════════════════════════════════════  ════════════════════════════════════════
-function processData() {                 function processData() {
-  const db = new DBConnection();           using db = new DBConnection();
-  try {                                    db.query("SELECT...");
-    db.query("SELECT...");               }  ← Cleanup is AUTOMATIC here!
-    // more work...
-  } finally {
-    db.close(); // ← You must remember this!
-  }             // ← Missing 'finally'? Resource leaks!
-}
-
-                                         WHY 'using' IS BETTER:
-                                         1. Cannot forget cleanup — it's guaranteed
-                                         2. Works even when exceptions are thrown
-                                         3. Code is shorter and cleaner
-```
-
 ### Section Recap
 - `accessor` auto-generates a hidden backing field + getter + setter — primarily used with decorators to intercept reads and writes.
 - `using` automatically calls `[Symbol.dispose]()` when a variable's scope ends — even if an error is thrown.
@@ -605,60 +472,6 @@ function processData() {                 function processData() {
 ---
 
 ## 4. Generics — Write Code Once, Use Safely with Any Type
-
-### The Problem Generics Solve — Starting from Zero
-
-Let's say you want to write a function that returns the first element of an array. Your first attempt might look like this:
-
-```ts
-// ❌ Attempt 1: Use 'any' — accepts any type, returns any type
-function getFirst(arr: any[]): any {
-  return arr[0];
-}
-
-const first = getFirst(["Alice", "Bob", "Carol"]);
-// TypeScript thinks 'first' is type 'any'
-first.toUpperCase();  // Works — but TypeScript can't verify it's a string!
-first.toFixed(2);     // Also no TypeScript error — but will CRASH at runtime
-                      // because strings don't have a toFixed() method!
-```
-
-The problem with `any`: you lose all type safety. TypeScript can no longer help you catch mistakes.
-
-```ts
-// ❌ Attempt 2: Be specific — but this only works for one type!
-function getFirstString(arr: string[]): string {
-  return arr[0];
-}
-function getFirstNumber(arr: number[]): number {
-  return arr[0];
-}
-// This approach requires duplicating the function for every type. Terrible!
-```
-
-**The solution — Generics:** A **generic** is a **type placeholder** denoted by `<T>`. Instead of fixing the type to `string` or `number`, you let the caller fill in the type. TypeScript then tracks that type throughout the function, giving you full safety with full flexibility.
-
-**Real-world analogy:** Think of a generic function like a **shipping box template**. The box template works for any product — books, phones, shoes. The moment you decide what to put inside, the label tells you *exactly* what's in the box. You can't accidentally put shoes in a box labeled "books."
-
-**ASCII diagram — how generics work:**
-
-```
-GENERIC FUNCTION DECLARATION:
-┌────────────────────────────────────────────────────┐
-│  function getFirst<T>(arr: T[]): T | undefined     │
-│                    ▲       ▲     ▲                 │
-│                    │       │     │                 │
-│               Type param  Array  Return type       │
-│               (placeholder) of T  same as input   │
-└────────────────────────────────────────────────────┘
-
-When called with string[]:              When called with number[]:
-┌──────────────────────────────┐        ┌──────────────────────────────┐
-│  getFirst(["Alice", "Bob"])  │        │  getFirst([1, 2, 3])         │
-│  T is inferred as 'string'   │        │  T is inferred as 'number'   │
-│  Returns: string | undefined │        │  Returns: number | undefined  │
-└──────────────────────────────┘        └──────────────────────────────┘
-```
 
 ### Generic Functions
 
@@ -692,46 +505,6 @@ firstName?.toUpperCase(); // ✅ TypeScript knows this might be a string
 firstNum?.toFixed(2);     // ✅ TypeScript knows this might be a number
 
 // firstNum?.toUpperCase(); // ❌ TypeScript Error: 'toUpperCase' doesn't exist on 'number'!
-```
-
-### Generic Interfaces
-
-Generics work on interfaces too. This pattern is extremely common when working with APIs:
-
-```ts
-// An API response always has the same wrapper, but the 'data' field varies per endpoint.
-// <T> makes the interface reusable for any data type.
-interface ApiResponse<T> {
-  data:    T;       // T is the type of the actual payload (changes per endpoint)
-  status:  number;  // HTTP status code (200, 404, 500, etc.) — always a number
-  message: string;  // Human-readable message — always a string
-}
-
-// Define the data model shapes
-interface User    { id: number; name: string; email: string; }
-interface Product { id: number; title: string; price: number; }
-
-// Use the generic interface — fill in T with the specific type
-const userResponse: ApiResponse<User> = {
-  data:    { id: 1, name: "Alice", email: "alice@example.com" },
-  status:  200,
-  message: "User found successfully"
-};
-
-// T can also be an array type
-const productsResponse: ApiResponse<Product[]> = {
-  data:    [
-    { id: 1, title: "Laptop",   price: 999 },
-    { id: 2, title: "Mouse",    price: 29  },
-  ],
-  status:  200,
-  message: "Products fetched"
-};
-
-// TypeScript knows exactly what .data contains in each case
-console.log(userResponse.data.name);            // ✅ "Alice" — TypeScript knows it's a User
-console.log(productsResponse.data[0].price);    // ✅ 999 — TypeScript knows it's Product[]
-// console.log(userResponse.data.price);         // ❌ Error: 'price' doesn't exist on User!
 ```
 
 ### Generic Classes
@@ -789,11 +562,14 @@ console.log(scores.size);   // 2
 // scores.push("invalid"); // ❌ Error: string is not assignable to number
 ```
 
+
+### 🧠 Think Like a Developer: Choosing Generic Constraints
+**Scenario:** You write a generic `sortBy<T>(items: T[], key: keyof T)` function, but sometimes users pass a key for a boolean property, causing unexpected sorting behavior.
+**Decision:** You update the function signature to constrain `T` or the key, ensuring the property accessed by the key resolves strictly to a `string` or `number`. This prevents runtime sorting bugs by enforcing type-safe constraints at compile time.
+
 ### Generic Constraints — Limiting What T Can Be
 
 Sometimes you want to use a generic, but you need to guarantee that `T` has at least certain properties. The `extends` keyword adds a **constraint** to the type parameter.
-
-**Real-world analogy:** You're designing a VIP Lounge function that serves *any guest*, but they must have a membership card with an `id`. The constraint is: "whoever you are, you must have an `id` property."
 
 ```ts
 // Define the minimum shape that T must conform to.
@@ -835,77 +611,6 @@ console.log(product?.price); // 29
 // findById(["Alice", "Bob"], 1); // Error: string doesn't satisfy HasId!
 ```
 
-### Multiple Type Parameters
-
-Functions can have more than one type parameter when needed:
-
-```ts
-// A function that transforms an array from one type to another.
-// This is essentially how the built-in Array.prototype.map() works.
-// TInput = the type of items going IN
-// TOutput = the type of items coming OUT
-function mapArray<TInput, TOutput>(
-  arr:       TInput[],                       // The input array
-  transform: (item: TInput) => TOutput       // Function that converts each TInput to TOutput
-): TOutput[] {
-  return arr.map(transform); // Apply the transform to each item, return new array
-}
-
-// Example 1: Convert names (strings) to their lengths (numbers)
-const names   = ["alice", "bob", "carol"];
-const lengths = mapArray(names, name => name.length);
-// TypeScript infers: TInput = string, TOutput = number
-// 'lengths' is typed as number[]
-console.log(lengths); // [5, 3, 5]
-
-// Example 2: Convert users to their email addresses
-interface UserMin { id: number; email: string; }
-const users: UserMin[] = [{ id: 1, email: "a@b.com" }, { id: 2, email: "c@d.com" }];
-const emails = mapArray(users, u => u.email);
-// TypeScript infers: TInput = UserMin, TOutput = string
-// 'emails' is typed as string[]
-console.log(emails); // ["a@b.com", "c@d.com"]
-```
-
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Using 'any' instead of generics — you lose all type safety
-function getFirstBad(arr: any[]): any {
-  return arr[0];
-}
-const first = getFirstBad([1, 2, 3]);
-first.someMethodThatDoesNotExist(); // TypeScript says ✅ — but crashes at RUNTIME!
-
-// ✅ FIX: Use a generic
-function getFirstGood<T>(arr: T[]): T | undefined {
-  return arr[0];
-}
-// Now TypeScript knows the return type and warns you about wrong usage!
-
-// ❌ MISTAKE 2: Accessing a property on T without a constraint
-function getIdBad<T>(item: T): number {
-  return item.id; // ❌ TypeScript Error: 'id' does not exist on type 'T'!
-                  // T could be anything — TypeScript doesn't know it has 'id'
-}
-
-// ✅ FIX: Add a constraint to tell TypeScript "T must have id"
-function getIdGood<T extends { id: number }>(item: T): number {
-  return item.id; // ✅ TypeScript now knows T has 'id'
-}
-
-// ❌ MISTAKE 3: Using too many type parameters when one will do
-// This is over-engineering
-function identityBad<T, U extends T>(value: T): U {
-  return value as U; // Pointlessly complex
-}
-
-// ✅ FIX: Use the simplest generic that solves the problem
-function identityGood<T>(value: T): T {
-  return value;
-}
-```
-
 ### Section Recap
 - Generic `<T>` is a **type placeholder** — TypeScript fills it in when the function/class is called.
 - Generics give you **reusability** (works with any type) AND **type safety** (TypeScript still validates everything).
@@ -916,46 +621,6 @@ function identityGood<T>(value: T): T {
 ---
 
 ## 5. Utility Types — TypeScript's Built-In Type Transformers
-
-### What Are Utility Types?
-
-TypeScript ships with a toolkit of **built-in generic types** that let you derive new types from existing ones. Instead of duplicating a type definition with minor modifications, you use a utility type to transform it automatically.
-
-**Why does this matter?**  
-If you define a `User` interface once and later want:
-- A "safe" version without the `password` field (for sending to the frontend)
-- An "update" version where all fields are optional (for PATCH requests)
-- A "new user" version without the `id` (which the server generates)
-
-Without utility types, you'd have to define each of these manually and keep them in sync as `User` changes. Utility types compute them automatically.
-
-**Real-world analogy:** Utility types are like power tools. Instead of chiseling every type by hand, you use the right tool for the job and get precise results instantly.
-
-**ASCII diagram — how utility types transform a base type:**
-
-```
-Original Interface:
-┌──────────────────────────────────────┐
-│  interface User {                    │
-│    id:       number;                 │
-│    name:     string;                 │
-│    email:    string;                 │
-│    password: string;                 │
-│  }                                   │
-└──────────────────────────────────────┘
-           │
-  ┌────────┼─────────────────────────────────────┐
-  │        │                                     │
-  ▼        ▼                                     ▼
-Partial<User>              Pick<User, "id"|"name">    Omit<User, "password">
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────────┐
-│  id?:   number;  │       │  id:   number;   │       │  id:     number;     │
-│  name?: string;  │       │  name: string;   │       │  name:   string;     │
-│  email?: string; │       └──────────────────┘       │  email:  string;     │
-│  password?:...   │                                   └──────────────────────┘
-└──────────────────┘
-All fields optional        Only id & name              Everything except password
-```
 
 ### `Partial<T>` — Make All Properties Optional
 
@@ -1109,72 +774,6 @@ const roleConfigs: Record<Role, RoleConfig> = {
 };
 ```
 
-### Combining Utility Types
-
-Utility types can be nested and combined for powerful results:
-
-```ts
-interface Product {
-  id:          number;
-  name:        string;
-  price:       number;
-  description: string;
-  stock:       number;
-  category:    string;
-}
-
-// A DTO for updating a product:
-// - Remove 'id' (you can't change the product's identity)
-// - Make all remaining fields optional (PATCH semantics — only change what you need)
-type UpdateProductDto = Partial<Omit<Product, "id">>;
-// Equivalent to:
-// {
-//   name?:        string;
-//   price?:       number;
-//   description?: string;
-//   stock?:       number;
-//   category?:    string;
-// }
-
-function updateProduct(id: number, data: UpdateProductDto) {
-  console.log(`Updating product ${id}:`, data);
-}
-
-updateProduct(1, { price: 49.99 });                     // ✅ Update just the price
-updateProduct(2, { name: "New Name", stock: 10 });      // ✅ Update name and stock
-updateProduct(3, { description: "Better description" }); // ✅ Update description
-// updateProduct(4, { id: 99 });                         // ❌ Error: 'id' not in UpdateProductDto!
-```
-
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Duplicating type definitions manually instead of using utility types
-// This creates maintenance nightmares when the original type changes!
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface UpdateUser { // ❌ Manually duplicated! If User changes, this gets out of sync.
-  id?: number;
-  name?: string;
-  email?: string;
-}
-
-// ✅ FIX: Derive it automatically
-type UpdateUserGood = Partial<User>; // Always in sync with User!
-
-// ❌ MISTAKE 2: Using Pick with a key that doesn't exist on the type
-type BadPick = Pick<User, "id" | "phone">;
-// ❌ Error: Type '"phone"' does not satisfy the constraint 'keyof User'
-// TypeScript catches this — 'phone' isn't on User!
-
-// ✅ FIX: Only pick keys that actually exist on the type
-type GoodPick = Pick<User, "id" | "name">; // ✅ Both keys exist on User
-```
-
 ### Section Recap
 - `Partial<T>` — makes all fields optional (perfect for HTTP PATCH / update operations).
 - `Required<T>` — makes all fields mandatory (removes all `?`).
@@ -1249,6 +848,26 @@ Build a generic repository for the DataForge application.
 | TypeScript Handbook — Utility Types | https://www.typescriptlang.org/docs/handbook/utility-types.html |
 | TypeScript 5.2 — `using` keyword | https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html |
 | TypeScript Handbook — Classes | https://www.typescriptlang.org/docs/handbook/2/classes.html |
+
+---
+
+
+## 🎤 Interview Prep
+
+**Q1: What is the difference between `interface` and `type` when defining generic structures?**
+*Answer:* Both can be generic. Interfaces are better for public APIs because they support declaration merging. `type` aliases can express complex unions, intersections, and mapped types that interfaces cannot. For simple data shapes, they are largely interchangeable.
+
+**Q2: How do function overloads work in TypeScript? Do they exist at runtime?**
+*Answer:* Function overloads are a compile-time construct only. You define multiple call signatures and exactly one implementation signature that handles all cases. At runtime, only the implementation exists as standard JavaScript.
+
+**Q3: Explain the `using` keyword and Explicit Resource Management.**
+*Answer:* Introduced in TS 5.2, `using` ties a variable''s lifetime to its scope. When the scope ends, the variable''s `[Symbol.dispose]()` method is automatically called, ensuring resources (like connections or file handles) are cleaned up even if exceptions are thrown.
+
+**Q4: What is the purpose of the `accessor` keyword on a class property?**
+*Answer:* `accessor` auto-generates a private backing field along with a getter and setter for the property. It was introduced primarily to work with decorators, allowing decorators to cleanly intercept both read and write operations.
+
+**Q5: What are utility types like `Partial`, `Pick`, and `Omit` doing under the hood?**
+*Answer:* They are built using TypeScript''s mapped types and conditional types. For example, `Partial<T>` maps over all keys of `T` using `keyof T` and appends the `?` modifier to make them optional.
 
 ---
 

@@ -6,1188 +6,759 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 🚦 Prerequisites
 
-By the end of this lecture, you will be able to:
-- Organise code with ES modules: `import`, `export`, type-only imports, and barrel files
-- Understand namespaces (legacy) and when they appear in older codebases
-- Write declaration files (`.d.ts`) for untyped JavaScript libraries
-- Install community type definitions from DefinitelyTyped (`@types`)
-- Write and apply modern ECMAScript (TC39) decorators (TypeScript 5.0+)
-- Use modern TC39 Class, Method, Field, and Accessor decorators
-- Configure `tsconfig.json` path mapping for clean imports
+Before diving into this lecture, you should be comfortable with:
+1. **JavaScript ES6 Modules:** Understanding basic `import` and `export` syntax in standard JavaScript environments.
+2. **TypeScript Fundamentals:** Familiarity with static typing, interfaces, and the basic compilation step (`tsc`).
+3. **Object-Oriented Programming (OOP) in TypeScript:** Solid knowledge of classes, methods, properties, inheritance, and access modifiers (`public`, `private`).
+4. **Tooling Basics:** Knowing how to configure a fundamental `tsconfig.json` file for project setups.
 
 ---
 
-## 📋 Agenda
+## 🎯 Objectives & Agenda
 
-### Part 1 — Theory (~90 min)
-1. ES Modules in TypeScript: `import`/`export`, type-only imports, barrel files
-2. Namespaces: internal modules, legacy usage
-3. Declaration files (`.d.ts`) and DefinitelyTyped (`@types`)
-4. Modern TC39 Decorators (TS 5.0+)
-5. Class, Method, Field, and Accessor Decorators
-6. `tsconfig.json` path mapping (`paths` and `baseUrl`)
+### Learning Objectives
+By the end of this comprehensive lecture, you will be able to:
+- **Organise code effectively** using ES modules, separating concerns across distinct files cleanly.
+- **Optimise bundle sizes** using type-only imports and type-only exports.
+- **Implement barrel files** to create clean, aggregated module entry points that hide folder complexity.
+- **Understand the history and legacy usage** of TypeScript Namespaces and when to avoid them.
+- **Bridge TypeScript with untyped JavaScript** by writing custom declaration files (`.d.ts`) and leveraging the DefinitelyTyped (`@types`) ecosystem.
+- **Master Metaprogramming** by applying modern ECMAScript (TC39) Class, Method, Field, and Accessor decorators.
+- **Eliminate relative path hell** through intelligent `tsconfig.json` path mapping aliases.
 
-### Part 2 — Practice & Lab (~90–120 min)
-1. Organise a project with barrel exports and path mapping
-2. Write declaration files for untyped JavaScript
-3. DataForge Project Part 3: Validation Decorators
+### 📋 Agenda
+1. **Deep Dive into ES Modules:** `import`/`export`, default vs named exports, type-only imports, and structuring logic.
+2. **Barrel Files:** Aggregating folder exports for clean architectural APIs.
+3. **Namespaces:** Understanding the legacy internal module system.
+4. **Declaration Files (`.d.ts`):** Providing static types to untyped third-party libraries and global variables.
+5. **Modern TC39 Decorators (TS 5.0+):** Metaprogramming patterns across classes, methods, fields, and accessors.
+6. **Path Mapping:** Configuring clean, absolute-like imports via `paths` and `baseUrl`.
+7. **Think Like a Developer:** Real-world architectural decision-making scenarios.
+8. **Before vs After:** Comparing legacy or poorly structured code with modern, clean code patterns.
+9. **Common Mistakes & How to Avoid Them:** A structured troubleshooting guide for modules and decorators.
+10. **Practice Labs, Assignment & Interview Prep:** Hands-on challenges and career readiness to solidify your knowledge.
 
 ---
 
-## 1. ES Modules in TypeScript
+## 1. Deep Dive into ES Modules
 
-### Why Do We Need Modules? The Problem First
+### The 'Why': The Problem First
 
-Imagine writing an entire web application in a single file. That file would quickly grow to tens of thousands of lines. You'd have:
-- No clear boundaries between unrelated features
-- Name collisions (two functions accidentally called `formatDate`)
-- Impossible to find anything or work in a team without constant conflicts
-- No way to reuse code between projects without copy-pasting
+Imagine attempting to write a modern, complex web application within a single file. That file would quickly balloon to tens of thousands of lines of code. The consequences of this approach are dire:
+- **No clear boundaries:** Unrelated features (like User authentication, Product catalogs, and Database connections) are hopelessly mixed together.
+- **Catastrophic Name Collisions:** Two separate features might accidentally define a helper function called `formatDate()`, breaking the application.
+- **Merge Conflicts:** A team of developers working on the exact same file will constantly overwrite each other's changes in version control.
+- **Zero Reusability:** You cannot easily extract a piece of logic to share across different projects without brute-force copy-pasting.
 
-**Modules** solve all of these problems by letting you split your code into small, focused files. Each file **exports** the things it wants to share and **imports** only what it needs from other files.
+**Modules** solve these architectural nightmares by letting you split your code into small, focused, and completely isolated files. Each file **exports** only the public API it explicitly wants to share, and **imports** only what it strictly needs from other files.
 
-**Real-world analogy:** Think of modules like **LEGO bricks**. Each brick (file) has a specific shape and purpose. You can snap them together in any configuration to build complex structures. You can swap one brick for another without rebuilding the whole thing. And you can use the same brick in multiple builds.
-
-```
-Without modules:                      With modules:
-─────────────────────────────         ─────────────────────────────────────
-app.ts (5000 lines)                   src/
-  function formatDate() { ... }         ├── utils/
-  function formatCurrency() { ... }     │   ├── date.ts    → exports formatDate
-  class UserService { ... }             │   └── money.ts   → exports formatCurrency
-  class ProductService { ... }          ├── services/
-  interface User { ... }                │   ├── user.ts    → exports UserService
-  interface Product { ... }             │   └── product.ts → exports ProductService
-  // ... 4900 more lines               └── models/
-                                            ├── user.ts    → exports User interface
-                                            └── product.ts → exports Product interface
-```
+**Real-world analogy:** Think of modules like **LEGO bricks**. Each brick (a file) has a specific shape, color, and purpose. You can snap them together in any configuration to build highly complex structures. You can swap one brick for a newer version without tearing down the entire build, and you can reuse the exact same brick model in multiple different sets.
 
 ### Named Exports & Imports
 
-A **named export** makes a specific declaration (function, class, interface, constant) available to other files.
+A **named export** explicitly makes a declaration (like a function, class, interface, or constant) available to other files. A single file can contain multiple named exports.
 
-```ts
+```typescript
 // ═══════════════════════════════════════════════════════════════
 // FILE: src/utils/math.ts
-// This file exports two math utility functions.
 // ═══════════════════════════════════════════════════════════════
 
-// The 'export' keyword before a declaration makes it importable from other files.
-// Without 'export', this function is private to this file.
+// The 'export' keyword makes this function accessible from the outside.
 export function add(a: number, b: number): number {
-  return a + b; // Simple addition — returns the sum of two numbers
+  return a + b; 
 }
 
-// You can export multiple things from a single file.
+// Multiple named exports are perfectly valid and common.
 export function multiply(a: number, b: number): number {
-  return a * b; // Simple multiplication
+  return a * b;
 }
 
-// This function has NO 'export' — it is PRIVATE to this file.
-// Other files cannot import or use it.
+// NO 'export' keyword here. 
+// This function is strictly PRIVATE to the math.ts file.
+// It is physically impossible to import this elsewhere.
 function internalHelper(): void {
-  console.log("I'm only accessible inside math.ts");
+  console.log("I am isolated inside math.ts");
 }
 ```
 
-```ts
+Importing these requires you to use the exact names defined in the export, wrapped in curly braces.
+
+```typescript
 // ═══════════════════════════════════════════════════════════════
 // FILE: src/main.ts
-// This file imports from the math utility module.
 // ═══════════════════════════════════════════════════════════════
 
-// Named import: use curly braces to specify exactly which exports you want.
-// The path './utils/math' is relative to the current file.
-// TypeScript adds the .ts extension automatically — you don't include it.
+// Named import: Curly braces require an exact matching of names.
 import { add, multiply } from './utils/math';
 
-console.log(add(2, 3));       // 5
-console.log(multiply(4, 5));  // 20
+console.log(add(10, 5));      // Output: 15
+console.log(multiply(10, 5)); // Output: 50
 
-// internalHelper(); // ❌ Error: 'internalHelper' is not exported from './utils/math'!
+// internalHelper(); // ❌ Compiler Error: 'internalHelper' is not exported.
 ```
 
 ### Default Exports vs Named Exports
 
-A **default export** is used when a file has ONE primary thing to export — the "main attraction" of that file.
+A **default export** is designated when a file has exactly ONE primary entity to export. It represents the singular "main attraction" of the module.
 
-```ts
+```typescript
 // ═══════════════════════════════════════════════════════════════
-// FILE: src/models/User.ts
-// This file has both a named export (interface) and a default export (class).
+// FILE: src/services/UserService.ts
 // ═══════════════════════════════════════════════════════════════
 
-// Named export — use curly braces when importing
 export interface User {
-  id:    number;
-  name:  string;
-  email: string;
+  id: number;
+  name: string;
 }
 
-// Default export — only ONE per file allowed.
-// The 'default' keyword marks this as the main export.
+// Default export — only ONE per file is permitted by the compiler.
 export default class UserService {
-  private users: User[] = []; // Private array of users — internal state
+  private users: User[] = [];
 
   addUser(user: User): void {
-    this.users.push(user); // Add the user to the internal array
-  }
-
-  findAll(): User[] {
-    return this.users; // Return all stored users
-  }
-
-  findById(id: number): User | undefined {
-    return this.users.find(u => u.id === id); // Search by id, return user or undefined
+    this.users.push(user);
   }
 }
 ```
 
-```ts
+When importing a default export, you omit the curly braces. Because it is the default, you are free to name it whatever you like upon importing:
+
+```typescript
 // ═══════════════════════════════════════════════════════════════
-// FILE: src/main.ts — importing from User.ts
+// FILE: src/app.ts
 // ═══════════════════════════════════════════════════════════════
 
-// Default import: NO curly braces — you can name it anything you want!
-import UserService from './models/User';       // Import the default export
+// Default import: NO curly braces. We can invent the name here.
+import CustomUserServiceName from './services/UserService';
 
-// Named import: curly braces required — must match the exported name exactly
-import { User }   from './models/User';        // Import the named interface
+// Named import: Curly braces required to match the exact interface name.
+import { User } from './services/UserService';
 
-const service = new UserService();
-service.addUser({ id: 1, name: "Alice", email: "alice@example.com" });
-console.log(service.findAll()); // [{ id: 1, name: "Alice", email: "..." }]
+const service = new CustomUserServiceName();
+service.addUser({ id: 1, name: "Alice" });
 ```
 
 > [!TIP]
-> Prefer **named exports** over default exports in most cases. Named exports:
-> - Make it immediately obvious what something is called (you can't accidentally rename it on import)
-> - Work much better with IDE auto-import features
-> - Are easier to search for with "Find All References"
-> 
-> Reserve default exports for the main class/component of a file (e.g., a React component or Angular service).
+> **Best Practice for Scalability:** Prefer **named exports** over default exports for the vast majority of scenarios. Named exports strictly enforce consistent naming across the entire codebase. This prevents developer A from importing `import UserSvc from './UserService'` while developer B imports `import UserService from './UserService'`. Furthermore, named exports provide significantly superior IDE refactoring support (like global "Rename Symbol" features) and make auto-importing highly reliable. Reserve default exports exclusively for files that inherently represent a single visual component (e.g., a React component page).
 
-### Type-Only Imports — Reducing Bundle Size
+### Type-Only Imports — Optimising Bundle Size
 
-TypeScript 3.8 introduced `import type`. This tells the compiler: "I need this symbol for type checking only — please remove it from the compiled JavaScript completely."
+TypeScript 3.8 introduced the excellent `import type` syntax. It explicitly tells the TypeScript compiler: *"I am importing this symbol exclusively for static type checking purposes. I guarantee I will not use it as an executable value. Please remove it entirely from the compiled JavaScript output."*
 
-**Why does this matter?**  
-When you compile TypeScript to JavaScript, all imports remain in the output — even if you only used them for type annotations. With `import type`, the import disappears from the output entirely, resulting in smaller bundles and no unnecessary module loading.
+**Why is this architectural feature critical?**  
+When TypeScript compiles code down to JavaScript, standard imports remain in the emitted output to be resolved dynamically at runtime by Node or the browser. If you only use an imported class or interface to annotate a function parameter, the JavaScript runtime engine has absolutely no use for it. Using `import type` guarantees zero runtime overhead and prevents accidentally loading massive files just for a type signature.
 
-```ts
-// ✅ Type-only import — completely removed from compiled JavaScript output.
-// This import exists ONLY for TypeScript's type checker.
-// At runtime (in JavaScript), this import never runs.
+```typescript
+// ✅ Type-only import: Erased entirely from the compiled JavaScript bundle.
 import type { User } from './models/User';
 
-// ✅ Regular import — stays in JavaScript output (needed at runtime because we call 'new').
-import UserService from './models/User';
+// ✅ Regular import: Persists in the JavaScript bundle (needed for instantiation).
+import UserService from './services/UserService';
 
-// 'User' is used as a type annotation → fine with 'import type'
-function greetUser(user: User): string {
-  return `Hello, ${user.name}!`; // 'User' type used for type checking only
+// 'User' is used only in a type position. 'import type' is perfect here.
+function printUser(user: User): void {
+  console.log(user.name);
 }
 
-// 'UserService' is used as a value (we call 'new') → needs a regular import
-const service = new UserService(); // Cannot use 'import type' for this!
+// 'UserService' is used as a runtime value (we call 'new' on it). 
+// 'import type' would cause a crash here.
+const service = new UserService();
 ```
-
-**Common rule of thumb:** If you only use an import in type positions (`: User`, `<User>`, `user: User`), use `import type`. If you use it as a value (call a function, instantiate a class, read a constant), use a regular import.
-
-### Re-Exporting
-
-You can re-export things from one module in another, which is the foundation of "barrel files":
-
-```ts
-// Re-export specific named exports from another module
-export { add, multiply } from './math';
-
-// Re-export with renaming
-export { UserService as default } from './models/User';
-
-// Re-export ALL named exports from a module at once
-export * from './validation';
-
-// Re-export types only (no runtime code)
-export type { User, Product } from './models';
-```
-
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Circular imports — File A imports from B, File B imports from A
-// This creates a "chicken and egg" dependency cycle that can cause undefined values.
-// a.ts: import { something } from './b';
-// b.ts: import { something } from './a'; ← Circular!
-//
-// ✅ FIX: Extract the shared code into a third file (c.ts) that both A and B import from.
-// A → C (OK)  and  B → C (OK)  — no cycle!
-
-// ❌ MISTAKE 2: Using CommonJS require() in TypeScript projects
-const utils = require('./utils'); // Old Node.js style — avoid in TypeScript!
-
-// ✅ FIX: Always use ES module syntax in TypeScript
-import * as utils from './utils';
-// OR (with esModuleInterop: true in tsconfig):
-import utils from './utils';
-
-// ❌ MISTAKE 3: Forgetting 'type' on type-only imports
-import { User } from './User'; // User is an interface — runtime import is wasted!
-
-// ✅ FIX: Use import type for interfaces and type aliases
-import type { User } from './User'; // Zero runtime overhead
-
-// ❌ MISTAKE 4: Importing something that isn't exported
-// FILE: math.ts has: function internalHelper() { ... } (no 'export')
-import { internalHelper } from './math'; // ❌ Error: 'internalHelper' not exported!
-```
-
-### Section Recap
-- `export` makes a declaration available to other files. `import` brings it in.
-- **Named exports** use curly braces: `export function foo()`, `import { foo }`.
-- **Default exports** don't use curly braces on import: `export default class X`, `import X`.
-- `import type` removes the import from compiled JavaScript — always use it for interfaces and type aliases.
-- Prefer named exports for better IDE support and discoverability.
 
 ---
 
-## 2. Barrel Files — Clean Import Paths
+## 2. Barrel Files — Clean Architecture
 
-### The Problem Barrel Files Solve
+### The Problem: Fragmented and Deep Imports
 
-As a project grows, import paths become longer and more fragile:
+As a modular project scales, the sheer number of imported files becomes overwhelming. Importing related files individually becomes tedious and creates massive, unreadable blocks of import statements at the very top of your files.
 
-```ts
-// ❌ Without barrel files — you must know the exact path of every file
-import { User }        from '../../models/user/user.model';
-import { Product }     from '../../models/product/product.model';
-import { Order }       from '../../models/order/order.model';
-import { UserService } from '../../services/user/user.service';
-import { formatDate }  from '../../utils/date/date-formatter';
+```typescript
+// ❌ Without a barrel file - fragile and verbose
+import { User } from '../../models/user';
+import { Product } from '../../models/product';
+import { Order } from '../../models/order';
+import { Invoice } from '../../models/invoice';
+import { Receipt } from '../../models/receipt';
 ```
 
-This has two major problems:
-1. **Cognitive load:** You must know the exact file location of every import.
-2. **Fragility:** If you move or rename a file, every import path that referenced it breaks.
+### The Solution: Aggregating Exports via Barrels
 
-**The solution:** A **barrel file** is an `index.ts` file in a folder that **re-exports** everything from that folder. It creates a single, clean entry point for the entire folder.
+A **barrel file** is essentially an `index.ts` file deliberately placed inside a directory. Its primary and sole responsibility is to re-export the contents of the various internal files within that directory. It serves as a unified "public API" for that folder, abstracting away the internal file structure from consumers.
 
-### How Barrel Files Work — Step by Step
+**Step 1: Create the individual modules**
+```typescript
+// src/models/user.ts
+export interface User { id: string; name: string; }
 
-**Step 1: Create your individual files with their exports**
-
-```ts
-// ═══════════════════════════════════════════════════════════════
-// FILE: src/models/user.ts
-// ═══════════════════════════════════════════════════════════════
-export interface User {
-  id:    number;
-  name:  string;
-  email: string;
-}
-
-// A factory function for creating User objects
-export class UserFactory {
-  static create(name: string, email: string): User {
-    return { id: Date.now(), name, email }; // Generate an ID from the current timestamp
-  }
-}
+// src/models/product.ts
+export interface Product { id: string; price: number; }
 ```
 
-```ts
-// ═══════════════════════════════════════════════════════════════
-// FILE: src/models/product.ts
-// ═══════════════════════════════════════════════════════════════
-export interface Product {
-  id:    number;
-  title: string;
-  price: number;
-}
-
-export function isInStock(product: Product): boolean {
-  return product.price > 0; // Simple placeholder logic
-}
+**Step 2: Create the Barrel File**
+```typescript
+// src/models/index.ts (The Barrel File)
+// Re-exporting everything from sibling files
+export * from './user';
+export * from './product';
+export * from './order';
+export * from './invoice';
 ```
 
-**Step 2: Create the barrel file (index.ts) in the folder**
-
-```ts
-// ═══════════════════════════════════════════════════════════════
-// FILE: src/models/index.ts  ← THE BARREL FILE
-// This file re-exports EVERYTHING from every model file.
-// It creates a single entry point for the 'models' folder.
-// ═══════════════════════════════════════════════════════════════
-
-export * from './user';      // Re-export User interface AND UserFactory class
-export * from './product';   // Re-export Product interface AND isInStock function
-
-// Add new files here as your project grows:
-// export * from './order';
-// export * from './category';
+**Step 3: Import cleanly from the directory**
+```typescript
+// src/main.ts
+// ✅ TypeScript automatically resolves to the index.ts file when pointing to a folder!
+import { User, Product, Order, Invoice } from './models';
 ```
 
-**Step 3: Import from the folder (not individual files)**
-
-```ts
-// ═══════════════════════════════════════════════════════════════
-// FILE: src/main.ts
-// ═══════════════════════════════════════════════════════════════
-
-// ✅ With barrel — import everything from ONE place!
-// TypeScript knows to look for 'index.ts' when you import from a folder path.
-import { User, Product, UserFactory, isInStock } from './models';
-//                                                    ↑ No specific file needed!
-
-const user    = UserFactory.create("Alice", "alice@example.com");
-const product: Product = { id: 1, title: "Laptop", price: 999 };
-
-console.log(user.name);     // "Alice"
-console.log(isInStock(product)); // true
-```
-
-**Folder structure visual:**
-
-```
-BEFORE (no barrel):               AFTER (with barrel):
-──────────────────────            ────────────────────────────────────────
-src/                              src/
-├── models/                       ├── models/
-│   ├── user.ts                   │   ├── user.ts       ← individual files
-│   └── product.ts                │   ├── product.ts    ← individual files
-└── main.ts                       │   └── index.ts      ← barrel file
-                                  └── main.ts
-
-Importing:
-// Before: need full path            // After: clean folder import
-import { User } from                 import { User } from
-  '../../models/user';                 '../../models';
-```
-
-> [!TIP]
-> Barrel files work best when a folder represents a **feature** or **domain** with multiple related exports. Don't create barrel files for folders with only 1–2 files — it adds complexity for no benefit.
+> [!WARNING]
+> **Use Barrels Strategically:** While barrel files create beautiful and compact import blocks, avoid creating them for shallow directories (containing only 1-2 files). Overusing barrel files across every single folder adds unnecessary indirection. Additionally, be cautious of circular dependency loops: files *inside* the barrel's folder should import from their siblings using direct relative paths (`./user`), not by importing from the barrel itself (`./index`).
 
 ---
 
-## 3. Namespaces — The Legacy Approach
+## 3. Namespaces: The Legacy System
 
 ### What Are Namespaces?
 
-Before ES modules existed (before 2015), TypeScript invented its own system called **namespaces** (originally called "internal modules") to prevent global name collisions. If you loaded multiple scripts via `<script>` tags, all their functions ended up in the global scope and could conflict.
+Before the formalization of ECMAScript modules (ES6 in 2015), TypeScript had to invent its own proprietary solution, called **namespaces** (originally termed "internal modules"). This solved the massive problem of global scope pollution in browser environments where dozens of scripts were loaded sequentially via `<script>` tags, frequently overwriting each other's variables.
 
-A namespace wraps related code under a single object name, preventing collisions.
+A namespace essentially wraps related code into a single, globally accessible JavaScript object, simulating module encapsulation.
 
-```ts
-// The 'namespace' keyword creates a named container for related code.
-// Think of it as creating an object literal with its own scope.
-namespace Utils {
-  // Inside a namespace, use 'export' to make members accessible from outside.
-  export function log(msg: string): void {
-    console.log(`[LOG] ${msg}`);
-  }
+```typescript
+namespace ValidationLogic {
+  // This constant is deeply hidden inside the namespace closure.
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  export function warn(msg: string): void {
-    console.warn(`[WARN] ${msg}`);
-  }
-
-  // This is NOT exported — private to the namespace
-  function internalDebug(msg: string): void {
-    console.debug(msg);
+  // You must explicitly export to make it accessible outside the namespace.
+  export function isEmailValid(email: string): boolean {
+    return emailRegex.test(email);
   }
 }
 
-// Access namespace members using dot notation
-Utils.log("Server started");  // ✅ "[LOG] Server started"
-Utils.warn("Disk almost full"); // ✅ "[WARN] Disk almost full"
-// Utils.internalDebug("test"); // ❌ Error: 'internalDebug' is not accessible
+// Access the exported function via object dot notation
+const isValid = ValidationLogic.isEmailValid("test@example.com");
 ```
 
 ### Nested Namespaces
 
-```ts
+Namespaces can be deeply nested, mimicking folder structures entirely within a single file.
+
+```typescript
 namespace App {
   export namespace Models {
-    // A User interface nested inside App.Models
-    export interface User {
-      id:   number;
-      name: string;
-    }
-  }
-
-  export namespace Services {
-    // UserService nested inside App.Services
-    export class UserService {
-      getUser(id: number): App.Models.User {
-        // Must use the full qualified name inside nested namespaces
-        return { id, name: "Alice" };
-      }
-    }
+    export interface Customer { id: number; }
   }
 }
 
-// Usage: full qualified names
-const service = new App.Services.UserService();
-const user    = service.getUser(1);
-console.log(user.name); // "Alice"
+const customer: App.Models.Customer = { id: 1 };
 ```
 
-> [!NOTE]
-> For **all new projects**, use ES modules (`import`/`export`). Namespaces are a legacy TypeScript feature. You will encounter them in:
-> - Older Angular libraries (before v14)
-> - Legacy enterprise codebases
-> - TypeScript definition files (`*.d.ts`) for some older JavaScript libraries
->
-> **Never write new code using namespaces.** ES modules are the standard.
+> [!CAUTION]
+> **Legacy Notice:** Namespaces are overwhelmingly considered outdated for modern application development. Modern bundler tools (Webpack, Vite, Rollup) rely entirely on standard ES Modules (`import`/`export`) for tree-shaking and dead-code elimination. You must understand namespaces because you will frequently encounter them in older enterprise codebases and inside complex declaration files, but you should **never** write new application logic using namespaces.
 
 ---
 
-## 4. Declaration Files (`.d.ts`) — Typing Untyped JavaScript
+## 4. Declaration Files (`.d.ts`)
 
-### Why Are Declaration Files Needed?
+### The 'Why': Bridging Typed and Untyped Worlds
 
-TypeScript needs type information for **every** piece of code you use. But millions of JavaScript libraries were written before TypeScript existed — they have no type information built in.
+TypeScript strictly requires explicit type information to guarantee safety and provide autocomplete. However, the JavaScript ecosystem contains millions of legacy libraries written in plain Vanilla JavaScript, entirely lacking any static types.
 
-**Declaration files** (`.d.ts` files) solve this by providing the type information **separately** from the implementation. They tell TypeScript "this JavaScript library has these functions that accept these types and return these types" — without touching the original JavaScript.
+**Declaration files (`.d.ts`)** definitively solve this dilemma. They provide a separate, side-car file containing *only* type definitions, without altering the underlying JavaScript implementation whatsoever. 
 
-**Real-world analogy:** A declaration file is like a **restaurant menu**. The menu doesn't contain food — it tells you what's available, what's in each dish, and how much it costs. The TypeScript declaration file tells you what functions/classes a library has and what types they use, without containing any actual running code.
+**Analogy:** A `.d.ts` file is exactly like a **restaurant menu**. The menu itself doesn't contain the actual food (the executable runtime logic); it merely describes in great detail what is available to order (the function signatures, properties, and parameter types) so you don't order something that doesn't exist.
 
-```
-JavaScript library:              Declaration file:
-─────────────────────────        ────────────────────────────────────
-lodash.js (5000 lines of JS)    @types/lodash/index.d.ts
-                                  export function chunk<T>(
-                                    array: T[],
-                                    size: number
-                                  ): T[][];
-                                  
-                                  export function flatten<T>(
-                                    array: T[][]
-                                  ): T[];
-                                  // (and thousands more type definitions)
-```
+### DefinitelyTyped (`@types`)
 
-### DefinitelyTyped — Community-Maintained Types
-
-The TypeScript community maintains type definitions for thousands of popular JavaScript libraries at `github.com/DefinitelyTyped/DefinitelyTyped`. These are published to npm under the `@types/` scope.
+For thousands of popular libraries (like Lodash, Express, Jest, or React), the open-source community maintains high-quality declaration files in a massive GitHub repository called DefinitelyTyped. These are published under the `@types` scope on NPM.
 
 ```bash
-# Install types for the lodash utility library
+# Install the vanilla JS library
+npm install lodash
+
+# Install the community-maintained TypeScript definitions
 npm install --save-dev @types/lodash
+```
+Once installed, the TypeScript compiler instantly and automatically recognizes the types when you import the library. No additional configuration is needed.
 
-# Install types for Node.js built-in modules (fs, path, http, etc.)
-npm install --save-dev @types/node
+### Writing Custom Declaration Files
 
-# Install types for Express.js web framework
-npm install --save-dev @types/express
+When you use an obscure, proprietary, or internal JavaScript library that has no `@types` package, you must step up and write your own declaration file.
 
-# Install types for Jest testing framework
-npm install --save-dev @types/jest
+**The Original Vanilla JavaScript (`math-utils.js`):**
+```javascript
+// This is pure JS. No types exist here.
+function calculateDiscount(price, discountPercentage) {
+  return price - (price * (discountPercentage / 100));
+}
+module.exports = { calculateDiscount };
 ```
 
-After installation, TypeScript automatically finds them — no extra configuration needed!
-
-```ts
-// After 'npm install @types/lodash', TypeScript knows all lodash types!
-import _ from 'lodash';
-
-const chunked = _.chunk([1, 2, 3, 4, 5], 2);
-// TypeScript knows: chunked is number[][] (array of arrays of numbers)
-console.log(chunked); // [[1, 2], [3, 4], [5]]
-
-// TypeScript catches mistakes:
-// _.chunk("not an array", 2); // ❌ Error: string is not assignable to T[]
-```
-
-### Writing Your Own Declaration File
-
-When a library has no `@types` package, you must write the declaration file yourself. Here's the process step by step:
-
-**Step 1: Identify the JavaScript file you want to type**
-
-```js
-// FILE: src/legacy/analytics.js (original JavaScript — you cannot modify this)
-// This file has three exported functions with no type information.
-
-function trackEvent(eventName, properties) {
-  // In a real library, this would send data to an analytics service
-  console.log('Event:', eventName, 'Properties:', properties);
-}
-
-function setUserId(id) {
-  console.log('Setting user ID to:', id);
-}
-
-function pageView(url) {
-  console.log('Page view:', url);
-}
-
-module.exports = { trackEvent, setUserId, pageView };
-```
-
-**Step 2: Create the `.d.ts` file next to the JavaScript file**
-
-```ts
-// FILE: src/legacy/analytics.d.ts
-// This is the DECLARATION FILE. It has NO implementation code.
-// It only DESCRIBES what the JavaScript file exports and their types.
-
-// 'declare module' tells TypeScript: "when someone imports from './analytics',
-// here's the type shape of what they get."
-declare module './analytics' {
-  // Describe each exported function with full type signatures
-
-  // trackEvent: accepts event name (string) and optional properties (object)
-  export function trackEvent(
-    eventName: string,
-    properties?: Record<string, unknown>  // Optional object with any string keys
-  ): void;
-
-  // setUserId: accepts a user identifier (string or number)
-  export function setUserId(id: string | number): void;
-
-  // pageView: accepts a URL string
-  export function pageView(url: string): void;
+**The Custom Ambient Declaration (`math-utils.d.ts`):**
+```typescript
+// We declare the module shape. 
+// Absolutely NO implementation body is allowed here!
+declare module './math-utils' {
+  export function calculateDiscount(price: number, discountPercentage: number): number;
 }
 ```
 
-**Step 3: TypeScript now understands the JavaScript file**
+Now, importing from `./math-utils` in your standard `.ts` files will yield full compiler type safety, preventing you from accidentally passing strings into a math function.
 
-```ts
-// FILE: src/main.ts
-// Now we get full type safety when using the legacy JavaScript module!
-import { trackEvent, setUserId, pageView } from './legacy/analytics';
+### Typing Global Variables
 
-setUserId("user-42");                              // ✅ TypeScript: valid string
-trackEvent("purchase", { amount: 99.99, item: "Laptop" }); // ✅ Valid
-pageView("/products/laptop");                      // ✅ Valid
+Sometimes, old-school libraries or modern build tools inject variables directly onto the `window` object or the global scope via `<script>` tags or Webpack DefinePlugin. You can declare these globally so TypeScript stops complaining.
 
-// TypeScript now catches mistakes:
-// setUserId([1, 2, 3]);    // ❌ Error: array is not string | number
-// trackEvent(123);         // ❌ Error: number is not string
-```
+```typescript
+// FILE: global.d.ts (placed at the root of the project)
 
-### Declaring Global Variables
+// Declare a constant injected by Webpack during the build process
+declare const __API_BASE_URL__: string;
 
-Sometimes a library injects global variables via a `<script>` tag. You can teach TypeScript about them:
-
-```ts
-// FILE: src/globals.d.ts
-// This file tells TypeScript about global variables that exist at runtime
-// (injected by build tools, CDN scripts, or server-rendered HTML).
-
-// Global constants injected by the build tool (e.g., Vite/Webpack define plugin)
-declare const __APP_VERSION__: string;   // e.g., "2.1.4"
-declare const __API_BASE_URL__: string;  // e.g., "https://api.myapp.com"
-declare const __BUILD_DATE__: string;    // e.g., "2024-01-15"
-
-// Extend the global 'Window' interface to add properties injected by a CDN script
+// Extend the existing global Window interface
 declare interface Window {
-  // A Google Analytics-like analytics library loaded via <script> tag
-  myAnalytics: {
-    track(event: string, data?: object): void;
-    identify(userId: string): void;
+  GoogleAnalytics: {
+    trackEvent(eventName: string): void;
   };
-  // A chat widget loaded via <script> tag
-  Intercom: (command: string, ...args: any[]) => void;
-}
-```
-
-```ts
-// Now TypeScript understands these globals:
-console.log(`App version: ${__APP_VERSION__}`);  // ✅ TypeScript knows it's a string
-window.myAnalytics.track("login");               // ✅ TypeScript knows this exists
-```
-
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Using 'any' everywhere in a declaration file
-// This defeats the entire purpose of writing the declaration file!
-declare module './utils' {
-  export function formatDate(value: any): any;  // ❌ What types? Who knows!
 }
 
-// ✅ FIX: Be as specific as possible
-declare module './utils' {
-  export function formatDate(value: Date | string | number, format?: string): string;
-}
-
-// ❌ MISTAKE 2: Forgetting the 'export' keyword in declare module
-declare module './utils' {
-  function formatDate(date: Date): string;  // ❌ Not exported — can't import it!
-}
-
-// ✅ FIX: Add 'export'
-declare module './utils' {
-  export function formatDate(date: Date): string;  // ✅ Now importable
-}
-
-// ❌ MISTAKE 3: Putting executable code in a .d.ts file
-// declaration files are TYPE-ONLY — they cannot have implementations!
-declare module './utils' {
-  export function add(a: number, b: number): number {
-    return a + b; // ❌ Error: functions in declaration files cannot have bodies!
-  }
-}
+// Usage in app.ts is now completely error-free
+console.log(__API_BASE_URL__);
+window.GoogleAnalytics.trackEvent("User Login Completed");
 ```
 
 ---
 
-## 5. Modern TC39 Decorators (TypeScript 5.0+)
+## 5. Modern TC39 Decorators (TS 5.0+)
 
-### What Is a Decorator? — Starting from Zero
+### The 'Why': Elegant Metaprogramming
 
-A **decorator** is a special function that you can attach to a class, method, property, or accessor to **modify it, annotate it, or add behaviour around it**. Decorators run when the JavaScript engine first encounters the class definition — not when you call a method or create an instance.
+A **decorator** is a highly specialized function attached to a class, method, field, or accessor. It allows you to modify, observe, intercept, or replace the behavior of the decorated element declaratively. Decorators beautifully handle cross-cutting concerns (like logging, telemetry, authentication checks, validation, or caching) without polluting the core business logic of the function itself.
 
-**Real-world analogy:** Think of decorators like **labels you stick on items**:
-- A `@Fragile` sticker on a shipping box doesn't change what's inside — it adds handling instructions.
-- A `@Manager` badge on an employee doesn't change who they are — it grants them additional access.
+> [!IMPORTANT]
+> **Major Architectural Shift:** TypeScript 5.0 introduced full, native support for the official **ECMAScript (TC39) Decorators standard**. Older versions of TypeScript relied heavily on a legacy, experimental implementation that required `"experimentalDecorators": true` in `tsconfig.json`. The new standard is vastly superior but is mathematically incompatible with the old one. **Ensure your modern projects remove the experimental flag entirely.**
 
-Similarly, a `@LogMethod` decorator on a function doesn't change what the function does — it wraps it with logging behaviour around every call.
+### Understanding Decorator Context
 
-```
-Without decorator:                    With @LogMethod decorator:
-────────────────────────              ─────────────────────────────────────────
-function add(a, b) {                  Before: "Calling add with [3, 7]"
-  return a + b;                         → original function runs →
-}                                     After: "add returned: 10"
-```
+All TC39 decorators receive exactly two parameters when invoked:
+1. The `value` being decorated (e.g., the raw function definition or class constructor).
+2. A rich `context` object containing structural metadata about the decorated item (like `context.kind` and `context.name`).
 
-**The big news about TC39 Decorators:**  
-In TypeScript 5.0, the language adopted the official **ECMAScript (TC39) standard** for decorators. This matters because:
-- They are now **standard JavaScript** — not a TypeScript experiment.
-- You **no longer need** `"experimentalDecorators": true` in `tsconfig.json`.
-- All modern frameworks (Angular 17+, NestJS) use these standard decorators.
-- The old "experimental" decorators have **different syntax** — they are incompatible.
+### 1. Class Decorators
 
-> [!WARNING]
-> If your `tsconfig.json` has `"experimentalDecorators": true`, you are using the **old, legacy** decorator system. Remove that flag to use modern TC39 decorators. The two systems have different function signatures and are NOT compatible with each other.
+A class decorator runs exactly once when the class is first defined by the JavaScript engine. It can completely replace the constructor or silently add hidden metadata.
 
-### How the TC39 Decorator Context Works
-
-Every TC39 decorator receives two arguments:
-1. The **value** being decorated (the class constructor, method function, etc.)
-2. A **context object** with metadata about what's being decorated
-
-```ts
-// A decorator is just a function that receives these two arguments:
-function ExampleDecorator(
-  value: any,               // The thing being decorated (class, method, etc.)
-  context: DecoratorContext // Rich metadata object
-) {
-  console.log("Kind:", context.kind); // 'class' | 'method' | 'field' | 'accessor'
-  console.log("Name:", context.name); // The name of the decorated item
-  // Return a replacement for 'value', or return nothing to keep the original
-}
-```
-
-### Class Decorators — Modifying or Annotating the Class
-
-A **class decorator** is applied to the class constructor. It can:
-- Replace the class with a new (modified) version
-- Add metadata to the class
-- Enforce patterns like Singleton
-
-```ts
+```typescript
 // ═══════════════════════════════════════════════════════════════
-// Example 1: A simple @LogClass decorator
-// Runs when the class is DEFINED (not when instances are created)
+// Class Decorator Example: Singleton Pattern
 // ═══════════════════════════════════════════════════════════════
 
-function LogClass(
-  value:   any,                   // The class constructor
-  context: ClassDecoratorContext  // Metadata — context.name is the class name
-): void {
-  // This runs immediately when JavaScript loads the file
-  console.log(`📦 Class "${String(context.name)}" has been registered!`);
-}
-
-// Apply the decorator using the '@' syntax, placed immediately above the class
-@LogClass
-class UserRepository {
-  private users: any[] = [];
-
-  constructor() {
-    console.log("UserRepository instance created");
-  }
-}
-
-// When the file loads, the output is:
-// 📦 Class "UserRepository" has been registered!
-// (Then, when you do 'new UserRepository()':)
-// UserRepository instance created
-```
-
-```ts
-// ═══════════════════════════════════════════════════════════════
-// Example 2: A @Singleton decorator
-// Ensures only ONE instance of the class ever exists.
-// ═══════════════════════════════════════════════════════════════
-
-function Singleton(
-  value:   abstract new (...args: any[]) => any, // The class constructor type
+function Singleton<T extends abstract new (...args: any) => any>(
+  value: T,
   context: ClassDecoratorContext
 ) {
-  let instance: any = null; // Closure variable — persists between calls
+  let instance: any = null;
 
-  // Return a new class that wraps the original.
-  // 'extends (value as any)' means the new class inherits everything.
-  return class extends (value as any) {
+  // We return an entirely new class that extends the original constructor
+  return class extends value {
     constructor(...args: any[]) {
       if (instance) {
-        return instance; // Already exists? Return the same instance!
+        return instance; // Return the deeply cached instance
       }
-      super(...args);    // First time? Call the real constructor.
-      instance = this;   // Save this as the only instance.
+      super(...args);
+      instance = this;   // Save the new instance for future calls
     }
   };
 }
 
 @Singleton
-class AppConfig {
-  constructor(public apiUrl: string) {
-    console.log(`Config created: ${apiUrl}`);
+class DatabaseConnection {
+  constructor(public id: string = Math.random().toString()) {
+    console.log("Database Connection Established.");
   }
 }
 
-const config1 = new AppConfig("https://api.example.com"); // "Config created: ..."
-const config2 = new AppConfig("https://other.api.com");   // NO output — returns existing!
-
-console.log(config1 === config2); // true — same object!
-console.log(config2.apiUrl);      // "https://api.example.com" — first instance wins
+const db1 = new DatabaseConnection(); // Logs: "Database Connection Established."
+const db2 = new DatabaseConnection(); // Logs nothing!
+console.log(db1 === db2); // Output: true! Both variables share the exact same instance.
 ```
 
-### Method Decorators — Wrapping Methods with Logic
+### 2. Method Decorators
 
-A **method decorator** wraps a method with additional behaviour. This is the most commonly used decorator type in practice.
+Method decorators wrap an existing method, allowing you to intercept calls before they reach the original function, alter the arguments, or manipulate the return value.
 
-**Use cases:** Logging, performance measurement, caching, rate limiting, retry logic, access control.
-
-```ts
+```typescript
 // ═══════════════════════════════════════════════════════════════
-// @LogMethod decorator — logs what arguments a method receives
-// and what value it returns.
+// Method Decorator Example: Execution Timer
 // ═══════════════════════════════════════════════════════════════
-function LogMethod(
-  originalMethod: (...args: any[]) => any, // The original method function
-  context: ClassMethodDecoratorContext      // Has context.name (the method name)
-): (...args: any[]) => any {
 
-  // Return a NEW function that REPLACES the original method.
-  // This wrapper is called every time the method is called.
-  return function (this: any, ...args: any[]) {
-    const methodName = String(context.name);
-
-    // Log BEFORE calling the original method
-    console.log(`▶️  ${methodName}() called with:`, args);
-
-    // Actually call the original method with the same 'this' context and arguments
-    const result = originalMethod.apply(this, args);
-
-    // Log AFTER the original method returns
-    console.log(`✅  ${methodName}() returned:`, result);
-
-    // Must return the result so the caller gets it!
-    return result;
-  };
-}
-
-// ═══════════════════════════════════════════════════════════════
-// @Timing decorator — measures how long a method takes to run
-// ═══════════════════════════════════════════════════════════════
-function Timing(
-  originalMethod: (...args: any[]) => any,
+function MeasureExecution(
+  originalMethod: Function,
   context: ClassMethodDecoratorContext
-): (...args: any[]) => any {
-
-  return function (this: any, ...args: any[]) {
-    const label = `⏱️  ${String(context.name)}`;
-    console.time(label);                              // Start the timer
-    const result = originalMethod.apply(this, args);  // Run the original
-    console.timeEnd(label);                           // Stop timer and log duration
-    return result;
-  };
-}
-
-// ═══════════════════════════════════════════════════════════════
-// Apply multiple decorators to a class.
-// Decorators stack — bottom decorator runs first (innermost wrapper).
-// ═══════════════════════════════════════════════════════════════
-class Calculator {
-  // Multiple decorators on one method:
-  // Execution order: @Timing runs first (innermost), @LogMethod runs second (outermost)
-  @LogMethod
-  @Timing
-  add(a: number, b: number): number {
-    return a + b; // The original method logic
-  }
-
-  @LogMethod
-  multiply(a: number, b: number): number {
-    return a * b;
-  }
-}
-
-const calc = new Calculator();
-calc.add(3, 7);
-// Console output (in order):
-// ▶️  add() called with: [3, 7]
-// ⏱️  add: 0.05ms
-// ✅  add() returned: 10
-```
-
-### Field (Property) Decorators — Transforming Initial Values
-
-A **field decorator** intercepts how a class field's initial value is set. It receives `undefined` as the `value` argument (since there's no "method" to replace), and returns an **initializer function** that processes the initial value.
-
-```ts
-// ═══════════════════════════════════════════════════════════════
-// @Uppercase decorator — converts the initial value of a string field to uppercase
-// ═══════════════════════════════════════════════════════════════
-function Uppercase(
-  value:   undefined,                // Field decorators always receive 'undefined'!
-  context: ClassFieldDecoratorContext // Has context.name (the field name)
 ) {
-  // Return an "initializer" function — it runs when the field is first set.
-  // 'initialValue' is the value written in the class definition (e.g., "electronics")
-  return function (this: any, initialValue: any) {
-    if (typeof initialValue === "string") {
-      console.log(`🔤 Field "${String(context.name)}" → uppercased`);
-      return initialValue.toUpperCase(); // Transform and return the new initial value
-    }
-    return initialValue; // Non-string? Return unchanged.
+  const methodName = String(context.name);
+
+  // We return a brand new wrapper function that replaces the original method
+  return function (this: any, ...args: any[]) {
+    const start = performance.now();
+    
+    // Execute the original method securely
+    const result = originalMethod.apply(this, args);
+    
+    const end = performance.now();
+    console.log(`⏱️ [${methodName}] executed seamlessly in ${(end - start).toFixed(4)}ms`);
+    
+    return result; // Critical: You MUST return the result to the original caller!
   };
 }
 
-class Product {
-  @Uppercase
-  category: string = "electronics"; // Initial value is "electronics"
-  // After @Uppercase runs, category will be "ELECTRONICS"
-
-  constructor(public name: string, public price: number) {}
+class ReportGenerator {
+  @MeasureExecution
+  generate(rows: number): string {
+    let sum = 0;
+    for (let i = 0; i < rows; i++) sum += i; // Simulate a heavy computation task
+    return `Financial report successfully generated for ${rows} rows.`;
+  }
 }
 
-const p = new Product("Laptop", 999);
-console.log(p.category); // "ELECTRONICS" — transformed by the decorator!
+const report = new ReportGenerator();
+report.generate(5000000); // Logs: ⏱️ [generate] executed seamlessly in X.XXXXms
 ```
 
-### Accessor Decorators — Intercept Get & Set
+### 3. Field Decorators
 
-When you combine the `accessor` keyword (from Lecture 20) with a decorator, the decorator can **intercept both reading and writing** the property. This is the most powerful field decorator type.
+Field decorators manage the initial assignment of a class property. They receive `undefined` as the `value` and must return an **initializer function**.
 
-**Use case:** Validation — ensure a value stays within valid bounds when written.
-
-```ts
+```typescript
 // ═══════════════════════════════════════════════════════════════
-// @Range decorator — a "decorator factory" that creates a decorator.
-// A decorator factory is a function that RETURNS a decorator function.
-// This pattern allows passing arguments to the decorator: @Range(0, 100)
+// Field Decorator Example: Force Uppercase
 // ═══════════════════════════════════════════════════════════════
-function Range(min: number, max: number) {
-  // The outer function receives min and max as config.
-  // It returns the actual decorator function.
+
+function ForceUppercase(
+  value: undefined, 
+  context: ClassFieldDecoratorContext
+) {
+  // Return the initializer function that processes the initial assignment value
+  return function (initialValue: any) {
+    if (typeof initialValue === "string") {
+      return initialValue.toUpperCase();
+    }
+    return initialValue;
+  };
+}
+
+class ProductRecord {
+  @ForceUppercase
+  sku: string = "lap-5001-blk"; // This will instantly be converted to uppercase
+}
+
+const p = new ProductRecord();
+console.log(p.sku); // Output: "LAP-5001-BLK"
+```
+
+### 4. Accessor Decorators (Auto-Accessors)
+
+When utilizing the modern `accessor` keyword on a property, TypeScript automatically generates a hidden private backing field along with a getter and setter. Accessor decorators are tremendously powerful because they can intercept both the read (get) and the write (set) operations continuously throughout the object's lifecycle.
+
+```typescript
+// ═══════════════════════════════════════════════════════════════
+// Accessor Decorator Example: Number Range Validation
+// ═══════════════════════════════════════════════════════════════
+
+// This structure is a "Decorator Factory" — a function that RETURNS the actual decorator.
+// It allows us to pass custom configuration arguments like min and max.
+function MinMax(min: number, max: number) {
   return function (
-    value:   ClassAccessorDecoratorTarget<any, number>, // The auto-generated get/set pair
-    context: ClassAccessorDecoratorContext              // Metadata
+    value: ClassAccessorDecoratorTarget<any, number>,
+    context: ClassAccessorDecoratorContext
   ): ClassAccessorDecoratorResult<any, number> {
-
+    
     return {
-      // Wrap the getter — just return the value unchanged
-      get(this: any): number {
-        return value.get.call(this); // Delegate to the original getter
+      get(this: any) {
+        return value.get.call(this);
       },
-      // Wrap the setter — VALIDATE before accepting the new value
-      set(this: any, newValue: number): void {
+      set(this: any, newValue: number) {
+        // Intercept the assignment. If it's invalid, throw a fatal error.
         if (newValue < min || newValue > max) {
-          // Throw a descriptive error if the value is out of range
-          throw new RangeError(
-            `"${String(context.name)}" must be between ${min} and ${max}. Got: ${newValue}`
-          );
+          throw new RangeError(`Critical Error: Value must remain between ${min} and ${max}`);
         }
-        value.set.call(this, newValue); // Value is valid — pass it to the original setter
+        // If valid, proceed with the original setter assignment
+        value.set.call(this, newValue);
       }
     };
   };
 }
 
-class Temperature {
-  // @Range(-273, 1000) — valid range is absolute zero to 1000°C
-  // 'accessor' generates the backing field + getter + setter
-  @Range(-273, 1000)
-  accessor celsius: number = 20; // Initial value: 20°C
+class Thermostat {
+  @MinMax(10, 30)
+  accessor temperature: number = 20;
 }
 
-const temp = new Temperature();
-temp.celsius = 100;              // ✅ Valid — between -273 and 1000
-console.log(temp.celsius);       // 100
-
-try {
-  temp.celsius = -999;           // ❌ Below absolute zero!
-} catch (e) {
-  if (e instanceof RangeError) {
-    console.error(e.message);   // '"celsius" must be between -273 and 1000. Got: -999'
-  }
-}
+const t = new Thermostat();
+t.temperature = 25; // ✅ OK
+// t.temperature = 5; // ❌ Immediately Throws RangeError
 ```
-
-### Visual: Decorator Execution Order
-
-When multiple decorators are stacked on the same element, they apply **bottom-to-top**:
-
-```
-@DecoratorA       ← Applied LAST (outermost wrapper — first to intercept incoming calls)
-@DecoratorB       ← Applied SECOND
-@DecoratorC       ← Applied FIRST (innermost wrapper — closest to the original method)
-method() { ... }  ← The original method
-
-Call execution flow:
-  DecoratorA intercepts call
-    → DecoratorB intercepts call
-        → DecoratorC intercepts call
-            → Original method runs
-        ← DecoratorC post-processing
-    ← DecoratorB post-processing
-  ← DecoratorA post-processing
-```
-
-For class decorators, multiple decorators run **top-to-bottom** at class definition time.
-
-### Common Mistakes & How to Avoid Them
-
-```ts
-// ❌ MISTAKE 1: Using legacy 'experimentalDecorators' format with TC39 decorators
-// Old decorator function signatures look different from TC39.
-// Legacy:  function MyDec(target: any, key: string, descriptor: PropertyDescriptor)
-// TC39:    function MyDec(value: Function, context: ClassMethodDecoratorContext)
-// They are NOT interchangeable! Mixing them causes confusing runtime errors.
-//
-// ✅ FIX: Remove "experimentalDecorators": true from tsconfig.json.
-// If you see that flag, you're in legacy mode!
-
-// ❌ MISTAKE 2: Trying to use field decorators to access the value directly
-function BadFieldDecorator(value: any, context: any) {
-  console.log(value); // ❌ 'value' is always undefined for field decorators!
-  value.doSomething(); // ❌ Will crash — undefined has no methods!
-}
-
-// ✅ FIX: Return an initializer function — that's how you process field values
-function GoodFieldDecorator(value: undefined, context: ClassFieldDecoratorContext) {
-  return function (this: any, initialValue: any) {
-    // 'initialValue' is the actual value — do your processing here
-    return initialValue;
-  };
-}
-
-// ❌ MISTAKE 3: Forgetting to return the result in a method decorator
-function BadMethodDecorator(originalMethod: Function, context: any) {
-  return function (this: any, ...args: any[]) {
-    console.log("Before");
-    originalMethod.apply(this, args); // Runs the method BUT...
-    // ❌ No 'return'! The caller always gets 'undefined' back!
-  };
-}
-
-// ✅ FIX: Always return the result
-function GoodMethodDecorator(originalMethod: Function, context: any) {
-  return function (this: any, ...args: any[]) {
-    console.log("Before");
-    const result = originalMethod.apply(this, args); // Capture result
-    return result; // ✅ Return it!
-  };
-}
-```
-
-### Section Recap
-- **TC39 Decorators** (TS 5.0+) are standard JavaScript — no `experimentalDecorators` flag needed.
-- A decorator is a **function** that receives the decorated value and a context object.
-- **Class decorators** can replace or annotate the entire class constructor.
-- **Method decorators** wrap methods — return a new function to replace the original.
-- **Field decorators** receive `undefined` as value — return an initializer function to transform the initial value.
-- **Accessor decorators** wrap both getter and setter of `accessor` fields.
-- Stacked decorators apply **bottom-to-top**.
 
 ---
 
-## 6. Path Mapping — Clean Import Paths
+## 6. Path Mapping
 
-### The Problem: Relative Path Hell
+### The 'Why': Eliminating Relative Path Hell
 
-As a project grows, imports from deeply nested files become long and unreadable:
+In massive enterprise projects, importing files from deeply nested directories results in confusing, fragile, and outright ugly paths:
 
-```ts
-// ❌ Real code from a medium-sized Angular application
-import { UserService }       from '../../../services/user/user.service';
-import { AuthGuard }         from '../../../guards/auth/auth.guard';
-import { ValidationUtils }   from '../../../../shared/utils/validation.utils';
-import { ButtonComponent }   from '../../../../shared/components/button/button.component';
-import { UserModel }         from '../../../models/user.model';
+```typescript
+// Nightmare scenario
+import { DateFormatter } from '../../../../shared/utils/formatters/DateFormatter';
 ```
 
-Problems with relative paths:
-1. **Hard to read** — you must count `../` to understand where files are.
-2. **Hard to refactor** — move ONE file and every import that referenced it breaks.
-3. **Hard to write** — you must know the exact depth to get the right number of `../`.
+If you refactor the architecture and move the importing file to a new directory, the fragile relative import shatters. Path mapping allows you to define clean, alias-based absolute paths relative to your overall project root.
 
-### The Solution: `tsconfig.json` Path Mapping
+### Configuring `tsconfig.json`
 
-TypeScript allows you to define **path aliases** — shortcuts that map a short, memorable name to a real file path.
-
-**Step 1: Configure `tsconfig.json`**
+Set up the aliases using `baseUrl` and `paths`. By standard convention, aliases begin with the `@` symbol to clearly differentiate them from external npm packages.
 
 ```json
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-
-    // 'baseUrl' is the root that all path aliases are relative to
     "baseUrl": "./src",
-
-    // 'paths' defines the aliases
     "paths": {
-      "@models/*":     ["models/*"],          // @models/user → src/models/user
-      "@services/*":   ["services/*"],        // @services/user → src/services/user
-      "@guards/*":     ["guards/*"],          // @guards/auth → src/guards/auth
-      "@utils/*":      ["shared/utils/*"],    // @utils/date → src/shared/utils/date
-      "@components/*": ["shared/components/*"] // @components/button → ...
+      "@models/*": ["domain/models/*"],
+      "@utils/*": ["shared/utils/*"],
+      "@components/*": ["ui/components/*"]
     }
   }
 }
 ```
 
-**How it works:**
-- `"baseUrl": "./src"` — all path aliases are resolved relative to the `src/` folder.
-- `"@models/*"` — this is the **alias** (starts with `@` by convention, though any prefix works).
-- `["models/*"]` — the **real path** it maps to (relative to `baseUrl`).
-- The `*` is a wildcard that captures the rest of the path.
+Instantly, your imports become pristine and decoupled from folder depth:
 
-**Step 2: Use the aliases in your code**
-
-```ts
-// ✅ AFTER path mapping — clean, readable, refactor-safe imports
-import { UserService }       from '@services/user/user.service';
-import { AuthGuard }         from '@guards/auth/auth.guard';
-import { ValidationUtils }   from '@utils/validation.utils';
-import { ButtonComponent }   from '@components/button/button.component';
-import { UserModel }         from '@models/user.model';
+```typescript
+import { DateFormatter } from '@utils/formatters/DateFormatter';
 ```
 
-### Bundler Configuration Required
-
 > [!WARNING]
-> TypeScript path mapping is a **compile-time only** feature. TypeScript understands the aliases and resolves types correctly, but the compiled JavaScript output still contains the alias strings (e.g., `@services/...`). Your bundler or runtime must also be configured to resolve them.
+> **Crucial Implementation Detail:** TypeScript's path mapping logic only resolves paths **during compilation and static type checking**. The emitted JavaScript files will *still* contain the raw alias string (e.g., `@utils/formatters/DateFormatter`). Therefore, you absolutely must configure your build bundler (like Webpack, Vite, Rollup, or a Node tool like `tsconfig-paths`) to natively recognize and resolve these aliases at runtime.
 
-**For Vite projects (`vite.config.ts`):**
-
-```ts
+**Vite Configuration Example (`vite.config.ts`):**
+```typescript
 import { defineConfig } from 'vite';
-import path from 'path'; // Node.js 'path' module for resolving absolute paths
+import path from 'path';
 
 export default defineConfig({
   resolve: {
     alias: {
-      // The left side matches the alias, the right side is the real absolute path.
-      '@models':     path.resolve(__dirname, './src/models'),
-      '@services':   path.resolve(__dirname, './src/services'),
-      '@guards':     path.resolve(__dirname, './src/guards'),
-      '@utils':      path.resolve(__dirname, './src/shared/utils'),
-      '@components': path.resolve(__dirname, './src/shared/components'),
+      '@utils': path.resolve(__dirname, './src/shared/utils'),
+      '@models': path.resolve(__dirname, './src/domain/models')
     }
   }
 });
 ```
 
-**For Node.js projects (without a bundler):**
+---
 
-```bash
-# Install the tsconfig-paths package
-npm install -D tsconfig-paths
+## 🧠 Think Like a Developer
 
-# Run TypeScript directly with path resolution
-npx ts-node -r tsconfig-paths/register src/main.ts
+**Scenario 1: Resolving Paralyzing Circular Dependencies**  
+*The Situation:* You have an `Order.ts` class file that imports `Customer.ts`, but `Customer.ts` simultaneously imports `Order.ts` to strictly type an array of past orders. Variables randomly evaluate as `undefined` at runtime.  
+*The Expert Decision:* "This is a classic circular dependency loop. The domain entity classes are far too tightly coupled. I will immediately create a separate `types.ts` file containing pure, implementation-free interfaces. Both `Order.ts` and `Customer.ts` will use `import type` to pull definitions from the `types.ts` file. Since types are completely erased at runtime, the execution circular dependency chain is broken, and the runtime evaluation succeeds flawlessly."
+
+**Scenario 2: Safely Typing an Obscure Third-Party Script**  
+*The Situation:* The Marketing department aggressively insists on adding a proprietary tracking script via a CDN. The script injects an `AnalyticsTrack` object directly onto the global window. Your strict TS compiler screams with errors, blocking the CI pipeline.  
+*The Expert Decision:* "I cannot change the remote CDN script, and disabling compiler strictness is unacceptable. I will elegantly create an ambient declaration file `global.d.ts` at the root of my project. I will use `declare interface Window { AnalyticsTrack: { log: (event: string) => void; }; }`. This bridges the structural gap perfectly, granting me rich intellisense and compiler safety without touching the impenetrable implementation logic."
+
+**Scenario 3: Implementing Robust Cross-Cutting Validation**  
+*The Situation:* You have 15 different API service classes, and each internal method desperately needs to ensure the user is actively authenticated before proceeding. You currently have `if (!authContext) throw new UnauthorizedError();` copy-pasted 50 times across the codebase.  
+*The Expert Decision:* "Rampant copy-pasting violates DRY (Don't Repeat Yourself) principles and severely clutters the core business logic. I will implement a powerful TC39 Method Decorator called `@RequireAuth`. I'll apply this decorator declaratively directly above any method that requires authentication. The decorator will cleanly intercept the call, check the auth state globally, and either throw a centralized error or seamlessly pass execution to the original method."
+
+---
+
+## ⚖️ Before vs After
+
+### 1. Legacy Namespaces vs Modern ES Modules
+
+**Before: Legacy Namespaces (Pollutes Global Scope, severely hard to tree-shake)**
+```typescript
+// validation.ts
+namespace Validation {
+  export function isString(val: any) { return typeof val === 'string'; }
+}
+
+// app.ts
+/// <reference path="validation.ts" />
+console.log(Validation.isString("test")); // Highly coupled to the global scope
 ```
 
-### Section Recap
-- Path aliases (`@models/`, `@services/`) replace ugly relative paths with clean, readable shortcuts.
-- Configure aliases in `tsconfig.json` under `compilerOptions.paths` + `baseUrl`.
-- You **must also configure your bundler** (Vite/Webpack) — TypeScript alone doesn't make the aliases work at runtime.
-- Use `@` as the prefix convention for aliases to distinguish them from npm package names.
+**After: ES Modules (Explicit, clean architectural boundaries, perfectly tree-shakable)**
+```typescript
+// validation.ts
+export function isString(val: any) { return typeof val === 'string'; }
+
+// app.ts
+import { isString } from './validation';
+console.log(isString("test")); // Independent and verifiable
+```
+
+### 2. Experimental Decorators vs TC39 Decorators
+
+**Before: Experimental Decorators (TypeScript < 5.0)**
+```typescript
+// Cryptic signature relying on internal PropertyDescriptors
+function LogExperimental(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  const original = descriptor.value;
+  descriptor.value = function(...args: any[]) {
+    console.log(propertyKey, "called");
+    return original.apply(this, args);
+  }
+}
+```
+
+**After: Standardized TC39 ECMAScript Decorators (TypeScript 5.0+)**
+```typescript
+// Clean, standardized signature with dedicated Context objects
+function LogTC39(originalMethod: Function, context: ClassMethodDecoratorContext) {
+  return function(this: any, ...args: any[]) {
+    console.log(String(context.name), "called");
+    return originalMethod.apply(this, args);
+  }
+}
+```
 
 ---
 
-## 🧪 Practice Labs
+## ⚠️ Common Mistakes & How to Avoid Them
 
-### Lab 1: Barrel Files & Path Mapping (40 min)
-
-1. Create a folder structure:
-   ```
-   src/
-   ├── models/
-   │   ├── user.ts    (exports User interface + UserFactory class)
-   │   ├── product.ts (exports Product interface)
-   │   └── index.ts   (barrel file — re-exports both)
-   └── main.ts
-   ```
-2. Add `"paths": { "@models/*": ["models/*"] }` to your `tsconfig.json`.
-3. Import from `@models` in `main.ts` instead of relative paths.
-4. Verify TypeScript picks up the correct types.
-
-### Lab 2: Writing Declaration Files (30 min)
-
-1. Create `src/legacy/currency.js` with:
-   ```js
-   function formatCurrency(amount, symbol) { return symbol + amount.toFixed(2); }
-   module.exports = { formatCurrency };
-   ```
-2. Write `src/legacy/currency.d.ts` that declares the type signature of `formatCurrency`.
-3. Import and use `formatCurrency` in `main.ts` — verify TypeScript catches wrong argument types.
-
-### Lab 3: Method Decorator (30 min)
-
-1. Build a `@Memoize` decorator that caches the results of a function call.
-2. The first time the function is called with certain arguments, compute the result.
-3. The second time the SAME arguments are passed, return the cached result.
-4. Test with an expensive-looking function: `fibonacci(n)`.
+| The Mistake | The Consequence | The Expert Fix |
+|-------------|-----------------|----------------|
+| **Exporting `any` in `.d.ts` Files** | Utterly defeats the entire purpose of adding type checking; the compiler remains completely blind to fatal runtime errors. | Explicitly define the interfaces to the highest degree possible, or use `unknown` if the type is truly dynamic, forcing downstream code to use strict type-guards. |
+| **Mixing Decorator Paradigms** | Cryptic runtime application crashes such as `"Cannot read properties of undefined (reading 'apply')"`. | Choose a single system and stick to it. For modern apps, rigorously ensure `"experimentalDecorators": true` is **absent** from `tsconfig.json` to properly use native TC39 decorators. |
+| **Forgetting to return the result in Method Decorators** | The decorated method executes perfectly, but it inexplicably returns `undefined` to the calling function, breaking the application silently. | Always reliably capture the result of `originalMethod.apply(this, args)` to a variable and explicitly `return result;` at the end of the wrapper function. |
+| **Using Path Mapping without Bundler Configuration** | TypeScript compiles without errors, but Node or the browser crashes immediately stating `Module not found: @utils/math`. | Carefully mirror your exact `tsconfig.json` paths mapping rules within your build tool (Webpack aliases, Vite resolve aliases, or `tsconfig-paths` for native Node). |
+| **Creating Circular Barrels** | Variables evaluate randomly to `undefined` because File A imports the barrel to reach File B, but File B hasn't loaded into memory yet. | Inside a specific feature directory, files should import from their internal sibling files directly via relative paths (`./helper`), avoiding imports from the parent barrel file `index.ts`. |
 
 ---
 
-## 📝 Assignment: DataForge Project — Part 3
+## 💻 Practice Labs & Assignments
 
-Add validation decorators to your DataForge project.
+### Lab 1: Establishing Type-Safe Legacy Code (30 mins)
+**Objective:** Provide iron-clad safety for an incredibly old JavaScript utility.
+1. Create a file `src/legacy/encryption.js` exporting the following: `function hash(str, salt) { return str + salt; }`.
+2. Write an accompanying `src/legacy/encryption.d.ts` file declaring this exact module and strictly enforcing that both arguments must be of type `string` and it inherently returns a `string`.
+3. Import the newly typed function within `main.ts`. Attempt to erroneously pass a number variable to the `salt` parameter. Confirm that the TypeScript compiler violently throws a type mismatch error.
 
-### Requirements
-1. Create a `decorators` folder in your DataForge project.
-2. Write a `@LogMethod` decorator that logs the method name, arguments, and return value for every call.
-3. Write a `@Validate` class decorator that checks all `string` properties are non-empty before methods run.
-4. Apply `@LogMethod` to the `add()` and `update()` methods of your `Repository` class from Part 2.
-5. Verify that the log output appears in the console when you call `add()` or `update()`.
+### Lab 2: Building an Intelligent Accessor Decorator (45 mins)
+**Objective:** Validate raw input data seamlessly and automatically using property decorators.
+1. Create a robust class named `UserAccount`.
+2. Add an `accessor email: string` property to handle email addresses.
+3. Build a `@ValidEmail` decorator factory. It should meticulously intercept the `set` operation.
+4. If the new incoming value does not contain an `@` symbol anywhere, throw a `TypeError("Invalid Email format provided")`. Otherwise, elegantly permit the assignment to succeed.
+5. Thoroughly test it by instantiating `UserAccount` and attempting to assign both valid formats and entirely invalid email formats.
+
+### Assignment: The DataForge Advanced Decorator Suite
+**Context:** Your evolving DataForge backend system desperately needs automated telemetry and validation without completely cluttering the delicate business logic.
+1. **Telemetry Matrix:** Create a `@MeasurePerformance` method decorator. Tactically apply it to your heaviest API methods (like fetching massive datasets or sorting routines). It should `console.log` the exact milliseconds taken to execute the routine.
+2. **Ironclad Validation:** Create an `@IsUUID` accessor decorator. Strategically apply it to the `id` field of your core database entities to strictly ensure they match a 36-character UUID regex pattern before allowing any updates to process.
+3. **Architecture Polish:** Configure `paths` within your `tsconfig.json` to intelligently map `@decorators` to your decorators directory, and update your repository imports universally to use this pristine, scalable alias.
 
 ---
 
-## 🔗 Resources
+## 🎤 Interview Prep
 
-| Resource | Link |
-|----------|------|
-| TypeScript Handbook — Modules | https://www.typescriptlang.org/docs/handbook/2/modules.html |
-| TypeScript Handbook — Declaration Files | https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html |
-| TC39 Decorators Proposal | https://github.com/tc39/proposal-decorators |
-| TypeScript 5.0 — TC39 Decorators | https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html |
-| DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+**Q1: How precisely does `import type` impact the final JavaScript bundle, and in what scenarios should you rigorously use it?**
+**Answer:** `import type` is completely erased by the compiler during the emission phase, leaving absolutely zero trace in the resulting JavaScript. You should relentlessly use it anytime you import a class, interface, or type alias strictly for static type annotation purposes, as it significantly reduces final bundle size and effectively prevents accidental execution side-effects from the imported file.
+
+**Q2: What exactly is a "barrel file", and what specific architectural problem does it elegantly solve?**
+**Answer:** A barrel file is an `index.ts` file that re-exports multiple related modules from a specific directory. It beautifully solves the problem of wildly cluttered import statements and deep file path coupling, allowing consumer modules to import multiple interconnected symbols from a single, unified directory endpoint.
+
+**Q3: Describe the fundamental technical difference between the legacy TypeScript decorators and the modern TC39 standard.**
+**Answer:** Legacy decorators relied heavily on an experimental compiler flag and possessed function signatures heavily tied to archaic `PropertyDescriptor` manipulation. The modern TC39 standard is a finalized, native ECMAScript proposal fully built into TS 5.0+. TC39 decorators receive the actual target `value` and a rich, unified `context` object containing extensive metadata, providing a drastically cleaner, highly standardized metaprogramming API.
+
+**Q4: If you attempt to import a legacy JavaScript library that entirely lacks types, how does TypeScript react, and how can you definitively fix it?**
+**Answer:** Depending on configuration, TypeScript will either implicitly assign the dangerous `any` type (if `noImplicitAny` is false) or throw a hard compilation error. You resolve it by first checking if an official `@types/` package exists on the DefinitelyTyped registry. If not, you manually create an ambient declaration file (`.d.ts`) meticulously defining the module's exact shape using the `declare module` syntax.
+
+**Q5: Why do `tsconfig.json` path aliases frequently fail entirely at runtime, even when the TS compiler shows absolutely zero errors?**
+**Answer:** TypeScript's path mapping is purely a compile-time feature designed strictly for module type resolution. It purposely does not alter or rewrite the physical import paths in the generated JavaScript. To successfully resolve them dynamically at runtime, you must configure your bundler (like Vite, Webpack) or a runtime resolver (like `tsconfig-paths` natively in Node) with identical, synchronized alias mappings.
 
 ---
 
-## 📌 Key Takeaways
+## 📜 Cheat Sheet
 
-- **ES Modules** (`import`/`export`) are the standard for organising TypeScript code — one responsibility per file.
-- Use `import type` for interfaces and type aliases — they are erased from the compiled JavaScript.
-- **Barrel files** (`index.ts`) create clean folder-level APIs by re-exporting from a single entry point.
-- **Namespaces** are a legacy TypeScript feature — use them only when reading/maintaining old code.
-- **Declaration files** (`.d.ts`) provide type information for JavaScript libraries without modifying them.
-- **TC39 Decorators** (TS 5.0+) are the standard — no `"experimentalDecorators"` flag needed.
-- Decorators stack **bottom-to-top** — the bottom decorator is the innermost wrapper.
-- **Path mapping** (`@models/`, `@services/`) in `tsconfig.json` eliminates fragile relative paths — but you must also configure your bundler.
+```typescript
+// 1. ES Modules, Naming Conventions & Barrel Files
+export function utility() {}             // Standard Named export
+export default class MainClass {}        // Standard Default export
+import type { DataModel } from './types';// Highly optimized Type-only import
+export * from './moduleA';               // Seamless Re-export (Barrel File approach)
+
+// 2. Path Mapping Implementation (tsconfig.json)
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": { "@utils/*": ["shared/utils/*"] }
+  }
+}
+
+// 3. Custom Ambient Declaration File (.d.ts)
+declare module 'ancient-untyped-lib' {
+  // Defining the boundary explicitly
+  export function doSomething(param: string): boolean;
+}
+// Declaring a globally injected environmental variable
+declare const __GLOBAL_PRODUCTION_ENV__: string;    
+
+// 4. Modern TC39 Class Decorator Implementation
+function Singleton(value: any, context: ClassDecoratorContext) {
+  let instance: any;
+  return class extends value {
+    constructor(...args: any[]) {
+      // Return cached instance if available
+      if (instance) return instance;
+      super(...args); instance = this;
+    }
+  }
+}
+
+// 5. Modern TC39 Method Decorator Implementation
+function Log(originalMethod: Function, context: ClassMethodDecoratorContext) {
+  return function(this: any, ...args: any[]) {
+    console.log(`Executing sequence ${String(context.name)}`);
+    // Crucial: return the result of the apply call
+    return originalMethod.apply(this, args);
+  }
+}
+
+// 6. Modern TC39 Accessor Decorator Implementation
+function MinimumBoundary(min: number) {
+  return function(value: any, context: ClassAccessorDecoratorContext) {
+    return {
+      get(this: any) { return value.get.call(this); },
+      set(this: any, val: number) {
+        if(val < min) throw new Error("Value provided is critically too low");
+        value.set.call(this, val);
+      }
+    };
+  }
+}
+```
+
+---
+
+## 📌 Key Takeaways & Resources
+
+- **Organize Strictly by Intent:** Use ES Modules and Named Exports strictly. One file should typically possess a single, clear responsibility.
+- **Erase Unnecessary Data:** Relentlessly leverage `import type` to instruct the compiler to keep your runtime payload lean, fast, and secure.
+- **Bridge the Untyped Gap:** Use `.d.ts` files to safely wrap untyped legacy logic, ensuring the TypeScript compiler rigidly protects your modern application layer from legacy failures.
+- **Embrace the ECMAScript Standard:** TC39 Decorators are the standardized future of JavaScript metaprogramming. Use them actively to cleanly extract cross-cutting concerns like heavy logging and validation out of your core business logic.
+- **Respect the Build Bundler:** Always remember that TypeScript is mostly a glorified type-checker. Executing runtime features like Path Mapping requires dual configuration mapped perfectly in your build tools.
+
+### Highly Recommended Resources
+- [The Official TypeScript Handbook: Modules Deep Dive](https://www.typescriptlang.org/docs/handbook/2/modules.html)
+- [The Official TypeScript Handbook: Ambient Declaration Files](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+- [The DefinitelyTyped GitHub Repository Ecosystem](https://github.com/DefinitelyTyped/DefinitelyTyped)
+- [TypeScript 5.0 Release Notes: The TC39 Decorators Architecture](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html)
 
 ---
 

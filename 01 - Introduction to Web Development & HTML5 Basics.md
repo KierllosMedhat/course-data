@@ -6,6 +6,16 @@
 
 ---
 
+## 📋 Prerequisites
+
+> Before starting this lecture, make sure you have:
+> - ✅ Completed Lecture 00
+> - ✅ VS Code installed with the **Live Server**, **Prettier**, and **Material Icon Theme** extensions
+> - ✅ A dedicated course folder on your computer to save your HTML files
+> - ✅ A modern web browser (Google Chrome or Microsoft Edge recommended)
+
+---
+
 ## 🎯 Learning Objectives
 
 By the end of this lecture, you will be able to:
@@ -64,7 +74,7 @@ The "Hyper" in HyperText refers to **links** — the ability to click a word on 
 | 1991 | Tim Berners-Lee invents HTML to share scientific documents |
 | 1999 | HTML 4 standardises the web |
 | 2008–2014 | HTML5 developed — adds video, audio, forms, semantic elements |
-| Today (2026) | HTML5 is the living standard, continuously updated |
+| Today | HTML5 is the living standard, continuously updated |
 
 ### 📌 Section Recap
 - HTML = HyperText Markup Language — describes structure and content, not appearance
@@ -87,119 +97,72 @@ Here is the complete HTML5 boilerplate with a comment explaining every single li
 <!-- This MUST be the very first line of every HTML file.                      -->
 <!-- It tells the browser: "Render this page using modern HTML5 standards."    -->
 <!-- Without it, browsers enter "quirks mode" — inconsistent, buggy rendering. -->
-<!-- Note: <!DOCTYPE> is NOT an HTML tag — it's a document type declaration.   -->
 
 <html lang="en">
 <!-- The ROOT element — everything else in the page lives inside here.         -->
-<!-- There is ONLY ONE <html> element per page.                                -->
 <!-- lang="en" declares the page language as English.                          -->
 <!--   Why this matters:                                                       -->
 <!--   • Screen readers choose the correct text-to-speech voice                -->
 <!--   • Search engines serve results in the right language                    -->
-<!--   • Browser spell-checkers use the correct dictionary                     -->
-<!--   Use "ar" for Arabic, "fr" for French, "de" for German, etc.            -->
 
   <head>
     <!-- The <head> contains METADATA — information ABOUT the page.            -->
     <!-- Nothing inside <head> is VISIBLE to the user on screen.               -->
-    <!-- Think of it as the cover of a book: title and metadata, not content.  -->
 
     <meta charset="UTF-8">
     <!-- Defines the character encoding — how the browser interprets text.     -->
     <!-- UTF-8 is universal and supports EVERY human writing system:           -->
-    <!--   English: a–z, A–Z                                                   -->
-    <!--   Accented: é ü ñ ø                                                   -->
-    <!--   Arabic: العربية   Chinese: 中文   Japanese: 日本語                    -->
-    <!--   Emoji: 🎉 🚀 💻                                                      -->
     <!-- Without this, special characters appear as garbled symbols: â€™       -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CRITICAL for mobile devices.                                           -->
     <!-- "width=device-width" = use the device's actual screen width           -->
-    <!--   (NOT a simulated 980px desktop width that mobile browsers default to)-->
     <!-- "initial-scale=1.0" = don't zoom in or out on page load               -->
     <!-- Without this: mobile browsers zoom way out, text becomes microscopic. -->
 
     <meta name="description" content="A page describing web development basics.">
     <!-- The SEO description — shown under the page title in Google results.   -->
-    <!-- Keep it under 160 characters. Make it informative and compelling.     -->
 
     <title>My Portfolio | Alex Chen</title>
     <!-- Text shown in the browser tab.                                        -->
-    <!-- Also used as the headline in Google search results.                   -->
-    <!-- Best practice: "Page Name | Site Name"                                -->
 
     <link rel="stylesheet" href="css/style.css">
     <!-- Links to an external CSS stylesheet.                                  -->
-    <!-- rel="stylesheet" = the type of relationship (it's a stylesheet).      -->
-    <!-- href="css/style.css" = path to the CSS file (relative path here).     -->
-    <!-- CSS is loaded in <head> so the browser knows styles BEFORE rendering. -->
 
   </head>
 
   <body>
     <!-- Everything the user SEES on screen goes inside <body>.                -->
     <!-- All visible content lives here: text, images, forms, buttons, etc.   -->
-    <!-- There is ONLY ONE <body> element per page.                            -->
-
+    
     <!-- Your visible content goes here -->
 
   </body>
-
 </html>
-<!-- Closing tag for the root <html> element.                                  -->
-<!-- Every opening tag needs a matching closing tag (with a forward slash).    -->
 ```
 
 ### The Head vs Body — Visual Summary
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   <html lang="en">                  │
-│                                                     │
-│  ┌───────────────────────────────────────────────┐  │
-│  │                   <head>                      │  │
-│  │         INVISIBLE — metadata only             │  │
-│  │                                               │  │
-│  │  <meta charset="UTF-8">      → encoding       │  │
-│  │  <meta name="viewport" ...>  → mobile size    │  │
-│  │  <meta name="description" …> → SEO snippet    │  │
-│  │  <title>Page Title</title>   → tab text       │  │
-│  │  <link rel="stylesheet" …>   → CSS file       │  │
-│  │  <script src="…" defer>      → JS file        │  │
-│  └───────────────────────────────────────────────┘  │
-│                                                     │
-│  ┌───────────────────────────────────────────────┐  │
-│  │                   <body>                      │  │
-│  │           VISIBLE — user content              │  │
-│  │                                               │  │
-│  │  <header>  <nav>  <main>  <footer>            │  │
-│  │  Headings, paragraphs, images, forms          │  │
-│  │  Everything the user sees and interacts with  │  │
-│  └───────────────────────────────────────────────┘  │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    HTML["&lt;html lang='en'&gt;<br>(Root)"] --> HEAD["&lt;head&gt;<br>(Invisible Metadata)"]
+    HTML --> BODY["&lt;body&gt;<br>(Visible Content)"]
+    HEAD --> META1["&lt;meta charset='UTF-8'&gt;"]
+    HEAD --> META2["&lt;meta name='viewport'&gt;"]
+    HEAD --> META3["&lt;meta name='description'&gt;"]
+    HEAD --> TITLE["&lt;title&gt;"]
+    HEAD --> LINK["&lt;link rel='stylesheet'&gt;"]
+    BODY --> HDR["&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;footer&gt;<br>Headings, paragraphs, images, forms"]
 ```
 
 ### The Emmet Shortcut
 
 Instead of typing the entire boilerplate manually, use **Emmet** in VS Code:
-
 1. Create a new `.html` file
 2. Type `!` (just the exclamation mark)
 3. Press `Tab`
 
 VS Code generates the full HTML5 boilerplate instantly. Always use this shortcut!
-
-### Common Mistakes & How to Avoid Them
-
-| Mistake | Why It Happens | Fix |
-|---------|---------------|-----|
-| Missing `<!DOCTYPE html>` | Forgetting the first line | Use Emmet (`!` + Tab) — it's always included |
-| Content placed outside `<body>` | Pasting code in the wrong location | Always structure: `<html>` → `<head>` + `<body>` |
-| Missing `lang` attribute on `<html>` | Not understanding its importance | Always include `lang="en"` (or your page's language) |
-| Deleting the viewport meta tag | Thinking it's unnecessary | Never delete it — it's required for mobile responsiveness |
-| Forgetting `<meta charset="UTF-8">` | Not understanding encoding | Emmet includes it — never delete it |
 
 ### 📌 Section Recap
 - Every HTML page starts with `<!DOCTYPE html>` — mandatory, always first
@@ -249,40 +212,18 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 
 ### The Core Semantic Layout Elements
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                      <header>                           │
-│   Site logo, site name, primary navigation              │
-│   (Can also appear inside <article> as an article header)│
-├─────────────────────────────────────────────────────────┤
-│                       <nav>                             │
-│   Primary navigation links (menus, breadcrumbs)         │
-│   Only for MAJOR navigation — not every group of links  │
-├───────────────┬─────────────────────────────────────────┤
-│               │                                         │
-│   <aside>     │              <main>                     │
-│               │                                         │
-│  Secondary    │  The PRIMARY, UNIQUE content of the page│
-│  content:     │  Only ONE <main> per page               │
-│  sidebars,    │                                         │
-│  related      │  ┌───────────────────────────────────┐ │
-│  links, ads   │  │           <article>               │ │
-│               │  │  Self-contained content that could │ │
-│               │  │  stand alone: blog post, news item,│ │
-│               │  │  comment, product card             │ │
-│               │  └───────────────────────────────────┘ │
-│               │                                         │
-│               │  ┌───────────────────────────────────┐ │
-│               │  │           <section>               │ │
-│               │  │  A themed group of content.        │ │
-│               │  │  Always has a heading inside it.   │ │
-│               │  │  "About Me", "My Skills", "FAQ"    │ │
-│               │  └───────────────────────────────────┘ │
-│               │                                         │
-├───────────────┴─────────────────────────────────────────┤
-│                      <footer>                           │
-│   Copyright, contact info, legal links, social icons   │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    PAGE["Web Page Layout"]
+    PAGE --> HDR["&lt;header&gt;<br>Site branding & primary nav"]
+    PAGE --> MN["&lt;main&gt;<br>The primary unique content"]
+    PAGE --> ASD["&lt;aside&gt;<br>Related secondary links"]
+    PAGE --> FTR["&lt;footer&gt;<br>Copyright, social links"]
+    
+    HDR --> NV["&lt;nav&gt;<br>Primary navigation links"]
+    
+    MN --> ART["&lt;article&gt;<br>Self-contained content"]
+    MN --> SEC["&lt;section&gt;<br>Themed group with heading"]
 ```
 
 ### Full Semantic Page Example with Comments
@@ -294,48 +235,28 @@ Code is read far more often than it's written. `<article>` is instantly recognis
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alex Chen | Full-Stack Developer</title>
-  <meta name="description" content="Alex Chen's web developer portfolio showcasing projects in Angular and ASP.NET.">
 </head>
 <body>
 
   <header>
     <!-- Site-wide header — appears on every page -->
-    <!-- Contains the brand identity and primary navigation -->
-
     <h1>Alex Chen</h1>
-    <!-- The ONE and ONLY <h1> on this page — the page's main title     -->
-
     <nav>
       <!-- Primary navigation — the main menu of the site -->
-      <!-- Uses anchor links (#id) to jump to page sections -->
       <ul>
         <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
     <!-- The main content — unique to THIS page -->
-    <!-- This is what the page is actually ABOUT -->
 
     <section id="about">
       <!-- A themed section — always has a heading inside it -->
       <h2>About Me</h2>
       <p>I'm a full-stack developer passionate about building things for the web.</p>
-    </section>
-
-    <section id="skills">
-      <h2>My Skills</h2>
-      <ul>
-        <li>HTML5 &amp; CSS3</li>
-        <li>JavaScript &amp; TypeScript</li>
-        <li>C# &amp; ASP.NET Core</li>
-        <li>SQL Server</li>
-        <li>Angular</li>
-      </ul>
     </section>
 
     <section id="projects">
@@ -345,33 +266,17 @@ Code is read far more often than it's written. `<article>` is instantly recognis
         <!-- An <article> is self-contained — it makes sense on its own -->
         <h3>TaskFlow Dashboard</h3>
         <p>A dynamic task management app built with JavaScript.</p>
-        <a href="https://github.com/alexchen/taskflow" target="_blank" rel="noopener noreferrer">
-          View on GitHub
-        </a>
+        <a href="https://github.com/alexchen/taskflow">View on GitHub</a>
       </article>
 
-      <article>
-        <h3>ShopAngular E-Commerce</h3>
-        <p>A full-featured shopping app built with Angular and ASP.NET Core.</p>
-        <a href="https://github.com/alexchen/shopangular" target="_blank" rel="noopener noreferrer">
-          View on GitHub
-        </a>
-      </article>
     </section>
-
-    <section id="contact">
-      <h2>Get in Touch</h2>
-      <p>Email: <a href="mailto:alex@example.com">alex@example.com</a></p>
-    </section>
-
   </main>
 
   <aside>
     <!-- Related but secondary content — sidebar, quick links -->
     <h2>Quick Links</h2>
     <ul>
-      <li><a href="https://github.com/alexchen" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-      <li><a href="https://linkedin.com/in/alexchen" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      <li><a href="https://github.com/alexchen">GitHub</a></li>
     </ul>
   </aside>
 
@@ -383,44 +288,6 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 </body>
 </html>
 ```
-
-### Non-Semantic vs Semantic — Side by Side
-
-```html
-<!-- ❌ Bad — tells nothing about content purpose -->
-<div id="header">
-  <div id="logo">My Site</div>
-  <div id="nav">
-    <div class="nav-link">Home</div>
-  </div>
-</div>
-<div id="main-content">
-  <div class="blog-post">...</div>
-</div>
-<div id="foot">Copyright 2026</div>
-
-<!-- ✅ Good — structure communicates its own meaning -->
-<header>
-  <h1>My Site</h1>
-  <nav>
-    <a href="/">Home</a>
-  </nav>
-</header>
-<main>
-  <article>...</article>
-</main>
-<footer>Copyright 2026</footer>
-```
-
-### Common Mistakes & How to Avoid Them
-
-| Mistake | Fix |
-|---------|-----|
-| Multiple `<main>` elements on one page | Only ONE `<main>` per page — it must be unique |
-| Using `<section>` for every container | `<section>` is for themed groups with headings. Generic grouping? Use `<div>`. |
-| Missing headings inside `<section>` | Every `<section>` should have a heading (`<h2>`, `<h3>`, etc.) |
-| Using `<article>` for every card-shaped element | `<article>` is for self-contained content that could be shared independently |
-| Nesting `<main>` inside semantic landmarks | `<main>` cannot be a child of `<article>`, `<aside>`, `<footer>`, `<header>`, or `<nav>` |
 
 ### 📌 Section Recap
 - Semantic HTML describes *what* content is — for accessibility, SEO, and maintainability
@@ -438,21 +305,12 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 ```html
 <h1>Main Page Title</h1>
 <!-- Largest heading. ONE per page. Defines the page's main topic. -->
-<!-- Think: the book's TITLE on the cover                          -->
 
 <h2>Major Section Heading</h2>
 <!-- Direct children of h1 — the main sections of your page        -->
-<!-- Think: CHAPTER names in the book                              -->
 
 <h3>Subsection Heading</h3>
 <!-- Sub-topics within a major section                             -->
-<!-- Think: SECTIONS within a chapter                              -->
-
-<h4>Minor Heading</h4>
-<!-- Rarely needed — for complex, deeply nested documents          -->
-
-<h5>Very Minor Heading</h5>
-<h6>Smallest Heading — Almost Never Used</h6>
 ```
 
 > [!WARNING]
@@ -461,13 +319,9 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 ### Paragraphs and Text Emphasis
 
 ```html
-<!-- p = paragraph — use for any block of regular body text -->
-<p>
-  This is a paragraph. Each <p> tag automatically gets spacing above and below.
-</p>
+<p>This is a paragraph. Each <p> tag automatically gets spacing above and below.</p>
 
 <!-- strong = important text — semantic meaning: "this is critical!" -->
-<!-- Screen readers add stress to strongly-important words -->
 <p>Always use <strong>semantic HTML</strong> — it matters for accessibility.</p>
 
 <!-- em = emphasised text — semantic meaning: "stress on this word" -->
@@ -475,12 +329,6 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 
 <!-- code = inline code snippet — monospace font -->
 <p>Use the <code>console.log()</code> function to debug JavaScript.</p>
-
-<!-- abbr = abbreviation — shows the full form on hover -->
-<p><abbr title="HyperText Markup Language">HTML</abbr> is the language of the web.</p>
-
-<!-- mark = highlighted/marked text -->
-<p>The most important point is <mark>use semantic elements</mark>.</p>
 ```
 
 ### Lists — Ordered and Unordered
@@ -492,33 +340,12 @@ Code is read far more often than it's written. `<article>` is instantly recognis
   <li>CSS</li>
   <li>JavaScript</li>
 </ul>
-<!-- Renders as:  • HTML  • CSS  • JavaScript -->
 
 <!-- ol = ordered list (numbers) — use when ORDER matters -->
 <ol>
   <li>Download VS Code</li>
   <li>Install the Live Server extension</li>
-  <li>Create your first HTML file</li>
-  <li>Open with Live Server</li>
 </ol>
-<!-- Renders as: 1. Download VS Code  2. Install...  etc. -->
-
-<!-- Nested list — lists inside list items -->
-<ul>
-  <li>Frontend Technologies
-    <ul>
-      <li>HTML5</li>
-      <li>CSS3</li>
-      <li>JavaScript</li>
-    </ul>
-  </li>
-  <li>Backend Technologies
-    <ul>
-      <li>C# &amp; ASP.NET Core</li>
-      <li>SQL Server</li>
-    </ul>
-  </li>
-</ul>
 ```
 
 ### Links — The Core of the Web
@@ -526,8 +353,6 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 ```html
 <!-- Basic link to an external website -->
 <a href="https://developer.mozilla.org">MDN Web Docs</a>
-<!-- href = "HyperText REFerence" — where the link points                -->
-<!-- The text between tags is what the user sees and clicks              -->
 
 <!-- External link opening in a new tab -->
 <a href="https://github.com" target="_blank" rel="noopener noreferrer">
@@ -537,20 +362,9 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 <!-- rel="noopener noreferrer" = security protection against tabnapping  -->
 <!-- ALWAYS use rel="noopener noreferrer" with target="_blank"           -->
 
-<!-- Link to another page in your project (relative path) -->
-<a href="about.html">About Me</a>
-<a href="pages/contact.html">Contact</a>
-<a href="../index.html">Back to Home</a>   <!-- ../ goes up one folder  -->
-
 <!-- Anchor link — scrolls to a section on the SAME page -->
 <a href="#projects">Jump to Projects</a>
 <!-- The target: <section id="projects">...</section>                    -->
-
-<!-- Email link — opens the user's email client -->
-<a href="mailto:hello@example.com">Send me an email</a>
-
-<!-- Phone link — works on mobile devices -->
-<a href="tel:+15551234567">+1 (555) 123-4567</a>
 ```
 
 ### Images
@@ -562,23 +376,9 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 <!-- alt = alternative text — REQUIRED for every meaningful image        -->
 
 <!-- Image with explicit dimensions (prevents layout shift) -->
-<img
-  src="avatar.jpg"
-  alt="Profile photo of Alex Chen"
-  width="200"
-  height="200"
->
+<img src="avatar.jpg" alt="Profile photo of Alex Chen" width="200" height="200">
 <!-- Setting width and height reserves space before the image loads      -->
 <!-- Prevents "Cumulative Layout Shift" (CLS) — a Google SEO ranking signal -->
-
-<!-- Decorative image (purely visual — no meaningful content) -->
-<img src="decorative-wave.svg" alt="">
-<!-- Empty alt="" tells screen readers to skip this image entirely       -->
-
-<!-- Linked image — clicking the image goes to another page -->
-<a href="https://github.com/alexchen">
-  <img src="github-logo.png" alt="Alex Chen's GitHub profile">
-</a>
 ```
 
 > [!WARNING]
@@ -592,16 +392,11 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 <div class="project-card">
   <h3>Project Title</h3>
   <p>Project description goes here.</p>
-  <a href="#">View Project</a>
 </div>
-<!-- div takes the FULL WIDTH and starts on a NEW LINE                   -->
 
 <!-- span = INLINE generic container -->
 <!-- Use when no semantic element fits and you need to style inline text -->
-<p>
-  The error code is <span class="error-code">404</span> — not found.
-</p>
-<!-- span sits WITHIN the text flow — no line break before or after      -->
+<p>The error code is <span class="error-code">404</span> — not found.</p>
 ```
 
 ### HTML Entities — Special Characters
@@ -613,38 +408,12 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 | `&amp;` | `&` | Ampersand in text |
 | `&copy;` | © | Copyright symbol |
 | `&nbsp;` | (non-breaking space) | Space that won't wrap |
-| `&mdash;` | — | Em dash |
-| `&pound;` | £ | British pound symbol |
-| `&euro;` | € | Euro symbol |
-
-```html
-<p>HTML uses &lt;tags&gt; to mark up content.</p>
-<!-- Renders as: HTML uses <tags> to mark up content. -->
-
-<footer>
-  <p>&copy; 2026 Alex Chen. All rights reserved.</p>
-  <!-- Renders as: © 2026 Alex Chen. All rights reserved. -->
-</footer>
-```
-
-### Common Mistakes & How to Avoid Them
-
-| Mistake | Fix |
-|---------|-----|
-| Using `<b>` for important text | Use `<strong>` — has semantic meaning (important) not just visual bold |
-| Using `<i>` for emphasis | Use `<em>` — conveys stress emphasis to screen readers |
-| Skipping heading levels (h1 → h4) | Maintain hierarchy: h1 → h2 → h3. Use CSS for visual size |
-| Wrapping block elements in inline elements | Never put `<div>` or `<p>` inside `<span>` or `<a>` |
-| Using `<br><br>` for vertical spacing | Use CSS `margin` or `padding` — `<br>` is only for meaningful line breaks |
-| Missing quotes around attribute values | Always quote attributes: `href="..."` not `href=...` |
 
 ### 📌 Section Recap
-- Headings h1–h6 define the content outline — never skip levels for visual styling
-- `<strong>` (important) and `<em>` (emphasis) have semantic meaning — use them over `<b>` and `<i>`
-- `<ul>` for unordered lists, `<ol>` for ordered lists — always use `<li>` inside
+- Headings h1–h6 define the content outline — never skip levels
+- `<strong>` (important) and `<em>` (emphasis) have semantic meaning
 - Links need `href`; external links need `target="_blank" rel="noopener noreferrer"`
 - Images need `alt` — always; empty `alt=""` only for purely decorative images
-- `<div>` (block) and `<span>` (inline) are generic containers — use when no semantic element fits
 
 ---
 
@@ -655,42 +424,15 @@ Code is read far more often than it's written. `<article>` is instantly recognis
 Every HTML element behaves as either **block-level** or **inline-level** by default. This determines how elements arrange themselves on the page — completely independently of any CSS.
 
 **Block elements** are like paragraphs in a book: each one starts on a new line and takes up the full width of the page.
-
 **Inline elements** are like words within a paragraph: they flow alongside the surrounding text without breaking to a new line.
 
-```
-BLOCK elements (each occupies its own line):
-┌────────────────────────────────────────────┐
-│ <h2>My Skills Section</h2>                 │
-└────────────────────────────────────────────┘
-┌────────────────────────────────────────────┐
-│ <p>I know HTML, CSS, and JavaScript.</p>   │
-└────────────────────────────────────────────┘
-┌────────────────────────────────────────────┐
-│ <ul><li>HTML</li><li>CSS</li></ul>         │
-└────────────────────────────────────────────┘
+### Examples
 
-INLINE elements (flow within text):
-This is a paragraph with a <a>link</a>, some <strong>bold</strong>
-text, and an <em>italic</em> word — all on the same line.
-```
+**Block elements** (new line, full width):
+`<div>`, `<p>`, `<h1>`–`<h6>`, `<ul>`, `<ol>`, `<li>`, `<header>`, `<main>`, `<section>`
 
-### Block Elements (Common Examples)
-
-```
-Block elements (new line, full width):
-<div>, <p>, <h1>–<h6>, <ul>, <ol>, <li>,
-<header>, <nav>, <main>, <section>, <article>, <aside>, <footer>,
-<form>, <table>, <blockquote>, <figure>, <figcaption>
-```
-
-### Inline Elements (Common Examples)
-
-```
-Inline elements (flow within text, no line break):
-<span>, <a>, <strong>, <em>, <img>,
-<input>, <button>, <code>, <label>, <abbr>, <time>
-```
+**Inline elements** (flow within text):
+`<span>`, `<a>`, `<strong>`, `<em>`, `<img>`, `<button>`
 
 ### Why This Matters
 
@@ -698,14 +440,12 @@ Inline elements (flow within text, no line break):
 <!-- Block elements stack vertically -->
 <p>First paragraph</p>
 <p>Second paragraph</p>
-<!-- Two separate paragraphs, one below the other -->
 
 <!-- Inline elements flow within their container -->
 <p>
   I know <strong>HTML</strong>, <em>CSS</em>, and
   <a href="#">JavaScript</a>.
 </p>
-<!-- All three are on the same line as the surrounding paragraph text -->
 
 <!-- ✅ VALID: inline elements inside block elements -->
 <p>
@@ -718,15 +458,10 @@ Inline elements (flow within text, no line break):
 </span>
 ```
 
-> [!NOTE]
-> CSS can change any element's default display behaviour using the `display` property. This is covered in detail in Lecture 04. But understanding the HTML defaults helps you predict layout before adding any CSS.
-
 ### 📌 Section Recap
 - Block elements: start on new line, fill full width (`<div>`, `<p>`, `<h1>`–`<h6>`)
 - Inline elements: flow within text, take only the space they need (`<span>`, `<a>`, `<strong>`)
 - Inline elements **cannot** contain block elements
-- Images are inline by default (but can be changed with CSS)
-- CSS can change display behaviour — the defaults are just starting points
 
 ---
 
@@ -746,31 +481,20 @@ Think of it like giving directions:
 Example project structure:
 my-portfolio/
 ├── index.html            ← You are working in this file
-├── about.html
 ├── css/
 │   └── style.css
-├── js/
-│   └── app.js
 ├── images/
-│   ├── avatar.jpg
-│   └── project1.png
+│   └── avatar.jpg
 └── pages/
     └── contact.html
 ```
 
 ```html
 <!-- From index.html — paths to different locations: -->
-
-<!-- File in the SAME folder as index.html -->
-<a href="about.html">About Me</a>
-
 <!-- File in a SUBFOLDER -->
 <a href="pages/contact.html">Contact</a>
 <img src="images/avatar.jpg" alt="My profile photo">
-
-<!-- CSS and JS files in subfolders -->
 <link rel="stylesheet" href="css/style.css">
-<script src="js/app.js" defer></script>
 
 <!-- From pages/contact.html — going UP to parent folder: -->
 <a href="../index.html">Back to Home</a>
@@ -780,21 +504,80 @@ my-portfolio/
 > [!TIP]
 > Use **relative paths** for files within your own project — they work no matter where you deploy the site. Use **absolute URLs** (`https://...`) only for resources hosted on external servers.
 
-### Common Path Mistakes & Fixes
+---
 
-| Mistake | Why It Happens | Fix |
-|---------|---------------|-----|
-| `<img src="C:\Users\Me\Desktop\photo.jpg">` | Copy-pasting from File Explorer | Never use system-absolute paths — use relative paths |
-| Image shows broken icon | Wrong relative path | Double-check the exact folder structure |
-| `../` doesn't seem to work | Miscounting levels | Count one `../` per folder level you need to go up |
-| CSS not loading | Wrong path in `<link href="...">` | Open DevTools → Network tab to see the exact error |
+## 🧠 Think Like a Developer
 
-### 📌 Section Recap
-- Relative paths are relative to the current file's location
-- `images/photo.jpg` = file in a subfolder named "images"
-- `../index.html` = file one folder level up from the current file
-- Never use system-absolute paths (`C:\...`) — they only work on your machine
-- Use `https://...` absolute URLs only for external resources
+### Scenario 1: Structuring a Blog Post
+> You're writing the HTML for a blog post. It has a title, author details, the main text, and a sidebar with related posts.
+
+**Decision:** Don't just use `<div>` tags (div soup). Think *semantically*. The entire post should be wrapped in an `<article>` tag because it's self-contained content. The title is the `<h1>`. The main text goes in `<p>` tags. The related posts sidebar belongs in an `<aside>`.
+
+### Scenario 2: Debugging a Broken Image
+> You added an image `<img src="images/logo.png" alt="Logo">` but the browser shows a broken image icon.
+
+**Decision:** You don't rewrite the code immediately. First, check the path. Is the image actually inside an `images` folder? Did you spell `logo.png` correctly, with the exact casing? Are you running Live Server from the correct root folder? Finally, check the Network tab in DevTools to see the 404 error path.
+
+### Scenario 3: Deciding Between a Button and a Link
+> You need a clickable element that submits a form or performs an action (like "Add to Cart"), and another clickable element that takes the user to a new page (like "View Products").
+
+**Decision:** If it goes to a new URL, use an anchor tag `<a>`. If it performs an action on the current page or submits a form, use a `<button>`. Never use an `<a>` tag for an action, and never use a `<button>` tag just to navigate. This is crucial for screen readers.
+
+---
+
+## ❌→✅ Before vs After
+
+### 1. Page Layout
+```html
+<!-- ❌ Before: Meaningless divs (Div Soup) -->
+<div class="header">
+  <div class="nav">
+    <a href="/">Home</a>
+  </div>
+</div>
+<div class="main">
+  <div class="post">
+    <div class="title">My Blog Post</div>
+  </div>
+</div>
+
+<!-- ✅ After: Semantic HTML5 -->
+<header>
+  <nav>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+  <article>
+    <h1>My Blog Post</h1>
+  </article>
+</main>
+```
+
+### 2. Formatting Text
+```html
+<!-- ❌ Before: Using visual tags instead of semantic tags -->
+<p>Please <b>read this carefully</b>.</p>
+
+<!-- ✅ After: Using semantic tags for importance -->
+<p>Please <strong>read this carefully</strong>.</p>
+```
+
+---
+
+## ⚠️ Common Mistakes & How to Avoid Them
+
+| ❌ Mistake | ✅ Fix |
+|-----------|--------|
+| Multiple `<main>` elements on one page | Only ONE `<main>` per page — it must be unique |
+| Using `<section>` for every container | `<section>` is for themed groups with headings. Generic grouping? Use `<div>`. |
+| Missing headings inside `<section>` | Every `<section>` should have a heading (`<h2>`, `<h3>`, etc.) |
+| Using `<b>` for important text | Use `<strong>` — has semantic meaning (important) not just visual bold |
+| Using `<i>` for emphasis | Use `<em>` — conveys stress emphasis to screen readers |
+| Wrapping block elements in inline elements | Never put `<div>` or `<p>` inside `<span>` or `<a>` |
+| Using `<br><br>` for vertical spacing | Use CSS `margin` or `padding` — `<br>` is only for meaningful line breaks |
+| Missing quotes around attribute values | Always quote attributes: `href="..."` not `href=...` |
+| `<img src="C:\Users\Me\Desktop\photo.jpg">` | Never use system-absolute paths — use relative paths |
 
 ---
 
@@ -838,7 +621,7 @@ Build a personal profile page using semantic HTML5.
      - `<section id="education">` — `<ol>` of your education
      - `<section id="experience">` — `<article>` elements for each role
      - `<section id="skills">` — `<ul>` of skills
-4. Add `<nav>` with anchor links pointing to each section's `id`
+4. Add `<nav>` with anchor links pointing to each section's `id` (e.g. `<a href="#skills">`)
 5. Test clicking the nav links — they should scroll to each section
 
 ---
@@ -857,17 +640,7 @@ We are building a complete professional developer portfolio over 8 lectures. Tod
    └── index.html
    ```
 
-2. Add the full HTML5 boilerplate:
-   ```html
-   <!DOCTYPE html>
-   <html lang="en">
-   <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="description" content="Your Name — Full-Stack Developer Portfolio">
-     <title>Your Name | Full-Stack Developer</title>
-   </head>
-   ```
+2. Add the full HTML5 boilerplate.
 
 3. Inside `<body>`, build this structure:
 
@@ -896,6 +669,50 @@ We are building a complete professional developer portfolio over 8 lectures. Tod
    <p>&copy; <time datetime="2026">2026</time> Your Name</p>
    ```
 3. Add a headshot: `<img src="images/avatar.jpg" alt="Photo of [Your Name]" width="200" height="200">`
+
+---
+
+## 💼 Interview Prep
+
+**Q1: What is semantic HTML and why is it important?**
+> Semantic HTML refers to tags that convey meaning about the content they enclose, rather than just presentation (e.g. `<article>`, `<header>` instead of `<div>`). It is crucial for three reasons: Accessibility (screen readers rely on it), SEO (search engines use it to understand page structure), and Maintainability (makes code easier for humans to read).
+
+**Q2: What is the purpose of the `alt` attribute on an `<img>` tag?**
+> The `alt` attribute provides alternative text if the image fails to load, and it is read aloud by screen readers for visually impaired users. It is essential for accessibility. If an image is purely decorative, you must still include the attribute, but leave it empty: `alt=""`.
+
+**Q3: Explain the difference between block and inline elements.**
+> A block element (like `<div>` or `<p>`) starts on a new line and takes up the full width available to it. An inline element (like `<span>` or `<a>`) flows within the text content and only takes up as much width as necessary, without breaking to a new line. Block elements can contain inline elements, but inline elements cannot contain block elements.
+
+**Q4: Why should you use `rel="noopener noreferrer"` with `target="_blank"`?**
+> When you open an external link in a new tab using `target="_blank"`, the new page potentially gets access to the `window.opener` object, which is a security risk known as tabnapping. `rel="noopener noreferrer"` prevents the new page from accessing the original window.
+
+**Q5: What is the purpose of the `<!DOCTYPE html>` declaration?**
+> It tells the browser to render the page using modern HTML5 standards. Without it, browsers fall back into "quirks mode" to support very old web pages, which leads to inconsistent and buggy rendering across different browsers.
+
+---
+
+## 📄 Cheat Sheet
+
+### Essential Tags
+| Tag | Purpose | Example |
+|-----|---------|---------|
+| `<a>` | Hyperlink | `<a href="page.html">Link</a>` |
+| `<img>` | Image | `<img src="img.jpg" alt="Desc">` |
+| `<h1>` | Main heading | `<h1>Page Title</h1>` |
+| `<p>` | Paragraph | `<p>Body text here.</p>` |
+| `<ul>` | Unordered List | `<ul><li>Item</li></ul>` |
+| `<strong>`| Important text | `<strong>Bold</strong>` |
+
+### Semantic Elements
+| Element | Use Case |
+|---------|----------|
+| `<header>` | Top of page/article (logo, nav) |
+| `<nav>` | Main navigation links |
+| `<main>` | Unique core content of the page |
+| `<section>`| A themed group of content |
+| `<article>`| Self-contained, independent content |
+| `<aside>` | Secondary/related content |
+| `<footer>` | Bottom of page/article (copyright) |
 
 ---
 

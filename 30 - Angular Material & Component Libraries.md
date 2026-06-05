@@ -6,7 +6,14 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 1. 🏗️ Prerequisites
+- Understanding of Angular Components and Directives.
+- Basic knowledge of CSS and structural HTML.
+- Familiarity with Angular Standalone components.
+
+---
+
+## 2. 🎯 Objectives
 
 By the end of this lecture, you will be able to:
 - Understand what Angular Material is and why you'd use a component library
@@ -21,26 +28,19 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 📋 Agenda
+## 3. 📋 Agenda
 
-### Part 1 — Theory (~90 min)
-1. What is a Component Library? Why use one?
-2. Angular Material: installation and theming
-3. Core components: buttons, form fields, cards
-4. Navigation: `MatSidenav`, `MatToolbar`
-5. Data tables: `MatTable` (broken down step by step)
-6. Feedback: `MatDialog`, `MatSnackBar`
-7. Angular CDK: behaviour without style
-8. Alternative component libraries
-
-### Part 2 — Practice / Lab (~90–120 min)
-1. Set up Angular Material with a custom theme
-2. Build a data table with sorting, pagination, and filtering
-3. ShopAngular Project Part 8: Angular Material UI
+- **Part 1: Component Libraries & Angular Material** (45 mins)
+- **Part 2: Core Components & Navigation** (45 mins)
+- **Part 3: Data Tables & Feedback Components** (45 mins)
+- **Part 4: Angular CDK & Alternatives** (15 mins)
+- **Part 5: Labs & Practice** (30 mins)
 
 ---
 
-## 1. What is a Component Library? Why Should You Use One?
+## 4. 🌊 Deep Dive
+
+### 4.1 What is a Component Library? Why Should You Use One?
 
 ### Plain-English Explanation
 
@@ -62,7 +62,7 @@ A **component library** is the equivalent of a hardware store for UI development
 
 ---
 
-## 2. Angular Material — What It Is
+### 4.2 Angular Material — What It Is
 
 **Angular Material** is the official component library built and maintained by the **Angular team at Google**. It implements [Google's Material Design](https://m3.material.io/) specification — a comprehensive system of guidelines for building consistent, accessible, and beautiful UIs.
 
@@ -74,7 +74,7 @@ Because it's made by the same team as Angular itself, it has:
 
 ---
 
-## 3. Installation & Setup
+### 4.3 Installation & Setup
 
 ### Step-by-Step Installation
 
@@ -174,9 +174,9 @@ export class ProductCardComponent {}
 
 ---
 
-## 4. Core Components
+### 4.4 Core Components
 
-### 4.1 Buttons
+#### 4.41 Buttons
 
 Angular Material buttons are applied as **directives** on the native HTML `<button>` element. This means you keep semantic HTML (important for accessibility) and the directive adds the Material styling.
 
@@ -215,7 +215,7 @@ Angular Material buttons are applied as **directives** on the native HTML `<butt
 | `mat-icon-button` | Toolbar icons, compact actions |
 | `mat-fab` | The one main action on a page (e.g., "Create") |
 
-### 4.2 Form Fields & Inputs
+#### 4.42 Form Fields & Inputs
 
 The `<mat-form-field>` component is a wrapper that gives your standard `<input>` elements Material Design superpowers: a floating label, underline or outline border, prefix/suffix icons, hint text, and error messages.
 
@@ -257,7 +257,7 @@ The `<mat-form-field>` component is a wrapper that gives your standard `<input>`
   We'll never share your email.
 ```
 
-### 4.3 Cards
+#### 4.43 Cards
 
 `<mat-card>` is a surface component — a contained, elevated piece of UI that groups related content.
 
@@ -296,15 +296,6 @@ The `<mat-form-field>` component is a wrapper that gives your standard `<input>`
 </mat-card>
 ```
 
-### Common Mistakes & How to Avoid Them
-
-| Mistake | What Goes Wrong | Fix |
-|---------|----------------|-----|
-| Forgetting `matInput` on `<input>` | The field renders incorrectly, label doesn't float | Always add `matInput` to `<input>` inside `<mat-form-field>` |
-| Nesting a `<button>` inside another `<button>` | Invalid HTML, accessibility errors | Use `mat-icon-button` as a sibling, not a child |
-| Not importing `MatIconModule` | `<mat-icon>` shows text names, not icons | Add `MatIconModule` to your component imports |
-| Forgetting to include icon font | Icons don't render | Ensure the Material Icons font is in `index.html` |
-
 ### Section Recap
 - `mat-button`, `mat-raised-button`, etc. are **directives** on native `<button>` elements
 - `<mat-form-field>` wraps native inputs with the `matInput` directive
@@ -312,9 +303,9 @@ The `<mat-form-field>` component is a wrapper that gives your standard `<input>`
 
 ---
 
-## 5. Navigation Components
+### 4.5 Navigation Components
 
-### 5.1 MatToolbar
+#### 4.51 MatToolbar
 
 `MatToolbar` creates a header bar (like an app bar or navbar). It's the standard way to display your app title and top-level actions.
 
@@ -347,7 +338,7 @@ The `<mat-form-field>` component is a wrapper that gives your standard `<input>`
 </mat-toolbar>
 ```
 
-### 5.2 MatSidenav
+#### 4.52 MatSidenav
 
 `MatSidenav` creates a sliding panel (drawer) — standard in mobile-first responsive layouts. When collapsed, it hides off-screen; a button toggles it open.
 
@@ -431,7 +422,7 @@ The `<mat-form-field>` component is a wrapper that gives your standard `<input>`
 
 ---
 
-## 6. Data Tables — MatTable
+### 4.6 Data Tables — MatTable
 
 ### Why Does This Matter?
 
@@ -667,15 +658,6 @@ export class UsersTableComponent implements AfterViewInit {
 </mat-paginator>
 ```
 
-### Common Mistakes with MatTable
-
-| Mistake | Symptom | Fix |
-|---------|---------|-----|
-| `matColumnDef` doesn't match `displayedColumns` | Empty table or console error | Ensure every string in `displayedColumns` has a matching `matColumnDef` |
-| Missing `MatSortModule` import | Sort arrows don't appear | Add `MatSortModule` to component imports |
-| Not calling `ngAfterViewInit` | Sort/paginator don't work | Connect sort and paginator in `ngAfterViewInit`, not `ngOnInit` |
-| Missing `mat-sort-header` on `<th>` | Specific column not sortable | Add `mat-sort-header` directive to each `<th>` you want to sort |
-
 ### Section Recap
 - MatTable requires three parts: **data source**, **column definitions** (`ng-container`), **row definitions** (`<tr>`)
 - `MatTableDataSource` enables built-in filtering, sorting, and pagination
@@ -684,13 +666,13 @@ export class UsersTableComponent implements AfterViewInit {
 
 ---
 
-## 7. Feedback Components: Dialogs & SnackBars
+### 4.7 Feedback Components: Dialogs & SnackBars
 
 ### Why These Matter
 
 Unlike most UI components that live in your template, Material's feedback components (`MatDialog`, `MatSnackBar`) are **imperatively launched from TypeScript**. This is intentional — they appear in response to user actions (form submissions, deletions, errors) and need to be triggered programmatically.
 
-### 7.1 MatSnackBar (Toast Notifications)
+#### 4.71 MatSnackBar (Toast Notifications)
 
 SnackBars are brief messages that appear at the bottom of the screen to inform users of an operation's outcome. They auto-dismiss after a set duration.
 
@@ -737,7 +719,7 @@ export class ProductFormComponent {
 }
 ```
 
-### 7.2 MatDialog (Modal Windows)
+#### 4.72 MatDialog (Modal Windows)
 
 Dialogs are overlays that appear on top of the main content, requiring user interaction before proceeding. Common use cases: confirmation prompts, complex forms, image previews.
 
@@ -845,7 +827,7 @@ export class ProductListComponent {
 
 ---
 
-## 8. Angular CDK — Behaviour Without Style
+### 4.8 Angular CDK — Behaviour Without Style
 
 ### What is the CDK?
 
@@ -906,7 +888,7 @@ export class TaskBoardComponent {
 
 ---
 
-## 9. Alternative Component Libraries
+### 4.9 Alternative Component Libraries
 
 Angular Material is excellent, but it's not the only option. Here are the most popular alternatives:
 
@@ -941,7 +923,42 @@ Do you need full custom styling with utility CSS?
 
 ---
 
-## 🧪 Practice Labs
+---
+
+## 5. 🧠 Think Like a Dev
+- **Don't reinvent the wheel:** If a standard component exists, use it. Save your brainpower for business logic, not dropdown accessibility.
+- **Understand the underlying DOM:** Material adds directives and wrappers, but you still need to know how standard HTML/CSS works.
+- **Consistency is key:** Pick one component library per project. Mixing PrimeNG and Angular Material leads to a chaotic UI and massive bundles.
+
+---
+
+## 6. 🔄 Before / After
+
+**Before (Vanilla HTML/CSS):**
+```html
+<button class="btn btn-primary" onclick="submit()">Save</button>
+<!-- Requires manual CSS for btn, btn-primary, hover states, ripples, accessibility -->
+```
+
+**After (Angular Material):**
+```html
+<button mat-raised-button color="primary" (click)="submit()">Save</button>
+<!-- Fully accessible, styled, with ripple effects built-in -->
+```
+
+---
+
+## 7. ❌ Common Mistakes
+
+- **Forgetting `matInput` on `<input>`:** The form field renders incorrectly, and the label doesn't float. Always add `matInput` inside `<mat-form-field>`.
+- **Nesting buttons:** `<button><mat-icon>home</mat-icon></button>` is wrong. Use `<button mat-icon-button>` instead for accessibility and valid HTML.
+- **Missing `MatSortModule` import:** Sort arrows don't appear in tables. Always ensure the module is imported in your standalone component.
+- **Not calling `ngAfterViewInit` for Table Addons:** Calling it in `ngOnInit` causes the sort and paginator to fail because the view elements aren't initialized yet.
+- **`matColumnDef` doesn't match `displayedColumns`:** Results in an empty table or console error. Ensure every string in `displayedColumns` has a matching `matColumnDef`.
+
+---
+
+## 8. 🧪 Labs
 
 ### Lab 1 — Custom Theme Setup (30 min)
 1. Run `ng add @angular/material` in your Angular project.
@@ -960,68 +977,35 @@ Do you need full custom styling with utility CSS?
 
 ---
 
-## 📝 Assignment: ShopAngular Project — Part 8
+## 9. 💼 Interview Prep
 
-Migrate the ShopAngular UI to use Angular Material throughout.
-
-### Requirements
-
-**Step 1 — Setup**
-1. Run `ng add @angular/material` and choose a theme that suits a shopping app.
-
-**Step 2 — Navigation**
-2. In `AppComponent`, replace your custom navbar with:
-   - A `<mat-sidenav-container>` wrapping the whole layout
-   - A `<mat-sidenav>` with `<mat-nav-list>` links for Home, Products, Cart
-   - A `<mat-toolbar color="primary">` with a menu icon button, app title, and cart icon button
-   - Wire the menu button to `sidenav.toggle()`
-
-**Step 3 — Product Cards**
-3. In `ProductCardComponent`:
-   - Wrap the product in a `<mat-card appearance="outlined">`
-   - Use `<mat-card-header>`, `<mat-card-content>`, `<mat-card-actions>`
-   - Replace the Add to Cart button with `<button mat-raised-button color="primary">`
-
-**Step 4 — Checkout Form**
-4. In `CheckoutComponent`, wrap each form field with:
-   ```html
-   <mat-form-field appearance="outline">
-     <mat-label>Field Name</mat-label>
-     <input matInput formControlName="fieldName">
-   </mat-form-field>
-   ```
-
-**Step 5 — Snack Bar**
-5. After successful checkout, display:
-   ```typescript
-   this.snackBar.open('🎉 Order placed! Thank you for shopping with us.', 'Close', { duration: 4000 });
-   ```
+- **What is the difference between Angular Material and Angular CDK?**
+  *Answer:* Angular Material provides styled UI components implementing Google's Material Design. The Angular CDK (Component Dev Kit) provides unstyled behavioral primitives (like drag-and-drop, overlays, virtual scrolling) that you can use with any custom styling.
+- **How does MatTable handle data filtering and sorting?**
+  *Answer:* Through `MatTableDataSource`. You wrap your data array in it, and then wire up `MatSort` and set a `filter` string. The data source handles the underlying logic automatically.
+- **Why should we use component libraries instead of writing our own UI components?**
+  *Answer:* Component libraries offer out-of-the-box accessibility (a11y), cross-browser compatibility, design consistency, and development speed.
 
 ---
 
-## 🔗 Resources
+## 10. 📄 Cheat Sheet
 
-| Resource | Link |
-|----------|------|
-| Angular Material Components | https://material.angular.io/components/categories |
-| MatTable Guide | https://material.angular.io/components/table/overview |
-| MatDialog Guide | https://material.angular.io/components/dialog/overview |
-| Material Design 3 System | https://m3.material.io/ |
-| Angular CDK | https://material.angular.io/cdk/categories |
-
----
-
-## 📌 Key Takeaways
-
-- **Angular Material** is the official, accessible, Google-maintained component library for Angular
-- Install with `ng add @angular/material` — the schematic configures everything automatically
-- In standalone Angular, each component must import the specific Material modules it uses
-- **MatTable** requires three parts: data source (TypeScript), column definitions (`ng-container`), and row definitions (`<tr>`)
-- `MatTableDataSource` provides built-in filtering, sorting, and pagination — wire them up in `ngAfterViewInit`
-- **MatSnackBar** and **MatDialog** are launched from TypeScript, not from HTML templates
-- The **Angular CDK** provides unstyled behaviour primitives you can use with any CSS framework
-- Pick **one** component library and stick with it — mixing causes visual inconsistency and bundle bloat
+- **Installation:** `ng add @angular/material`
+- **Buttons:** `<button mat-raised-button color="primary">`
+- **Forms:** Wrap native inputs with `<mat-form-field appearance="outline">` and add `matInput` to the input element.
+- **Cards:** Wrap with `<mat-card>`, use `<mat-card-header>`, `<mat-card-content>`, `<mat-card-actions>`.
+- **Tables:** Requires `[dataSource]`, `<ng-container matColumnDef="...">`, `<tr mat-header-row>`, `<tr mat-row>`.
+- **SnackBars:** `inject(MatSnackBar).open('Message', 'Close', {duration: 3000})`
+- **Dialogs:** `inject(MatDialog).open(MyDialogComponent, {data: {...}})`
 
 ---
 
-**Next Lecture:** [Lecture 31 — State Management with RxJS & Signals](./31%20-%20State%20Management%20with%20RxJS%20%26%20Services.md)
+## 11. 📌 Key Takeaways
+
+- **Angular Material** is the official, accessible, Google-maintained component library for Angular.
+- Install with `ng add @angular/material` — the schematic configures everything automatically.
+- In standalone Angular, each component must import the specific Material modules it uses.
+- **MatTable** requires three parts: data source (TypeScript), column definitions (`ng-container`), and row definitions (`<tr>`).
+- `MatTableDataSource` provides built-in filtering, sorting, and pagination — wire them up in `ngAfterViewInit`.
+- **MatSnackBar** and **MatDialog** are launched from TypeScript, not from HTML templates.
+- Pick **one** component library and stick with it — mixing causes visual inconsistency and bundle bloat.

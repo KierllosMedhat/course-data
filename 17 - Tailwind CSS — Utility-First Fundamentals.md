@@ -6,7 +6,14 @@
 
 ---
 
-## 🎯 Learning Objectives
+## Prerequisites
+
+- Basic understanding of HTML and CSS.
+- Familiarity with the Command Line and npm.
+- Basic knowledge of JavaScript (ES6+).
+- Prior experience with Bootstrap is recommended (useful for comparison).
+
+## Objectives
 
 By the end of this lecture, you will be able to:
 - Explain the utility-first CSS philosophy and its advantages over component-first frameworks
@@ -20,7 +27,7 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 📋 Agenda
+## Agenda
 
 ### Part 1 — Theory (~90 min)
 1. Utility-First Philosophy — what it means and why it works
@@ -40,7 +47,9 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 1. Utility-First Philosophy
+## Deep Dive
+
+### 1. Utility-First Philosophy
 
 ### What Does "Utility-First" Mean? (Plain English)
 
@@ -98,7 +107,7 @@ Solutions: accept it (most teams do), use `@apply` for repeated patterns (Lectur
 
 ---
 
-## 2. Bootstrap vs Tailwind CSS: Side-by-Side Comparison
+### 2. Bootstrap vs Tailwind CSS: Side-by-Side Comparison
 
 | Aspect | Bootstrap 5 | Tailwind CSS v4 |
 |--------|-------------|-----------------|
@@ -111,32 +120,6 @@ Solutions: accept it (most teams do), use `@apply` for repeated patterns (Lectur
 | **Customisation** | Harder (Sass variables) | Very easy (`@theme`) |
 | **Best for** | Admin panels, quick prototypes | Unique designs, marketing sites |
 
-### Same Card, Two Approaches
-
-**Bootstrap:**
-```html
-<div class="card shadow-sm">
-  <div class="card-body">
-    <h5 class="card-title">Product</h5>
-    <p class="card-text text-muted">Description</p>
-    <button class="btn btn-primary">Buy Now</button>
-  </div>
-</div>
-```
-
-**Tailwind:**
-```html
-<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-  <h5 class="text-lg font-semibold text-gray-900">Product</h5>
-  <p class="text-gray-500 mt-1">Description</p>
-  <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg
-                 hover:bg-blue-700 transition">
-    Buy Now
-  </button>
-</div>
-```
-
-Bootstrap's `.card` gives you a specific look. Tailwind lets you build ANY design.
 
 **Choose Bootstrap when:** Quick prototype, team already knows Bootstrap, need built-in JS components, design originality is not a priority.
 
@@ -144,7 +127,7 @@ Bootstrap's `.card` gives you a specific look. Tailwind lets you build ANY desig
 
 ---
 
-## 3. Tailwind CSS v4 Architecture
+### 3. Tailwind CSS v4 Architecture
 
 ### The Revolution: CSS-Only Engine
 
@@ -183,7 +166,7 @@ Output: Tiny CSS file (typically < 10kb for a full app!)
 
 ---
 
-## 4. Setting Up Tailwind CSS v4 with Vite
+### 4. Setting Up Tailwind CSS v4 with Vite
 
 ### Step-by-Step Installation
 
@@ -245,7 +228,7 @@ npm run dev
 
 ---
 
-## 5. Core Utilities: Spacing, Colors, Typography, Sizing
+### 5. Core Utilities: Spacing, Colors, Typography, Sizing
 
 ### 5.1 The Spacing Scale
 
@@ -416,7 +399,7 @@ el.className = colorMap[color]; // "bg-blue-500" — Tailwind detects it
 
 ---
 
-## 6. Layout Utilities: Flexbox and CSS Grid
+### 6. Layout Utilities: Flexbox and CSS Grid
 
 ### 6.1 Flexbox
 
@@ -541,7 +524,7 @@ el.className = colorMap[color]; // "bg-blue-500" — Tailwind detects it
 
 ---
 
-## 7. Responsive Breakpoints
+### 7. Responsive Breakpoints
 
 ### Mobile-First Approach
 
@@ -612,7 +595,7 @@ xl:       → >= 1280px and up
 
 ---
 
-## 8. State Variants
+### 8. State Variants
 
 State variants apply a utility only in a specific interactive state: `{variant}:{utility}`.
 
@@ -699,7 +682,7 @@ State variants apply a utility only in a specific interactive state: `{variant}:
 
 ---
 
-## 9. Customising with `@theme`
+### 9. Customising with `@theme`
 
 ### Why Customise?
 
@@ -802,7 +785,44 @@ Every project has unique brand colors, fonts, and spacing. Tailwind v4's `@theme
 
 ---
 
-## Common Mistakes & How to Avoid Them (Summary)
+## Think Like a Dev
+
+- **Start with the End in Mind:** When building a component, visualize the interactive states (hover, active, disabled) and breakpoints (mobile, tablet, desktop) from the beginning.
+- **Don't Fight the Framework:** Embrace verbose class names. Instead of immediately trying to abstract everything into separate CSS files, leverage Tailwind's utility classes to keep styling closely coupled with the markup.
+- **Mobile-First Always:** Always design your base classes for the smallest screen, and progressively enhance with `md:`, `lg:`, etc.
+- **Component Abstraction over CSS Abstraction:** When HTML gets too verbose, abstract the repetition at the component level (using React/Vue/Svelte components or template partials) rather than the CSS level (using `@apply`).
+
+## Before/After
+
+Showcasing the shift from a traditional component-based framework (Bootstrap) to a utility-first approach (Tailwind CSS v4).
+
+### Same Card, Two Approaches
+
+**Before (Traditional CSS / Bootstrap):**
+```html
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Product</h5>
+    <p class="card-text text-muted">Description</p>
+    <button class="btn btn-primary">Buy Now</button>
+  </div>
+</div>
+```
+
+**After (Tailwind CSS v4):**
+```html
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+  <h5 class="text-lg font-semibold text-gray-900">Product</h5>
+  <p class="text-gray-500 mt-1">Description</p>
+  <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+    Buy Now
+  </button>
+</div>
+```
+
+Bootstrap's `.card` gives you a specific look. Tailwind lets you build ANY design.
+
+## Common Mistakes
 
 **Mistake 1: Dynamic class names**
 ```js
@@ -831,7 +851,7 @@ const bg = map[color]; // "bg-blue-500" — found!
 
 ---
 
-## Practice Labs
+## Labs
 
 ### Lab 1: Rebuild a Bootstrap Card (45 min)
 
@@ -851,7 +871,7 @@ Take a Bootstrap card and rebuild it using only Tailwind utilities:
 
 ---
 
-## Assignment: StartupLaunch Project — Part 3
+### Assignment: StartupLaunch Project — Part 3
 
 Convert your Bootstrap landing page to Tailwind CSS v4.
 
@@ -866,18 +886,29 @@ Convert your Bootstrap landing page to Tailwind CSS v4.
 
 ---
 
-## Resources
+## Interview Prep
 
-| Resource | Link |
-|----------|------|
-| Tailwind CSS v4 Docs | https://tailwindcss.com/docs |
-| Tailwind Playground | https://play.tailwindcss.com/ |
-| Heroicons | https://heroicons.com/ |
-| Google Fonts | https://fonts.google.com/ |
+**1. Q: What is utility-first CSS and how does it differ from semantic CSS?**
+**A:** Utility-first CSS uses small, single-purpose classes (like `flex` or `text-center`) applied directly to HTML elements, rather than abstracting styles into separate semantic CSS classes (like `.card` or `.btn`). This reduces context switching, eliminates naming conflicts, and keeps CSS bundles small.
 
----
+**2. Q: How does Tailwind CSS ensure a small bundle size in production?**
+**A:** Tailwind's engine parses your HTML, JavaScript, and template files for class names, generating only the CSS needed for the classes you actually use.
 
-## Final Lecture Recap
+**3. Q: Explain Tailwind's mobile-first responsive design approach.**
+**A:** Unprefixed utility classes apply to all screen sizes (starting from mobile). Breakpoint prefixes (like `md:` or `lg:`) apply styles only at that breakpoint and above. You start by styling for mobile, then override for larger screens.
+
+## Cheat Sheet
+
+- **Spacing:** `p-4` (padding 16px), `m-8` (margin 32px), `gap-6` (gap 24px)
+- **Colors:** `bg-blue-500` (background), `text-gray-900` (text), `border-red-500` (border)
+- **Flexbox:** `flex`, `flex-col`, `justify-center`, `items-center`
+- **Grid:** `grid`, `grid-cols-3`, `gap-4`, `col-span-2`
+- **Typography:** `text-sm`, `text-lg`, `font-bold`, `leading-relaxed`
+- **Sizing:** `w-full` (100%), `h-screen` (100vh), `max-w-7xl` (1280px max)
+- **States:** `hover:bg-blue-600`, `focus:ring-2`, `disabled:opacity-50`, `group-hover:opacity-100`
+- **Responsive:** `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px), `2xl:` (1536px)
+
+## Key Takeaways
 
 - **Utility-first**: style directly in HTML with single-purpose classes
 - **v3 → v4**: `tailwind.config.js` is gone; configure with `@theme` in CSS
@@ -889,6 +920,17 @@ Convert your Bootstrap landing page to Tailwind CSS v4.
 - **Responsive**: mobile-first; `sm:`, `md:`, `lg:`, `xl:` apply at breakpoint and wider
 - **States**: `hover:`, `focus:`, `active:`, `group-hover:`, `focus-within:`
 - **Theme**: `@theme { --color-brand-500: #ff0000; }` → `bg-brand-500`
+
+### Resources
+
+| Resource | Link |
+|----------|------|
+| Tailwind CSS v4 Docs | https://tailwindcss.com/docs |
+| Tailwind Playground | https://play.tailwindcss.com/ |
+| Heroicons | https://heroicons.com/ |
+| Google Fonts | https://fonts.google.com/ |
+
+---
 
 ---
 

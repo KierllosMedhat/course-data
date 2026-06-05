@@ -6,7 +6,16 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 1. 🛑 Prerequisites
+
+- Basic understanding of HTML tags and forms (`<input>`, `<select>`, `<button>`, etc.).
+- Basic understanding of CSS styling and specificities.
+- Prior knowledge of Bootstrap 5 grid system and basic utility classes (spacing, colors).
+- Basic JavaScript knowledge (DOM manipulation, event listeners) for JS components.
+
+---
+
+## 2. 🎯 Objectives
 
 By the end of this lecture, you will be able to:
 - Build professional forms with floating labels and validation states
@@ -18,7 +27,7 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 📋 Agenda
+## 3. 📋 Agenda
 
 ### Part 1 — Theory (~90 min)
 1. Forms: floating labels, input groups, validation
@@ -34,7 +43,9 @@ By the end of this lecture, you will be able to:
 
 ---
 
-## 1. Forms & Floating Labels
+## 4. 📖 Deep Dive
+
+### 1. Forms & Floating Labels
 
 ### Why Bootstrap Forms? (Plain English)
 
@@ -219,7 +230,7 @@ form.addEventListener('submit', (e) => {
 
 ---
 
-## 2. Custom Form Controls
+### 2. Custom Form Controls
 
 ### Form Selects
 
@@ -312,7 +323,7 @@ range.addEventListener('input', () => {
 
 ---
 
-## 3. Tables
+### 3. Tables
 
 ### Basic Styled Table
 
@@ -399,7 +410,7 @@ Bootstrap's table classes transform plain `<table>` HTML into polished, styled t
 
 ---
 
-## 4. JavaScript Components
+### 4. JavaScript Components
 
 ### How Bootstrap JS Works
 
@@ -657,7 +668,7 @@ document.querySelector('#save-btn').addEventListener('click', async () => {
 
 ---
 
-## 5. Customising Bootstrap with Sass
+### 5. Customising Bootstrap with Sass
 
 ### Why Customise? (Plain English)
 
@@ -794,7 +805,72 @@ npx sass --watch src/scss/custom.scss dist/css/style.css
 
 ---
 
-## ⚠️ Common Mistakes & How to Avoid Them
+## 5. 🧠 Think Like a Dev
+
+When approaching UI development with Bootstrap, always ask yourself: **"Should I write custom CSS for this, or does Bootstrap already have a class/component?"**
+
+1. **Leverage the Framework Fully**: Don't reinvent the wheel. If you need a switch, use Bootstrap's `.form-switch` rather than building a custom toggle from scratch. This saves time, reduces bugs, and ensures cross-browser compatibility.
+2. **Customization via Sass, Not Overrides**: Novices write custom CSS to override Bootstrap's colors (`!important` everywhere). Professionals use Bootstrap's Sass variables to compile a custom version of the framework. This keeps the CSS clean and maintainable.
+3. **Progressive Enhancement**: Start with simple HTML. Add Bootstrap classes to style it. Then add JS for interactivity. If JS fails, the form or table should still be fundamentally usable.
+4. **Accessibility (a11y) First**: Notice how Bootstrap requires `aria-label`, `aria-hidden`, or explicit `<label>` elements for forms? A good developer never skips these. Screen readers rely on this markup to make your site accessible to visually impaired users.
+
+---
+
+## 6. 🔄 Before / After
+
+### 1. Plain HTML Form vs. Bootstrap Form
+
+**Before (Plain HTML):**
+```html
+<form>
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email">
+  <button type="submit">Send</button>
+</form>
+```
+*Result: Unstyled, inconsistent across browsers, cramped spacing.*
+
+**After (Bootstrap 5):**
+```html
+<form>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+  </div>
+  <button type="submit" class="btn btn-primary">Send</button>
+</form>
+```
+*Result: Polished, proper padding, focus rings, and consistent spacing.*
+
+### 2. Standard Table vs. Responsive Bootstrap Table
+
+**Before (Plain HTML):**
+```html
+<table>
+  <tr><th>Name</th><th>Role</th></tr>
+  <tr><td>Alice</td><td>Admin</td></tr>
+</table>
+```
+*Result: No borders, no padding, text crammed together, breaks layout on mobile.*
+
+**After (Bootstrap 5):**
+```html
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
+      <tr><th>Name</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Alice</td><td>Admin</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+*Result: Zebra-striping, hover effects, dark header, vertically aligned text, and scrolls horizontally on small screens.*
+
+---
+
+## 7. ⚠️ Common Mistakes
 
 ### Mistake 1: Floating Labels Without a `placeholder` Attribute
 
@@ -867,7 +943,7 @@ $primary: #ff0000;
 
 ---
 
-## 🧪 Practice Labs
+## 8. 🧪 Labs
 
 ### Lab 1: Multi-Step Form Wizard (45 min)
 
@@ -907,7 +983,7 @@ $primary: #ff0000;
 
 ---
 
-## 📝 Assignment: StartupLaunch Project — Part 2
+### 📝 Assignment: StartupLaunch Project — Part 2
 
 Add interaction and polish to the StartupLaunch landing page.
 
@@ -950,19 +1026,57 @@ form.addEventListener('submit', (e) => {
 
 ---
 
-## 🔗 Resources
+## 9. 💼 Interview Prep
 
-| Resource | Link |
-|----------|------|
-| Bootstrap 5 Forms | https://getbootstrap.com/docs/5.3/forms/overview/ |
-| Bootstrap 5 Modals | https://getbootstrap.com/docs/5.3/components/modal/ |
-| Bootstrap Tooltips | https://getbootstrap.com/docs/5.3/components/tooltips/ |
-| Bootstrap Toasts | https://getbootstrap.com/docs/5.3/components/toasts/ |
-| Bootstrap Sass Customization | https://getbootstrap.com/docs/5.3/customize/sass/ |
+**Q: How do you customize Bootstrap's default theme (e.g., changing the primary color)?**
+**A:** The best practice is to customize Bootstrap via its Sass variables. You create a custom `.scss` file, define your variable overrides (like `$primary: #6f42c1;`), and then `@import` Bootstrap's source Sass files. You should never directly edit Bootstrap's compiled CSS or blindly override its classes with `!important`.
+
+**Q: What is the difference between declarative and programmatic initialization of Bootstrap JS components?**
+**A:** Declarative initialization relies entirely on HTML attributes (like `data-bs-toggle="modal"` and `data-bs-target="#myModal"`). Bootstrap's JS automatically detects these and makes them work without writing custom JavaScript. Programmatic initialization involves selecting the element and instantiating it via JS (`new bootstrap.Modal(document.getElementById('myModal'))`). Programmatic is useful when you need to trigger a component based on logic (e.g., showing a modal after an API call succeeds).
+
+**Q: Why do tooltips and toasts require manual initialization in Bootstrap, while modals and dropdowns don't?**
+**A:** Modals and dropdowns are typically triggered by direct user interactions on specific buttons. Tooltips can be numerous (potentially hundreds on a page). Initializing all of them automatically would have a severe performance impact. Bootstrap requires manual initialization for tooltips/toasts so developers can opt-in and control exactly when and where they are instantiated.
+
+**Q: Explain how floating labels work in Bootstrap.**
+**A:** Floating labels use CSS sibling selectors and the `:placeholder-shown` pseudo-class. The `<input>` must come *before* the `<label>` in the DOM, and it must have a `placeholder` attribute. When the input is focused or has a value (so the placeholder is not shown), CSS transforms the label to float above the input text.
 
 ---
 
-## 📌 Key Takeaways
+## 10. 📑 Cheat Sheet
+
+### Forms
+- `.form-label`: Base styling for labels.
+- `.form-control`: Main input styling.
+- `.form-select`: Styled dropdown selects.
+- `.form-check`: Wrapper for checkboxes/radios.
+- `.form-check-input`: Styled checkbox/radio input.
+- `.form-switch`: Turns a checkbox into a toggle switch.
+- `.input-group`: Wrapper to append/prepend text or buttons to inputs.
+- `.form-floating`: Wrapper for floating labels (input must precede label, requires placeholder).
+
+### Validation
+- `.needs-validation`: Added to form, combined with `novalidate` attribute.
+- `.was-validated`: Toggled via JS on form submit to reveal validation UI.
+- `.valid-feedback` / `.invalid-feedback`: Messages shown based on input validity.
+
+### Tables
+- `.table`: Base table styling.
+- `.table-striped`: Zebra-striping.
+- `.table-hover`: Hover state on rows.
+- `.table-bordered`: Borders on all sides of table and cells.
+- `.table-dark`: Dark theme for table or thead.
+- `.table-responsive`: Wrapper `<div>` to enable horizontal scrolling on mobile.
+
+### JS Components
+- **Modals:** `data-bs-toggle="modal"` `data-bs-target="#id"`
+- **Tabs:** `data-bs-toggle="tab"` `data-bs-target="#id"`
+- **Accordions:** `data-bs-toggle="collapse"` `data-bs-parent="#id"`
+- **Tooltips:** `new bootstrap.Tooltip(element)`
+- **Toasts:** `new bootstrap.Toast(element).show()`
+
+---
+
+## 11. 📌 Key Takeaways
 
 - **Floating labels** require `<input>` **before** `<label>` and a `placeholder` attribute.
 - Form validation: add `novalidate` to `<form>`, use `was-validated` class via JS to show feedback.

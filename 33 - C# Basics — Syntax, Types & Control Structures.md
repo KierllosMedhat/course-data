@@ -41,41 +41,11 @@ By the end of this lecture, you will be able to:
 
 ## 1. What is .NET?
 
-### Plain-English Explanation
-
-Before you write a single line of C#, you need to understand what platform you're writing for.
-
-**.NET** is a free, open-source, cross-platform **developer platform** — it's the engine that runs your C# code. Think of it like this:
-
-- **C#** is the *language* you write code in (like English)
-- **.NET** is the *runtime and library ecosystem* that executes your code (like the publishing industry + printing press that distributes your book)
-
-Just as the same English text can be printed by publishers in many countries, C# code compiled for .NET can run on Windows, macOS, and Linux.
+**.NET** is a free, open-source, cross-platform developer platform that runs C# code.
+- **C#**: The programming language.
+- **.NET**: The runtime and library ecosystem that executes C# cross-platform.
 
 ### The Three Core Components of .NET
-
-```
-┌──────────────────────────────────────────────────────────┐
-│                    .NET Platform                         │
-│                                                          │
-│  ┌─────────────────┐  ┌──────────────────────────────┐  │
-│  │       CLR        │  │      BCL (Base Class Library) │  │
-│  │ (Common Language │  │  - System.Collections        │  │
-│  │    Runtime)      │  │  - System.IO                 │  │
-│  │                  │  │  - System.Text.Json          │  │
-│  │  • Executes code │  │  - System.Net.Http           │  │
-│  │  • Manages memory│  │  - Math, DateTime, etc.      │  │
-│  │  • JIT compiles  │  │  (Thousands of pre-built     │  │
-│  │  • GC (garbage   │  │   classes ready to use)      │  │
-│  │    collection)   │  │                              │  │
-│  └─────────────────┘  └──────────────────────────────┘  │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │          SDK (Software Development Kit)          │   │
-│  │  • dotnet CLI  • C# compiler  • Build tools      │   │
-│  └──────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘
-```
 
 | Component | Full Name | What It Does |
 |-----------|-----------|-------------|
@@ -155,11 +125,8 @@ Hello, Alice! Welcome to C#.
 
 ### The Critical Difference
 
-This is one of the most important concepts in C# and one that confuses many beginners. Understanding it prevents subtle bugs.
-
-**Real-world analogy:**
-- A **value type** is like a *photocopy* of a document. If you give someone a photocopy and they write on it, your original is unchanged. Each person has their own independent copy.
-- A **reference type** is like a *Google Doc link*. If you share the link and someone edits the document, everyone sees the change — because you all point to the same document.
+- **Value type**: Acts like a photocopy. Copying gives an independent clone.
+- **Reference type**: Acts like a shared Google Doc link. Copying shares the reference; changes affect all users.
 
 ### Value Types
 
@@ -368,12 +335,6 @@ public class AppConfig
 ---
 
 ## 4. Nullable Types & Null-Handling Operators
-
-### The "Billion-Dollar Mistake"
-
-The inventor of `null`, Tony Hoare, called its introduction "my billion-dollar mistake" because null references cause countless runtime crashes (`NullReferenceException` — the most common exception in C#).
-
-C# has excellent tools to handle null safely. Let's learn them.
 
 ### Nullable Value Types
 
@@ -711,10 +672,6 @@ for (int i = 0; i < 10; i++)
 
 ## 6. String Manipulation
 
-### Why Strings Are Important
-
-In virtually every program you write, you'll manipulate strings — format output, parse input, build messages, create JSON, etc. C# provides excellent tools for this.
-
 ### 6.1 String Interpolation (`$"..."`)
 
 The cleanest, most readable way to embed values in strings:
@@ -841,9 +798,7 @@ Console.WriteLine(full[7..12]);             // "World" (range indexer, C# 8+)
 
 ### 6.5 `StringBuilder` — For Building Strings in Loops
 
-`string` is immutable — every `+` or concatenation creates a new string object in memory. In a loop that runs thousands of times, this creates thousands of temporary objects and is very slow.
-
-`StringBuilder` is a **mutable** string buffer that you can append to efficiently:
+Since strings are immutable, concatenation in loops creates many temporary objects, severely degrading performance. `StringBuilder` provides an efficient, mutable string buffer:
 
 ```csharp
 using System.Text; // Required for StringBuilder
@@ -891,14 +846,7 @@ Console.WriteLine(sb2.Length);     // Current length of the buffer
 
 ### What is a Primary Constructor?
 
-Normally, to create a class and store constructor parameters, you write:
-1. Fields (private variables)
-2. A constructor
-3. Assign the parameters to the fields
-
-Primary constructors collapse all three steps into a single concise declaration.
-
-**Real-world analogy:** It's like the difference between filling out a long form (traditional constructor) versus signing a digital document that auto-populates fields from your profile (primary constructor).
+Normally, to create a class and store constructor parameters, you define fields, a constructor, and assign parameters. Primary constructors collapse this into a single concise declaration.
 
 ```csharp
 // ── Traditional approach (verbose) ──────────────────────────────

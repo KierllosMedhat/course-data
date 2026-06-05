@@ -6,10 +6,19 @@
 
 ---
 
+## 📋 Prerequisites
+
+> Before starting this lecture, make sure you have:
+> - ✅ Completed Lecture 03 (CSS3 Fundamentals & Selectors)
+> - ✅ A solid understanding of the CSS Box Model (margin, border, padding)
+> - ✅ Familiarity with CSS specificity and cascade rules
+> - ✅ A code editor (like VS Code) installed and running
+
+---
+
 ## 🎯 Learning Objectives
 
 By the end of this lecture, you will be able to:
-
 - Explain the `display` property and name at least six of its values
 - Differentiate between `display: none` and `visibility: hidden`
 - Identify the five CSS positioning schemes and when to use each
@@ -24,23 +33,25 @@ By the end of this lecture, you will be able to:
 
 ## 📋 Agenda
 
-| Time | Topic |
-|------|-------|
-| 0:00 – 0:20 | Recap & Warm-up Q&A |
-| 0:20 – 0:50 | The `display` property |
-| 0:50 – 1:15 | `display: none` vs `visibility: hidden` |
-| 1:15 – 1:50 | CSS Positioning (static → sticky) |
-| 1:50 – 2:05 | Z-Index & Stacking Contexts |
-| 2:05 – 2:20 | Legacy Floats & Clearing |
-| 2:20 – 2:30 | Overflow |
-| 2:30 – 2:45 | Overlays: Old Way vs `<dialog>` |
-| 2:45 – 3:00 | BEM Naming Convention |
-| 3:00 – 3:40 | **Lab 1**: Sticky Nav with Dropdown |
-| 3:40 – 4:00 | **Lab 2**: CSS-Only Modal using `:target` |
+### Part 1 — Theory (~90 minutes)
+1. The `display` property
+2. `display: none` vs `visibility: hidden`
+3. CSS Positioning (static → sticky)
+4. The Positioned Ancestor Concept
+5. Z-Index & Stacking Contexts
+6. Legacy Floats & Clearing
+7. The `overflow` Property
+8. Overlays: Old Way vs Native `<dialog>`
+9. BEM Naming Convention
+
+### Part 2 — Practice & Lab (~90–120 minutes)
+1. Lab 1: Sticky Nav with Dropdown
+2. Lab 2: CSS-Only Modal using `:target`
+3. Portfolio Project Part 4
 
 ---
 
-## 📌 The `display` Property
+## 1. The `display` Property
 
 Every HTML element is a **box**. The `display` property controls two things: how the box behaves **externally** (own line or inline?) and how its **children** are laid out internally.
 
@@ -116,7 +127,7 @@ Turn the element into a **flex** or **grid** container. Children become flex/gri
 
 ---
 
-## 📌 `display: none` vs `visibility: hidden`
+## 2. `display: none` vs `visibility: hidden`
 
 Both hide elements, but they behave **very differently** — a classic interview question.
 
@@ -145,7 +156,7 @@ Both hide elements, but they behave **very differently** — a classic interview
 
 ---
 
-## 📌 CSS Positioning
+## 3. CSS Positioning
 
 By default every element sits in the **normal document flow**. The `position` property lets you break elements out and place them precisely. The offset properties `top`, `right`, `bottom`, `left` control placement.
 
@@ -222,13 +233,17 @@ Flows normally until a scroll threshold is hit, then **sticks** like `fixed` unt
 
 ---
 
-## 📌 The Positioned Ancestor Concept
+## 4. The Positioned Ancestor Concept
 
 This is the most misunderstood CSS concept. The pattern is simple:
 
-```
-Parent:  position: relative;
-  └── Child:  position: absolute; top: X; left: Y;
+```mermaid
+graph TD
+    Parent["Parent Element<br>position: relative;"]
+    Child["Child Element<br>position: absolute;<br>top: X; left: Y;"]
+    Parent -->|Anchors| Child
+    style Parent fill:#e2e8f0,stroke:#475569,stroke-width:2px
+    style Child fill:#bfdbfe,stroke:#2563eb,stroke-width:2px
 ```
 
 The child's offsets are measured from the **padding edge** of the nearest non-static ancestor.
@@ -249,7 +264,7 @@ The child's offsets are measured from the **padding edge** of the nearest non-st
 
 ---
 
-## 📌 Z-Index & Stacking Contexts
+## 5. Z-Index & Stacking Contexts
 
 `z-index` controls which element appears **on top** when elements overlap. Higher number = on top.
 
@@ -278,6 +293,20 @@ A **stacking context** is an isolated "sub-stack." Children's `z-index` values o
 - `opacity` less than 1
 - `transform`, `filter`, or `will-change` with non-default values
 
+```mermaid
+graph TD
+    Root["Root Context"]
+    BoxA["Box A (z-index: 1)<br>Wins locally"]
+    BoxB["Box B (z-index: 0, opacity: 0.9)<br>Creates Stacking Context"]
+    Child["Child (z-index: 9999)<br>Trapped in Box B!"]
+    
+    Root --> BoxA
+    Root --> BoxB
+    BoxB --> Child
+    
+    style Child stroke:#ef4444,stroke-width:3px
+```
+
 ```css
 .box-a { position: relative; z-index: 1; }   /* Above box-b globally */
 .box-b { position: relative; z-index: 0; opacity: 0.99; } /* Creates stacking context */
@@ -290,7 +319,7 @@ A **stacking context** is an isolated "sub-stack." Children's `z-index` values o
 
 ---
 
-## 📌 Legacy Floats & Clearing
+## 6. Legacy Floats & Clearing
 
 Floats were the layout tool before Flexbox/Grid. Today they're mainly used for **wrapping text around images**.
 
@@ -326,7 +355,7 @@ If a parent contains **only** floated children, it collapses to **zero height**.
 
 ---
 
-## 📌 The `overflow` Property
+## 7. The `overflow` Property
 
 Controls what happens when content is **larger than its container**.
 
@@ -347,7 +376,7 @@ Controls what happens when content is **larger than its container**.
 
 ---
 
-## 📌 Overlays: Old Way vs Native `<dialog>`
+## 8. Overlays: Old Way vs Native `<dialog>`
 
 ### Old Way: Manual overlay with `z-index`
 
@@ -404,9 +433,20 @@ dialog.addEventListener('close', () => console.log(dialog.returnValue));
 
 ---
 
-## 📌 BEM Naming Convention
+## 9. BEM Naming Convention
 
 **BEM** = **Block** / **Element** / **Modifier** — a naming convention that makes CSS self-documenting.
+
+```mermaid
+graph LR
+    B[Block<br>.card] --> E[Element<br>.card__title]
+    B --> M[Modifier<br>.card--featured]
+    E --> EM[Element Modifier<br>.card__title--large]
+    style B fill:#fecdd3,stroke:#e11d48
+    style E fill:#bfdbfe,stroke:#2563eb
+    style M fill:#bbf7d0,stroke:#16a34a
+    style EM fill:#e9d5ff,stroke:#9333ea
+```
 
 ```
 .block                    →  standalone component
@@ -433,15 +473,90 @@ dialog.addEventListener('close', () => console.log(dialog.returnValue));
 
 ---
 
-## 🧪 Lab 1: Sticky Nav with Dropdown
+## 🧠 Think Like a Developer
 
-**Time:** 40 minutes  
+### Scenario 1: A Button with an Icon and Notification Dot
+> You need a notification bell icon with a small red dot badge overlapping the top right corner.
+
+**Decision:** You use the **positioned ancestor** pattern. The `<button>` gets `position: relative`. The `<span class="badge">` gets `position: absolute; top: 0; right: 0;`. Then, you refine the positioning with negative margins or `transform: translate(50%, -50%)` to make it perfectly overlap the corner.
+
+### Scenario 2: Unclickable Elements Below a Modal
+> You built a custom modal (without `<dialog>`), but you notice that even when the modal is closed, the buttons directly underneath it can't be clicked.
+
+**Decision:** This happens because you used `opacity: 0` without hiding the overlay properly. The overlay is invisible, but physically covering the page. You fix it by adding `visibility: hidden;` to the closed state, which ignores mouse events, or by switching to a proper `<dialog>` element.
+
+---
+
+## ❌→✅ Before vs After
+
+### 1. The Positioned Ancestor
+```css
+/* ❌ Before: The tooltip escapes to the body */
+.card-button {
+  display: block;
+}
+.tooltip {
+  position: absolute;
+  top: 100%;
+}
+
+/* ✅ After: The parent anchors the tooltip */
+.card-button {
+  display: block;
+  position: relative;
+}
+.tooltip {
+  position: absolute;
+  top: 100%;
+}
+```
+
+### 2. BEM Classes
+```html
+<!-- ❌ Before: Messy and collision-prone classes -->
+<div class="profile-card active">
+  <div class="user-details">
+    <span class="large name">John</span>
+  </div>
+</div>
+
+<!-- ✅ After: BEM format -->
+<div class="profile-card profile-card--active">
+  <div class="profile-card__details">
+    <span class="profile-card__name profile-card__name--large">John</span>
+  </div>
+</div>
+```
+
+---
+
+## ⚠️ Common Mistakes & How to Avoid Them
+
+| ❌ Mistake | ✅ Fix |
+|-----------|--------|
+| Setting `width`/`height` on an `inline` element | Switch to `inline-block` or `block` |
+| Absolutely positioned element flies to wrong place | Add `position: relative` to the intended parent |
+| `z-index: 9999` still appears below another element | Check if a parent has `opacity < 1`, `transform`, or `filter` (stacking context trap) |
+| Content hidden behind fixed navbar | Add `padding-top` to `<body>` equal to nav height |
+| `position: sticky` not working | Remove `overflow: hidden/auto/scroll` from ancestor elements |
+| Float-collapsed container (0 height) | Add `display: flow-root` to the parent |
+| Unexpected horizontal scrollbar | Debug with `* { outline: 1px solid red }` to find the overflowing element |
+| Using only the modifier class in BEM | Always include both: `class="card card--featured"` |
+| Using `display: none` but needing screen reader access | Use the `.visually-hidden` CSS pattern instead |
+| Dropdown closes when moving mouse diagonally to it | Add padding buffer on the dropdown to bridge the gap |
+| Building a `div`-based modal | Use native `<dialog>` — 97%+ browser support |
+
+---
+
+## 🧪 Practice Labs
+
+### Lab 1: Sticky Nav with Dropdown (40 min)
+
 **Goal:** Build a fixed navigation bar with a CSS-only hover dropdown using BEM.
 
 **Key concepts applied:** `position: fixed`, `position: absolute`, `z-index`, BEM, `:hover` reveal.
 
-### HTML Structure
-
+1. **HTML Structure:**
 ```html
 <header class="site-header">
   <nav class="nav">
@@ -463,8 +578,7 @@ dialog.addEventListener('close', () => console.log(dialog.returnValue));
 </header>
 ```
 
-### Core CSS
-
+2. **Core CSS:**
 ```css
 :root { --nav-height: 64px; --nav-bg: #0f172a; }
 body  { padding-top: var(--nav-height); }
@@ -494,23 +608,11 @@ body  { padding-top: var(--nav-height); }
 .nav__dropdown-link:hover { background: rgba(255,255,255,0.08); color: white; }
 ```
 
-### Challenge Extensions
+### Lab 2: CSS-Only Modal using `:target` (20 min)
 
-- [ ] Add `scroll-behavior: smooth` on `:root`
-- [ ] Make the dropdown keyboard-accessible using `:focus-within`
-- [ ] Add a mobile hamburger menu toggle
-
----
-
-## 🧪 Lab 2: CSS-Only Modal using `:target`
-
-**Time:** 20 minutes  
 **Goal:** Build a functional modal using only HTML + CSS — no JavaScript — by leveraging the `:target` pseudo-class.
 
-**How it works:** Clicking `<a href="#contact-modal">` makes the element with `id="contact-modal"` the `:target`. CSS shows it. Clicking `<a href="#">` removes the target, hiding it.
-
-### HTML Structure
-
+1. **HTML Structure:**
 ```html
 <main class="page">
   <h1>CSS-Only Modal Demo</h1>
@@ -532,8 +634,7 @@ body  { padding-top: var(--nav-height); }
 </div>
 ```
 
-### Core CSS
-
+2. **Core CSS:**
 ```css
 .modal {
   position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -548,18 +649,6 @@ body  { padding-top: var(--nav-height); }
 .modal:target .modal__panel { transform: translateY(0); }
 .modal__close { position: absolute; top: 16px; right: 16px; text-decoration: none; font-size: 1.25rem; }
 ```
-
-### `:target` vs `<dialog>` Trade-offs
-
-| Feature | `:target` Modal | `<dialog>` Modal |
-|---------|:--------------:|:----------------:|
-| Needs JavaScript | ❌ No | ✅ Yes (minimal) |
-| Focus trapping | ❌ No | ✅ Yes |
-| Escape to close | ❌ No | ✅ Yes |
-| Accessibility | ⚠️ Partial | ✅ Full |
-
-> [!NOTE]
-> The `:target` trick is a clever CSS demo, but for production modals always prefer native `<dialog>`.
 
 ---
 
@@ -589,6 +678,50 @@ body  { padding-top: var(--nav-height); }
 
 ---
 
+## 💼 Interview Prep
+
+**Q1: What is the difference between `display: none` and `visibility: hidden`?**
+> `display: none` completely removes the element from the document flow, meaning other elements will shift to take its place. `visibility: hidden` hides the element visually, but its physical space remains reserved in the layout. Both methods hide the element from screen readers.
+
+**Q2: How does `position: absolute` calculate its placement?**
+> An absolutely positioned element is removed from the normal document flow. Its top, bottom, left, and right properties are calculated relative to the padding edge of its **nearest positioned ancestor** (any ancestor with a `position` value other than `static`). If no such ancestor exists, it is positioned relative to the initial containing block (the document).
+
+**Q3: What causes a `z-index` rule to fail, even if you set it to `9999`?**
+> `z-index` only works on elements that are positioned (non-static). Even if positioned, an element with `z-index: 9999` can fail to appear on top if one of its parent elements forms a new **stacking context** (via opacity, transform, filter, etc.) and has a lower z-index than the element it is competing against globally. The child is trapped inside its parent's stacking context.
+
+**Q4: What is the BEM methodology?**
+> BEM stands for Block, Element, Modifier. It is a CSS class naming convention that makes CSS modular and self-documenting. A `Block` is a standalone entity (e.g., `.card`), an `Element` is a part of the block (`.card__title`), and a `Modifier` represents a state or variation (`.card--featured`). It keeps CSS specificity flat and manageable.
+
+---
+
+## 📄 Cheat Sheet
+
+### Display Types
+| Property | Line Break | Respects Width/Height |
+|----------|------------|------------------------|
+| `display: block` | Yes | Yes |
+| `display: inline` | No | No |
+| `display: inline-block` | No | Yes |
+
+### Positioning Schemas
+| `position` | Document Flow | Offsets relative to... |
+|------------|---------------|-------------------------|
+| `static` | In flow | N/A (Offsets ignored) |
+| `relative` | In flow | Its normal position |
+| `absolute` | Removed | Nearest positioned ancestor |
+| `fixed` | Removed | The viewport |
+| `sticky` | In flow | The viewport (upon scroll) |
+
+### Overflow Values
+| `overflow` | Behaviour |
+|------------|-----------|
+| `visible` | Content spills out |
+| `hidden` | Content is clipped |
+| `scroll` | Scrollbars always shown |
+| `auto` | Scrollbars shown only if needed |
+
+---
+
 ## 🔗 Resources
 
 - [MDN — display](https://developer.mozilla.org/en-US/docs/Web/CSS/display) · [MDN — position](https://developer.mozilla.org/en-US/docs/Web/CSS/position) · [MDN — z-index](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index)
@@ -600,35 +733,17 @@ body  { padding-top: var(--nav-height); }
 
 ## 📌 Key Takeaways
 
-1. **`display` is the foundation** — block, inline, inline-block are building blocks; flex/grid are power tools
-2. **`display: none`** removes from flow; **`visibility: hidden`** hides but preserves space
-3. **Positioning is a 5-value system**: static → relative → absolute → fixed → sticky
-4. **Positioned ancestor pattern** is everywhere: parent `relative` + child `absolute`
-5. **`z-index`** only works on positioned elements and is trapped inside stacking contexts
-6. **Float collapse** → fix with `display: flow-root`; prefer Flexbox/Grid for new layouts
-7. **`overflow: auto`** is almost always what you want for scrollable containers
-8. **`<dialog>`** is the modern, accessible way to build modals — use `showModal()`
-9. **BEM** = Block `__` Element `--` Modifier — prevents specificity wars
-10. **Use CSS variables for z-index** — a scale prevents z-index wars
+1. **`display` is the foundation** — block, inline, inline-block are building blocks; flex/grid are power tools.
+2. **`display: none`** removes from flow; **`visibility: hidden`** hides but preserves space.
+3. **Positioning is a 5-value system**: static → relative → absolute → fixed → sticky.
+4. **Positioned ancestor pattern** is everywhere: parent `relative` + child `absolute`.
+5. **`z-index`** only works on positioned elements and is trapped inside stacking contexts.
+6. **Float collapse** → fix with `display: flow-root`; prefer Flexbox/Grid for new layouts.
+7. **`overflow: auto`** is almost always what you want for scrollable containers.
+8. **`<dialog>`** is the modern, accessible way to build modals — use `showModal()`.
+9. **BEM** = Block `__` Element `--` Modifier — prevents specificity wars.
+10. **Use CSS variables for z-index** — a scale prevents z-index wars.
 
 ---
 
-## ⚠️ Common Mistakes & How to Avoid Them
-
-| # | Mistake | Fix |
-|---|---------|-----|
-| 1 | Setting `width`/`height` on an `inline` element | Switch to `inline-block` or `block` |
-| 2 | Absolutely positioned element flies to wrong place | Add `position: relative` to the intended parent |
-| 3 | `z-index: 9999` still appears below another element | Check if a parent has `opacity < 1`, `transform`, or `filter` (stacking context trap) |
-| 4 | Content hidden behind fixed navbar | Add `padding-top` to `<body>` equal to nav height |
-| 5 | `position: sticky` not working | Remove `overflow: hidden/auto/scroll` from ancestor elements |
-| 6 | Float-collapsed container (0 height) | Add `display: flow-root` to the parent |
-| 7 | Unexpected horizontal scrollbar | Debug with `* { outline: 1px solid red }` to find the overflowing element |
-| 8 | Using only the modifier class in BEM | Always include both: `class="card card--featured"` |
-| 9 | Using `display: none` but needing screen reader access | Use the `.visually-hidden` CSS pattern instead |
-| 10 | Dropdown closes when moving mouse diagonally to it | Add padding buffer on the dropdown to bridge the gap |
-| 11 | Building a `div`-based modal | Use native `<dialog>` — 97%+ browser support |
-
----
-
-*End of Lecture 04 — CSS Layout: Positioning, Floats & Display*
+**Next Lecture:** [Lecture 05 — Modern Layout: Flexbox →](./05%20-%20Modern%20Layout%20-%20Flexbox.md)

@@ -6,40 +6,54 @@
 
 ---
 
-## 🎯 Learning Objectives
+## 1. 🏗️ Prerequisites
+
+Before starting this lecture, you should have:
+- A solid understanding of fundamental JavaScript concepts (variables, functions, loops, and control flow).
+- Familiarity with object and array literal syntax.
+- Basic understanding of the DOM and how JavaScript interacts with HTML elements.
+- Node.js installed on your local machine (LTS version recommended).
+- A modern code editor, such as Visual Studio Code, installed and properly configured.
+- Familiarity with terminal/command-line navigation (e.g., changing directories, running basic commands).
+
+---
+
+## 2. 🎯 Objectives
 
 By the end of this lecture, you will be able to:
-- Use template literals for string interpolation and multiline strings
-- Safely access nested properties with optional chaining (`?.`) and nullish coalescing (`??`)
-- Write modern classes with constructors, inheritance, and static methods
-- Use `Set` and `Map` for specialised data collections
-- Set up a modern JavaScript project with npm, Vite, and ESLint
-- Configure ESLint 9 using the modern **Flat Config** system
-- Understand what bundlers do and why they matter
+- Use template literals for string interpolation and multiline strings to write cleaner, more readable code.
+- Safely access nested properties with optional chaining (`?.`) and nullish coalescing (`??`) without crashing your application.
+- Write modern, object-oriented code using ES6 classes with constructors, inheritance, and static methods.
+- Implement `Set` and `Map` data structures for specialised and performant data collections.
+- Set up a modern JavaScript project using npm to manage dependencies and scripts.
+- Configure ESLint 9 using the modern **Flat Config** system to enforce code quality and style.
+- Understand the role of bundlers, specifically Vite, and how they optimise code for production.
 
 ---
 
-## 📋 Agenda
+## 3. 📋 Agenda
 
 ### Part 1 — Theory (~90 min)
-1. Template literals & string interpolation
-2. Optional chaining (`?.`) & nullish coalescing (`??`)
-3. Classes: constructor, methods, inheritance (`extends`)
-4. Collections: `Set`, `Map`
-5. Tooling: npm, `package.json`, `node_modules`
-6. Bundlers: Vite
-7. Linting: ESLint 9 Flat Config (`eslint.config.js`)
+1. **Template literals** & string interpolation.
+2. **Optional chaining** (`?.`) & nullish coalescing (`??`).
+3. **Classes**: constructor, methods, inheritance (`extends`), and private fields.
+4. **Collections**: `Set` and `Map`.
+5. **Tooling**: npm, `package.json`, and `node_modules`.
+6. **Bundlers**: Vite basics and configuration.
+7. **Linting**: ESLint 9 Flat Config (`eslint.config.js`).
 
 ### Part 2 — Practice & Lab (~90–120 min)
-1. Set up a project with npm, ESLint, and Vite
-2. Build a class-based component system
-3. TaskFlow Project Part 6: Tooling & Classes
+1. **Lab 1**: Build a class-based component system.
+2. **Lab 2**: Set up a project with npm, ESLint, and Vite.
+3. **Assignment**: TaskFlow Project Part 6 (Final Tooling & Classes migration).
 
 ---
 
-## 1. Template Literals
+## 4. 🤿 Deep Dive
 
-### What Are Template Literals? (Plain English)
+### 4.1 Template Literals
+
+**What Are Template Literals? (Plain English)**
 
 Template literals are an upgraded way to write strings in JavaScript. Before ES6, combining strings with variables was messy — you had to use the `+` operator to "glue" things together. Template literals use **backticks** (`` ` ``) and let you embed any JavaScript expression directly inside a string using `${}`.
 
@@ -65,7 +79,7 @@ const receipt = `Total: $${(price * quantity).toFixed(2)}`; // "Total: $29.97"
 const status = `Status: ${age >= 18 ? "Adult" : "Minor"}`;
 ```
 
-### Multiline Strings
+**Multiline Strings**
 
 Template literals preserve newlines naturally:
 
@@ -82,7 +96,7 @@ const html2 = `
 `;
 ```
 
-### Tagged Template Literals (Advanced)
+**Tagged Template Literals (Advanced)**
 
 A "tag" is a function that processes a template literal. This is how libraries like `styled-components` and `graphql-tag` work:
 
@@ -104,16 +118,9 @@ const output = highlight`The ${product} costs $${price} dollars.`;
 // "The <strong>Laptop</strong> costs $<strong>999</strong> dollars."
 ```
 
-### 📌 Section Recap
-- Template literals use backticks (`` ` ``) instead of quotes.
-- Use `${}` to embed any JavaScript expression.
-- They support multiline strings natively — no `\n` needed.
+### 4.2 Optional Chaining (`?.`) & Nullish Coalescing (`??`)
 
----
-
-## 2. Optional Chaining (`?.`) & Nullish Coalescing (`??`)
-
-### The Problem: Crashing on Nested Properties
+**The Problem: Crashing on Nested Properties**
 
 In real apps, you work with data from APIs that might be incomplete. Accessing a property on `null` or `undefined` immediately throws an error and crashes your app.
 
@@ -134,7 +141,7 @@ const zip = user.profile.address.zip;
 const zip = user && user.profile && user.profile.address && user.profile.address.zip;
 ```
 
-### Optional Chaining (`?.`) — Safe Access
+**Optional Chaining (`?.`) — Safe Access**
 
 The `?.` operator short-circuits and returns `undefined` if anything in the chain is `null` or `undefined`, instead of crashing:
 
@@ -156,7 +163,7 @@ const firstTag = user?.profile?.tags?.[0]; // undefined (no crash if tags is und
 user?.sendEmail?.(); // Only calls sendEmail() if it exists!
 ```
 
-### Nullish Coalescing (`??`) — Smarter Defaults
+**Nullish Coalescing (`??`) — Smarter Defaults**
 
 The `??` operator returns the **right-hand value** only when the left-hand value is `null` or `undefined`. This is different from `||`, which triggers for ANY falsy value (including `0`, `""`, `false`).
 
@@ -191,7 +198,7 @@ const username2 = settings.username ?? "Guest"; // "" ✅ (preserves the empty s
 const timeout2  = settings.timeout  ?? 30; // 30 ✅ (null correctly falls back)
 ```
 
-### Combining `?.` and `??`
+**Combining `?.` and `??`**
 
 They work beautifully together:
 
@@ -202,7 +209,7 @@ const firstPost = user?.posts?.[0]?.title    ?? "No posts yet";
 const volume    = userPrefs?.audio?.volume   ?? 75;
 ```
 
-### Nullish Assignment (`??=`)
+**Nullish Assignment (`??=`)**
 
 A shorthand for "assign only if currently null or undefined":
 
@@ -217,11 +224,9 @@ config.name    ??= "App"; // Does NOT assign! ("" is not null/undefined)
 console.log(config); // { timeout: 5000, retries: 0, name: "" }
 ```
 
----
+### 4.3 ES6 Classes
 
-## 3. ES6 Classes
-
-### What Is a Class? (Plain English)
+**What Is a Class? (Plain English)**
 
 A class is a **blueprint** or **template** for creating objects. Imagine you're building a game with many characters. Instead of defining each character's properties from scratch, you create a `Character` blueprint that specifies what every character has (name, health, level) and what every character can do (`attack()`, `heal()`). Then you stamp out as many characters as you need from that blueprint.
 
@@ -235,7 +240,7 @@ class Character {         const alice = new Character("Alice", 100);
 }
 ```
 
-### Defining a Class
+**Defining a Class**
 
 ```js
 class Product {
@@ -284,7 +289,7 @@ const products = [laptop, shirt];
 const sorted = products.toSorted(Product.compare);
 ```
 
-### Inheritance with `extends`
+**Inheritance with `extends`**
 
 Inheritance lets you create a **specialised version** of an existing class, reusing all of its code and adding or overriding what's needed:
 
@@ -338,7 +343,7 @@ console.log(rex instanceof Dog);    // true
 console.log(rex instanceof Animal); // true — it's both!
 ```
 
-### Private Fields in Classes (ES2022)
+**Private Fields in Classes (ES2022)**
 
 We covered this in Lecture 12, but here's a complete class example combining everything:
 
@@ -382,11 +387,9 @@ account.deposit(500).deposit(200).withdraw(100);
 console.log(account.balance); // 1600
 ```
 
----
+### 4.4 Collections: `Set` and `Map`
 
-## 4. Collections: `Set` and `Map`
-
-### Why Use `Set` and `Map`?
+**Why Use `Set` and `Map`?**
 
 Before ES6, plain objects (`{}`) and arrays (`[]`) were used for everything. But they have limitations:
 - Arrays can hold **duplicate** values and have no efficient lookup by key.
@@ -394,7 +397,7 @@ Before ES6, plain objects (`{}`) and arrays (`[]`) were used for everything. But
 
 `Set` and `Map` solve specific problems that objects and arrays can't handle cleanly.
 
-### `Set` — A Collection of Unique Values
+**`Set` — A Collection of Unique Values**
 
 A `Set` automatically **removes duplicates**. You can't have the same value twice.
 
@@ -428,7 +431,7 @@ const intersection = new Set([...setA].filter(x => setB.has(x)));
 // Set { 3, 4 }
 ```
 
-### `Map` — Key-Value Pairs with Any Key Type
+**`Map` — Key-Value Pairs with Any Key Type**
 
 A `Map` is like an object but more powerful: **any type** can be a key (objects, functions, numbers — not just strings).
 
@@ -469,7 +472,7 @@ orderedMap.set("m", 3);
 [...orderedMap.keys()]; // ["z", "a", "m"] — insertion order preserved!
 ```
 
-### When to Use What
+**When to Use What**
 
 | Use Case | Use |
 |----------|-----|
@@ -480,11 +483,9 @@ orderedMap.set("m", 3);
 | Need to preserve insertion order reliably | `Map` |
 | Frequently adding/removing entries | `Map` |
 
----
+### 4.5 JavaScript Tooling — npm
 
-## 5. JavaScript Tooling — npm
-
-### What Is npm? (Plain English)
+**What Is npm? (Plain English)**
 
 **npm** (Node Package Manager) is the world's largest software registry. Think of it like an app store for JavaScript code. Instead of copy-pasting code from Stack Overflow, you install battle-tested, maintained packages with a single command.
 
@@ -493,7 +494,7 @@ When you install npm packages:
 - The actual code goes in `node_modules/` (never commit this to Git!)
 - A `package-lock.json` locks the exact versions for reproducible installs
 
-### Key npm Commands
+**Key npm Commands**
 
 ```bash
 # Initialize a new project (creates package.json):
@@ -520,7 +521,7 @@ npm outdated
 npm uninstall lodash
 ```
 
-### Understanding `package.json`
+**Understanding `package.json`**
 
 ```json
 {
@@ -545,7 +546,7 @@ npm uninstall lodash
 }
 ```
 
-### The `node_modules` Folder
+**The `node_modules` Folder**
 
 > [!WARNING]
 > **NEVER commit `node_modules` to Git.** It can contain thousands of files (tens of megabytes). Always create a `.gitignore` file with `node_modules` listed.
@@ -557,11 +558,9 @@ dist/
 .env
 ```
 
----
+### 4.6 Bundlers — Vite
 
-## 6. Bundlers — Vite
-
-### What Does a Bundler Do? (Plain English)
+**What Does a Bundler Do? (Plain English)**
 
 When you develop with ES modules, your code is split across many files. Browsers can fetch modules, but making hundreds of HTTP requests is slow in production.
 
@@ -583,7 +582,7 @@ src/
 index.html
 ```
 
-### Setting Up Vite
+**Setting Up Vite**
 
 **Vite** is the modern standard for front-end development. It offers:
 - Instant dev server startup (no bundling in dev — browsers handle modules directly)
@@ -607,7 +606,7 @@ npm run dev    # Opens at http://localhost:5173
 npm run build  # Creates the /dist folder
 ```
 
-### What Vite Creates
+**What Vite Creates**
 
 ```
 taskflow-vite/
@@ -620,7 +619,7 @@ taskflow-vite/
     └── style.css       ← Global styles
 ```
 
-### Basic `vite.config.js`
+**Basic `vite.config.js`**
 
 ```js
 import { defineConfig } from 'vite';
@@ -639,11 +638,9 @@ export default defineConfig({
 });
 ```
 
----
+### 4.7 Linting — ESLint 9 Flat Config
 
-## 7. Linting — ESLint 9 Flat Config
-
-### What Is a Linter? (Plain English)
+**What Is a Linter? (Plain English)**
 
 A linter is like a **spell checker for your code**. It automatically scans your code for:
 - **Actual bugs** (variables used before being defined, unreachable code)
@@ -652,14 +649,14 @@ A linter is like a **spell checker for your code**. It automatically scans your 
 
 ESLint is the industry-standard linter for JavaScript.
 
-### ESLint 9's Big Change: Flat Config
+**ESLint 9's Big Change: Flat Config**
 
 Before ESLint 9, configuration was stored in a `.eslintrc.json` or `.eslintrc.js` file using a cascade system (child folders could override parent configs). **ESLint 9 completely replaced this** with a new "Flat Config" system using a single `eslint.config.js` file.
 
 > [!IMPORTANT]
 > If you find ESLint documentation or tutorials using `.eslintrc.*` files, they are outdated. ESLint 9+ uses `eslint.config.js` only.
 
-### Setting Up ESLint 9
+**Setting Up ESLint 9**
 
 ```bash
 # Install ESLint and create a flat config automatically:
@@ -669,7 +666,7 @@ npm install --save-dev eslint @eslint/js
 npm init @eslint/config
 ```
 
-### `eslint.config.js` — The New Flat Config
+**`eslint.config.js` — The New Flat Config**
 
 ```js
 // eslint.config.js
@@ -723,7 +720,7 @@ export default [
 ];
 ```
 
-### Running ESLint
+**Running ESLint**
 
 ```bash
 # Check all files in src/ for issues:
@@ -734,8 +731,6 @@ npx eslint src/app.js
 
 # Auto-fix issues that ESLint can fix (formatting, etc.):
 npx eslint src/ --fix
-
-# Add to package.json scripts for easy access:
 ```
 
 ```json
@@ -749,7 +744,7 @@ npx eslint src/ --fix
 
 Then run: `npm run lint`
 
-### Common ESLint Rules Explained
+**Common ESLint Rules Explained**
 
 | Rule | What it catches | Level |
 |------|----------------|-------|
@@ -762,7 +757,63 @@ Then run: `npm run lint`
 
 ---
 
-## ⚠️ Common Mistakes & How to Avoid Them
+## 5. 🧠 Think Like a Dev
+
+- **Tooling vs. Language:** A key mental shift is separating *JavaScript the language* from *JavaScript tooling*. The language (ES6+) is what runs in the browser. Tooling (Vite, ESLint, npm) is the infrastructure that helps you write better code and prepares it for production execution. Mastering the tooling can significantly accelerate your workflow.
+- **Fail Fast vs. Fail Gracefully:** Optional chaining (`?.`) allows you to fail gracefully instead of crashing. But think critically: *should* you fail gracefully? If missing data indicates a critical system error, sometimes you want the app to throw an error early so you can identify and fix the underlying data issue immediately rather than burying it with safe accessors.
+- **DRY (Don't Repeat Yourself) with Classes:** Use inheritance (`extends`) cautiously. Favor "composition over inheritance" where it makes sense, but use inheritance to avoid repeating boilerplate (e.g., standard properties every UI component needs). Inheritance builds tight coupling, so it's a double-edged sword.
+- **Data Structures Matter:** Choosing the right data structure (e.g., `Set` instead of `Array` for checking uniqueness) often solves half the algorithmic problem without needing complex logic. A good developer always asks: "Is an array the best tool for this, or do I need a Set or Map?"
+
+---
+
+## 6. 🔄 Before / After
+
+A quick visual reference showing how modern features clean up your code.
+
+**String Interpolation**
+```js
+// BEFORE (Pre-ES6)
+var greeting = "Hello, my name is " + name + " and I am " + age + " years old.";
+
+// AFTER (ES6+)
+const greeting = `Hello, my name is ${name} and I am ${age} years old.`;
+```
+
+**Safe Property Access**
+```js
+// BEFORE
+var zipCode = user && user.address && user.address.zipCode;
+
+// AFTER
+const zipCode = user?.address?.zipCode;
+```
+
+**Default Values**
+```js
+// BEFORE (Buggy with 0 or "")
+var quantity = input.quantity || 1; // If input.quantity is 0, it incorrectly falls back to 1
+
+// AFTER (Safe)
+const quantity = input.quantity ?? 1; // correctly preserves 0 and empty strings
+```
+
+**Collections (Unique Values)**
+```js
+// BEFORE
+var uniqueNumbers = [];
+for (var i = 0; i < numbers.length; i++) {
+  if (uniqueNumbers.indexOf(numbers[i]) === -1) {
+    uniqueNumbers.push(numbers[i]);
+  }
+}
+
+// AFTER
+const uniqueNumbers = [...new Set(numbers)];
+```
+
+---
+
+## 7. ⚠️ Common Mistakes & How to Avoid Them
 
 ### Mistake 1: Confusing `??` and `||` for Defaults
 
@@ -832,7 +883,7 @@ npm ci          # Installs exactly what's in package-lock.json
 
 ---
 
-## 🧪 Practice Labs
+## 8. 🧪 Labs
 
 ### Lab 1: Class-Based Component System (45 min)
 
@@ -865,11 +916,11 @@ npm ci          # Installs exactly what's in package-lock.json
 
 ---
 
-## 📝 Assignment: TaskFlow Project — Part 6 (Final)
+### 📝 Assignment: TaskFlow Project — Part 6 (Final)
 
 Migrate TaskFlow to a professional, modern toolchain.
 
-### Requirements
+**Requirements**
 
 **1. Scaffold with Vite:**
 ```bash
@@ -918,20 +969,77 @@ export class TaskManager {
 
 ---
 
-## 🔗 Resources
+## 9. 💼 Interview Prep
 
-| Resource | Link |
-|----------|------|
-| Vite Documentation | https://vitejs.dev/ |
-| ESLint Flat Config | https://eslint.org/docs/latest/use/configure/configuration-files |
-| MDN — Optional Chaining | https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining |
-| MDN — Nullish Coalescing | https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing |
-| MDN — Set | https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set |
-| MDN — Map | https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map |
+Common technical questions asked in interviews regarding this material:
+
+1. **What is the difference between `null` and `undefined`? How do `?.` and `??` treat them?**
+   *Answer:* `undefined` means a variable has been declared but not assigned a value. `null` is an assignment value representing no value. `?.` and `??` treat both equally: they short-circuit or provide fallbacks for both `null` and `undefined`, but ignore other falsy values.
+
+2. **What's the difference between a `Map` and a plain JavaScript object?**
+   *Answer:* A `Map` can have any data type (even objects or functions) as a key, preserves insertion order, and has built-in methods like `.size`. Objects only support strings or Symbols as keys.
+
+3. **Can you explain the difference between `dependencies` and `devDependencies` in `package.json`?**
+   *Answer:* `dependencies` are libraries required for the application to run in production (like React or Express). `devDependencies` are only needed during development (like ESLint or Vite).
+
+4. **Why do we need bundlers like Vite or Webpack?**
+   *Answer:* Browsers are inefficient at loading hundreds of small ES modules over the network. Bundlers combine these files into a few optimized, minified assets, and often transpile newer JavaScript features to work on older browsers.
+
+5. **Explain the difference between `||` and `??`.**
+   *Answer:* `||` (logical OR) returns the right-hand operand if the left is *any* falsy value (like `0`, `""`, `false`, `null`, `undefined`). `??` (nullish coalescing) only returns the right-hand operand if the left is exactly `null` or `undefined`.
 
 ---
 
-## 📌 Key Takeaways
+## 10. 📝 Cheat Sheet
+
+**String Interpolation**
+```js
+const text = `Hello ${name}!
+Multiline is easy.`;
+```
+
+**Optional Chaining & Nullish Coalescing**
+```js
+const zip = user?.address?.zip;
+const amount = config.amount ?? 100; // Only defaults on null/undefined
+```
+
+**Classes**
+```js
+class Child extends Parent {
+  #privateData;
+  constructor(name) {
+    super(name);
+    this.#privateData = 42;
+  }
+  static utilityMethod() {}
+}
+```
+
+**Sets & Maps**
+```js
+const mySet = new Set([1, 2, 2, 3]); // {1, 2, 3}
+mySet.has(2); // true
+mySet.add(4);
+
+const myMap = new Map();
+myMap.set('key', 'value');
+myMap.get('key');
+```
+
+**npm & Tooling Commands**
+```bash
+npm init -y                  # Create package.json
+npm i lodash                 # Install dependency
+npm i -D eslint              # Install dev dependency
+npm run dev                  # Run dev script
+npm run build                # Run build script
+npm create vite@latest app   # Scaffold Vite project
+```
+
+---
+
+## 11. 📌 Key Takeaways
 
 - **Template literals** (`` ` ``) replace string concatenation — embed any expression with `${}`.
 - **Optional chaining** (`?.`) safely accesses nested properties without crashing.
