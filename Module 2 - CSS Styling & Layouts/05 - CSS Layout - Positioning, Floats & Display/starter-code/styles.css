@@ -1,0 +1,356 @@
+/* ==========================================================================
+   Portfolio Assignment - Part 4: Layout & Overlays CSS
+   ========================================================================== */
+
+/* 1. Global Reset & Variables */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Z-Index Scale (No magic numbers!) */
+  --z-sticky: 200;
+  --z-fixed-nav: 300;
+  --z-modal: 400;
+
+  /* Colors */
+  --color-primary: oklch(60% 0.16 250);
+  --color-primary-hover: oklch(50% 0.16 250);
+  --color-bg: #ffffff;
+  --color-text: #0f172a;
+  --color-card-bg: #f8fafc;
+  --color-border: #e2e8f0;
+
+  /* Spacing */
+  --nav-height: 70px;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  /* TODO Requirement 1: Set padding-top equal to your nav bar height */
+  padding-top: var(--nav-height);
+}
+
+/* ==========================================================================
+   Requirement 1: Fixed Navigation Bar
+   ========================================================================== */
+.portfolio-header {
+  /* TODO: Make the header fixed at top: 0, left/right: 0, with a height of var(--nav-height) 
+     and z-index of var(--z-fixed-nav). Apply background and border-bottom. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  z-index: var(--z-fixed-nav);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 100%;
+}
+
+.nav__brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: #475569;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav__link:hover {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Requirement 2: Hero Section with Absolute Positioning
+   ========================================================================== */
+.hero {
+  /* TODO: Set relative positioning and 100vh height (minus nav height is optional) */
+  position: relative;
+  height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafafa;
+  overflow: hidden;
+}
+
+.hero__content {
+  text-align: center;
+  max-width: 800px;
+  padding: 0 2rem;
+  z-index: 10;
+}
+
+.hero__title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Absolutely Positioned Decorative Elements */
+.hero__badge {
+  /* TODO: Absolute positioning. Pin to top/right corners with some offsets */
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background-color: #fef08a;
+  color: #854d0e;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.hero__circle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  opacity: 0.05;
+}
+
+.hero__circle--1 {
+  /* TODO: Make this circle absolute, width/height e.g. 300px, top: -100px, left: -100px */
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  left: -100px;
+}
+
+.hero__circle--2 {
+  /* TODO: Make this circle absolute, width/height e.g. 400px, bottom: -150px, right: -150px */
+  width: 400px;
+  height: 400px;
+  bottom: -150px;
+  right: -150px;
+}
+
+/* ==========================================================================
+   Requirement 3: Skills Section with Sticky Heading
+   ========================================================================== */
+.skills-section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.skills-section__title {
+  /* TODO: Set sticky positioning, with a top offset matching var(--nav-height) or similar,
+     so it stays in place when scrolling through the skills content. */
+  position: sticky;
+  top: calc(var(--nav-height) + 1rem);
+  align-self: start;
+  font-size: 2rem;
+}
+
+.skills-section__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ==========================================================================
+   Requirement 4: Project Cards with Hover Overlay
+   ========================================================================== */
+.projects {
+  padding: 4rem 2rem;
+  background-color: #f8fafc;
+}
+
+.projects__title {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2rem;
+}
+
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.project-card {
+  /* TODO: Set relative positioning so the child overlay is contained correctly.
+     Also hide overflow so card corners remain clipped. */
+  position: relative;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 250px;
+}
+
+.project-card__dummy-img {
+  width: 100%;
+  height: 100%;
+}
+
+.project-card__overlay {
+  /* TODO: Position absolutely with inset: 0. Add display flex (column, centered).
+     Set opacity: 0 and visibility: hidden for transition states. 
+     Transition background-color, opacity, and visibility. */
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.9);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+  
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* TODO: Fade in the overlay when hovering the project-card */
+.project-card:hover .project-card__overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.project-card__overlay-title {
+  margin-bottom: 0.5rem;
+}
+
+.project-card__overlay-desc {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   Requirement 5: Contact Modal using Native <dialog>
+   ========================================================================== */
+.contact-dialog {
+  /* TODO: Position in the screen center. Set borders to none, padding, border-radius, 
+     max-width, and a z-index of var(--z-modal). */
+  border: none;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  margin: auto; /* Centers dialog in viewport */
+}
+
+/* TODO: Style dialog backdrop */
+.contact-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.contact-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.contact-dialog__close {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.contact-dialog__close:hover {
+  color: var(--color-text);
+}
+
+.contact-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-dialog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-dialog__field label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.contact-dialog__field input,
+.contact-dialog__field textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.contact-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Standard buttons helper */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn--secondary {
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.btn--secondary:hover {
+  background-color: #cbd5e1;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Final</title>
+    <style>
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            font-family: sans-serif;
+        }
+        .task-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .task-item.completed span {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TaskFlow Final</h1>
+        <input type="text" id="task-input" class="task-input" placeholder="Add a new task...">
+        <ul id="task-list" class="task-list"></ul>
+        <p>Pending Tasks: <span id="pending-count">0</span></p>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

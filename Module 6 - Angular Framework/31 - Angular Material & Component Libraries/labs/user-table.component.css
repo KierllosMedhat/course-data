@@ -1,0 +1,51 @@
+.table-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+h2 {
+  margin-top: 0;
+  color: #3f51b5;
+  font-family: Roboto, sans-serif;
+  margin-bottom: 20px;
+}
+
+.filter-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.role-badge.admin {
+  background-color: #e8eaf6;
+  color: #3f51b5;
+}
+
+.role-badge.manager {
+  background-color: #e0f2f1;
+  color: #00796b;
+}
+
+.role-badge.user {
+  background-color: #eceff1;
+  color: #607d8b;
+}
+
+tr.mat-row, tr.mat-header-row {
+  height: 48px;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Grid Portfolio Refactor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Outer Page Wrapper using grid-template-areas -->
+  <div class="page-container">
+    
+    <!-- Navigation -->
+    <header class="header">
+      <div class="header__logo">GridCraft</div>
+      <nav class="header__nav">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#footer">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main Content (Consolidates sections) -->
+    <main class="main-content">
+      
+      <!-- About / Hero Section -->
+      <section id="about" class="about-section">
+        <div class="about-section__desc">
+          <h1>Modern Layout Refactor</h1>
+          <p>This project refactors old float hacks and rigid nested wrappers into a clean, flat DOM structure driven entirely by CSS Grid.</p>
+        </div>
+        <div class="about-section__visual">Visual Element</div>
+      </section>
+
+      <!-- Projects Grid Section (Using auto-fit and no media queries) -->
+      <section id="projects" class="projects-section">
+        <h2>My Work</h2>
+        <div class="projects-grid">
+          <article class="project-card">
+            <h3>Project One</h3>
+            <p>A CSS Grid sandbox proving the robustness of the fractional unit.</p>
+          </article>
+          <article class="project-card">
+            <h3>Project Two</h3>
+            <p>An e-commerce layout featuring promotional banners spanning multiple cells.</p>
+          </article>
+          <article class="project-card">
+            <h3>Project Three</h3>
+            <p>A responsive dashboard utilizing named grid template areas.</p>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+      <p>Contact: hello@gridcraft.io | © 2026 GridCraft. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

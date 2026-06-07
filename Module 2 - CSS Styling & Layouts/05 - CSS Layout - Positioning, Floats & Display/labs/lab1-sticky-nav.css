@@ -1,0 +1,145 @@
+/* ==========================================================================
+   Lab 1: Sticky Nav with Dropdown CSS
+   ========================================================================== */
+
+/* Universal Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --nav-height: 64px;
+  --nav-bg: #0f172a;
+  --font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  /* TODO 1: Explain why padding-top is necessary here. 
+     Hint: Fixed positioning removes the nav bar from the document flow, 
+     which would otherwise overlap the start of our body content. */
+  padding-top: var(--nav-height);
+  background-color: #f8fafc;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Header & Navigation (Fixed & Relative Positioning)
+   ========================================================================== */
+
+.site-header {
+  /* TODO 2: Style site-header to be pinned to the top of the viewport.
+     Set its position to fixed, top/left/right to 0, height to var(--nav-height), 
+     background to var(--nav-bg), and z-index to a high value (e.g. 1000). */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--nav-bg);
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav__item {
+  /* TODO 3: Why must this nav__item have position: relative?
+     Hint: It serves as the positioned ancestor anchor for the absolute dropdown below. */
+  position: relative;
+}
+
+.nav__link {
+  display: block;
+  padding: 10px 14px;
+  color: #e2e8f0;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.nav__link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav__link--cta {
+  background: #6366f1;
+  color: white;
+}
+
+.nav__link--cta:hover {
+  background: #4f46e5;
+}
+
+/* ==========================================================================
+   Dropdown Component (Absolute Positioning)
+   ========================================================================== */
+
+.nav__dropdown {
+  /* TODO 4: Configure the absolute dropdown.
+     Set position to absolute, top offset to calc(100% + 8px), left to 0, and min-width to 200px.
+     Use opacity: 0 and visibility: hidden for the initial state.
+     Use transition to animate opacity, visibility, and transform. */
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: #1e293b;
+  border-radius: 8px;
+  list-style: none;
+  padding: 6px;
+  
+  /* Initial hidden state */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* TODO 5: Show the dropdown when hovering over the nav__item--has-dropdown parent. */
+.nav__item--has-dropdown:hover .nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav__dropdown-link {
+  display: block;
+  padding: 10px 14px;
+  color: #cbd5e1;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.nav__dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+/* Base styling for page content sections */
+.page-content section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}

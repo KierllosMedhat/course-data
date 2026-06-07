@@ -1,0 +1,50 @@
+/* TODO: Add styles for your Character Explorer */
+.character-explorer {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.loading, .error-state {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 40px;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.character-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.character-card img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+/* TODO: Define CSS classes to represent character status */
+.status-alive {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.status-dead {
+  color: #c62828;
+  font-weight: bold;
+}
+
+.status-unknown {
+  color: #757575;
+}

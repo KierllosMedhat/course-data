@@ -1,0 +1,15 @@
+<div class="rating-container">
+  <!-- TODO: Display 5 interactive stars using the @for directive.
+       Apply the 'filled' class if the star number is less than or equal to currentRating()
+       Add distinct data-testid="star-X" attribute to each star for tests. -->
+  @for (star of [1, 2, 3, 4, 5]; track star) {
+    <button 
+      [class.filled]="star <= currentRating()"
+      (click)="rate(star)"
+      [attr.data-testid]="'star-' + star"
+      class="star-button"
+    >
+      ★
+    </button>
+  }
+</div>

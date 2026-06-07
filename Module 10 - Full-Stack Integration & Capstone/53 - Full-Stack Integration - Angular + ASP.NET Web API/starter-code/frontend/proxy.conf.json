@@ -1,0 +1,15 @@
+{
+  "/api": {
+    "target": "https://localhost:5001",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+
+/*
+  TODO Instructions:
+  1. Set the "target" URL to match your ASP.NET Core ShopAPI running address (e.g. https://localhost:5001 or https://localhost:7088).
+  2. Maintain "secure": false to ensure SSL handshake errors are ignored during local development.
+  3. Ensure your local serve command in angular.json references this file.
+*/

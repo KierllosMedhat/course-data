@@ -1,0 +1,25 @@
+<!-- TODO: Apply the appHoverShadow directive to this container element -->
+<div class="product-card">
+  @if (product().onSale) {
+    <span class="sale-badge">Sale!</span>
+  }
+
+  <img [src]="product().imageUrl" [alt]="product().name">
+
+  <h3>{{ product().name }}</h3>
+  
+  <div class="price-container">
+    <!-- TODO: Render original price with strikethrough if onSale -->
+    <!-- Hint: product().price | currency -->
+    
+    <!-- TODO: Render discounted price using the custom DiscountPipe -->
+    <!-- Hint: product().price | discount: product().discountPercent -->
+  </div>
+
+  <div class="date-container">
+    <!-- TODO: Render creation date context using standard DatePipe AND custom TimeAgoPipe -->
+    <!-- e.g., Created: {{ product().createdAt | date }} ({{ product().createdAt | timeAgo }}) -->
+  </div>
+
+  <button (click)="addToCartClick()">Add to Cart</button>
+</div>

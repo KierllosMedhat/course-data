@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Lab 1: Grid Holy Grail Layout CSS (grid-template-areas)
+   ========================================================================== */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #334155;
+  background-color: #f8fafc;
+}
+
+/* 
+   TODO 1: Assign named template areas to each semantic element.
+   Use the grid-area property (e.g. grid-area: hd; for header).
+*/
+.site-header {
+  grid-area: hd;
+  background-color: #1e293b;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.site-sidebar {
+  grid-area: nv;
+  background-color: #f1f5f9;
+  padding: 1.5rem;
+  border-right: 1px solid #e2e8f0;
+}
+
+.site-content {
+  grid-area: mn;
+  background-color: #ffffff;
+  padding: 2rem;
+}
+
+.site-aside {
+  grid-area: as;
+  background-color: #f8fafc;
+  padding: 1.5rem;
+  border-left: 1px solid #e2e8f0;
+}
+
+.site-footer {
+  grid-area: ft;
+  background-color: #0f172a;
+  color: #94a3b8;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* 
+   TODO 2: Apply display: grid on the .app-wrapper container.
+   Configure:
+   - min-height: 100vh
+   - grid-template-columns: 250px 1fr 200px (Sidebar, main, aside)
+   - grid-template-rows: auto 1fr auto (Header height, flexible body, footer height)
+   - grid-template-areas: mapping out the visual grid structure.
+*/
+.app-wrapper {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 250px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "hd hd hd"
+    "nv mn as"
+    "ft ft ft";
+}
+
+/* 
+   TODO 3: Write a media query for mobile viewport configurations.
+   For viewports <= 768px:
+   - Redefine grid-template-columns to be 1fr (single column)
+   - Redefine grid-template-rows to automatically size rows (auto)
+   - Rearrange grid-template-areas to stack sections vertically:
+     header -> navigation -> main workspace -> aside panel -> footer.
+*/
+@media (max-width: 768px) {
+  .app-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "hd"
+      "nv"
+      "mn"
+      "as"
+      "ft";
+  }
+  
+  .site-sidebar,
+  .site-aside {
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+}

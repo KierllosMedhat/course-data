@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Lab 1 - CSS3 Fundamentals & Selectors Starter Stylesheet
+   ========================================================================== */
+
+/* TODO 1: Add the CSS reset below targeting all elements, ::before, and ::after.
+   Set box-sizing to border-box, and clear out default margin and padding. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* TODO 2: Define your Design Tokens (variables) inside the :root selector.
+   You must include:
+   - At least 4 color variables (using hex, rgb, or oklch)
+   - At least 3 spacing variables (using rem)
+   - Optionally define font family variables */
+:root {
+  /* Example: --primary-color: oklch(60% 0.15 250); */
+}
+
+/* TODO 3: Style the body using your defined variables.
+   Set: font-family, background-color, text-color (color), and line-height. */
+body {
+  /* Write your styles here */
+}
+
+/* TODO 4: Use native CSS nesting to style the navigation bar (main-nav).
+   Nest styles for the .nav-container, .nav-links, and the 'a' links (including :hover and .active states).
+   Example of nesting structure:
+   .main-nav {
+      background-color: var(--some-color);
+      
+      .nav-container {
+         ...
+      }
+      a {
+         ...
+         &:hover { ... }
+      }
+   }
+*/
+
+/* TODO 5: Add styling for .profile-container, .profile-header, and .profile-section 
+   using your spacing and color variables. */

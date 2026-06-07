@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Portfolio - Part 3</title>
+  <!-- TODO: Add Google Fonts (e.g. Inter or Roboto) link here for typography bonus -->
+
+  <!-- TODO: Link the styles.css stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">DevPortfolio</a>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact" class="nav-btn">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <h1>Hi, I'm <span class="highlight-text">Jordan Developer</span></h1>
+      <p class="hero-subtitle">Full-Stack Software Engineer specializing in modern web applications.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <h2>About Me</h2>
+    <p>
+      I build accessible, responsive, and performant web applications. With a foundation in HTML5, CSS3, and modern design principles, I focus on writing clean, semantic markup and maintainable stylesheets.
+    </p>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <h2>My Projects</h2>
+    <div class="projects-grid">
+      <article class="project-card">
+        <h3>E-Commerce Platform</h3>
+        <p>A fully featured shopping cart experience using responsive layouts and accessible form controls.</p>
+        <a href="#" class="project-link">Read Case Study &rarr;</a>
+      </article>
+
+      <article class="project-card">
+        <h3>Task Dashboard</h3>
+        <p>A visual task tracking dashboard built with nested grids and custom property design tokens.</p>
+        <a href="#" class="project-link">Read Case Study &rarr;</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2>Contact Me</h2>
+    <p class="contact-lead">Have a project in mind or want to chat? Send me a message!</p>
+    <form class="contact-form" action="#" method="POST">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="john@example.com">
+      </div>
+      <div class="form-group">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <p>&copy; 2026 Jordan Developer. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

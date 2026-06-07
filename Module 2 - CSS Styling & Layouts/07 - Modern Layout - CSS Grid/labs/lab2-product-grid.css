@@ -1,0 +1,113 @@
+/* ==========================================================================
+   Lab 2: E-Commerce Product Grid CSS
+   ========================================================================== */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  background-color: #f1f5f9;
+  padding: 3rem 1.5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.grid-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.grid-header p {
+  color: #64748b;
+}
+
+/* ==========================================================================
+   Product Grid (Parent Container)
+   ========================================================================== */
+.product-grid {
+  /* TODO 1: Declare this container as a grid.
+     - Set a layout gap of 1.5rem.
+     - Configure columns using the auto-fit formula: repeat(auto-fit, minmax(280px, 1fr)).
+       This ensures the grid is responsive without media queries!
+  */
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* ==========================================================================
+   Product Card Styles
+   ========================================================================== */
+.product-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.product-card__image {
+  height: 200px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.product-card h3 {
+  font-size: 1.1rem;
+}
+
+.product-card .price {
+  font-weight: 700;
+  color: #059669;
+  font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   Promotional Banner (Interrupts Grid Flow)
+   ========================================================================== */
+.promo-banner {
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  /* TODO 2: Force the promotional banners to span the entire horizontal width 
+     of the grid (from line 1 to the negative line -1) so they break the grid pattern.
+  */
+  grid-column: 1 / -1;
+}
+
+.promo-banner--blue {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+}
+
+.promo-banner--green {
+  background: linear-gradient(135deg, #047857, #10b981);
+}

@@ -1,0 +1,160 @@
+/* ==========================================================================
+   Lab 2: Pricing Card Grid CSS (Flexbox Alignment)
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  padding: 4rem 2rem;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: #64748b;
+}
+
+/* ==========================================================================
+   Card Grid (Flex Container)
+   ========================================================================== */
+
+.card-grid {
+  /* TODO 1: Make this grid a flex container, wrap cards when needed, 
+     gap them 1.5rem, and center them. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: stretch; /* Forces all children to be equal height */
+}
+
+/* ==========================================================================
+   Pricing Card (Vertical Flex Container)
+   ========================================================================== */
+
+.pricing-card {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  border: 1px solid #e2e8f0;
+  
+  /* Flex items settings */
+  flex: 1 1 280px;
+  max-width: 360px;
+  
+  /* TODO 2: Turn the card itself into a vertical flex container (flex-direction: column) 
+     so we can align child components inside it. */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Featured Modifier */
+.pricing-card--featured {
+  border: 2px solid #2563eb;
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
+}
+
+.pricing-card .badge {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pricing-card__title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.pricing-card__price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.pricing-card__price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   Feature List & CTA Button (The Bottom Alignment Trick)
+   ========================================================================== */
+
+.feature-list {
+  list-style: none;
+  margin-bottom: 2rem;
+  
+  /* TODO 3: Give the feature-list flex-grow: 1.
+     This pushes everything below it (the CTA button) to the bottom of the card container, 
+     matching button heights even if some plans have fewer bullet points! */
+  flex-grow: 1;
+}
+
+.feature-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.feature-list li::before {
+  content: "✓ ";
+  color: #10b981;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.cta-button {
+  display: block;
+  text-align: center;
+  padding: 0.875rem;
+  background-color: #475569;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  
+  /* TODO 4: Make sure the button stays at the bottom. Auto margin-top can also assist. */
+  margin-top: auto;
+}
+
+.cta-button:hover {
+  background-color: #334155;
+}
+
+.cta-button--featured {
+  background-color: #2563eb;
+}
+
+.cta-button--featured:hover {
+  background-color: #1d4ed8;
+}

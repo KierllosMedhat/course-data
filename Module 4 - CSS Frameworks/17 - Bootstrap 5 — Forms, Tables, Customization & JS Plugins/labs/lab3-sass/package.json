@@ -1,0 +1,16 @@
+{
+  "name": "lab3-sass",
+  "version": "1.0.0",
+  "description": "Lab 3 Sass Customization with Bootstrap 5",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "sass src/scss/custom.scss dist/css/style.css",
+    "watch-css": "sass --watch src/scss/custom.scss dist/css/style.css"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8"
+  }
+}

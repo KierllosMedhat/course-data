@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1 - Real-Time Character Counter</title>
+    <style>
+        .text-danger {
+            color: red;
+            font-weight: bold;
+        }
+        .container {
+            margin: 20px;
+            font-family: sans-serif;
+        }
+        textarea {
+            width: 100%;
+            max-width: 400px;
+            height: 100px;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lab 1: Real-Time Character Counter</h1>
+        <!-- TODO: Create a textarea with id "message" and max length 250 -->
+        <textarea id="message" maxlength="250" placeholder="Type your message here..."></textarea>
+        
+        <!-- TODO: Create a span with id "counter" for the character counter text -->
+        <span id="counter">0 / 250 characters</span>
+    </div>
+    
+    <script src="lab1-character-counter.js" defer></script>
+</body>
+</html>

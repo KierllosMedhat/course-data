@@ -1,0 +1,85 @@
+.dashboard-container {
+  height: 100vh;
+  width: 100%;
+}
+
+.dashboard-sidenav {
+  width: 240px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e2e8f0;
+}
+
+.sidenav-header {
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.sidenav-header h3 {
+  margin: 0;
+  color: #1a202c;
+  font-weight: 700;
+}
+
+.active-item {
+  background-color: rgba(63, 81, 181, 0.1);
+  color: #3f51b5 !important;
+  font-weight: bold;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.content-body {
+  padding: 30px;
+  flex-grow: 1;
+  background-color: #f7fafc;
+}
+
+.section-header {
+  margin-bottom: 25px;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.8rem;
+}
+
+.section-header p {
+  margin: 5px 0 0;
+  color: #718096;
+}
+
+.table-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+tr.mat-header-row {
+  background-color: #edf2f7;
+}
+
+tr.mat-row:hover {
+  background-color: #f7fafc;
+}
+
+.mat-column-actions {
+  text-align: center;
+  width: 100px;
+}

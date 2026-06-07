@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - Dark Mode Toggle</title>
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  
+  <script>
+    // TODO: Step 5: Load the saved preference on page load (before body renders to prevent flashing)
+    // Read the saved theme from localStorage, or default to 'light'
+    // Apply the theme to the <html> tag using document.documentElement.setAttribute('data-bs-theme', savedTheme)
+  </script>
+</head>
+<body>
+
+  <!-- Navbar with Theme Toggle Button -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">ThemeApp</a>
+      
+      <!-- TODO: Step 1: Add a theme toggle button in the navbar -->
+      <!-- Give it an id like 'theme-toggle' and appropriate Bootstrap classes -->
+      <button id="theme-toggle" class="btn btn-outline-secondary ms-auto">
+        <i class="bi bi-moon-stars-fill me-1"></i> Dark Mode
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area with Cards -->
+  <div class="container my-5">
+    <h2 class="mb-4 text-center">Explore Our Components</h2>
+    
+    <!-- TODO: Step 2: Add 3 cards with text and dummy image placeholders -->
+    <!-- Use the Bootstrap Grid with 3 columns (e.g. col-md-4) -->
+    <!-- Make sure card components adapt to themes by using adaptive background utility classes (like bg-body-secondary or card borders) -->
+    <div class="row g-4">
+      
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Card Image 1">
+          <div class="card-body">
+            <h5 class="card-title">Card Title 1</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Card Image 2">
+          <div class="card-body">
+            <h5 class="card-title">Card Title 2</h5>
+            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Card Image 3">
+          <div class="card-body">
+            <h5 class="card-title">Card Title 3</h5>
+            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Dark Mode Logic Script -->
+  <script>
+    // TODO: Step 3 & 4: Toggle theme on click and save to localStorage
+    const toggleBtn = document.getElementById('theme-toggle');
+
+    toggleBtn.addEventListener('click', () => {
+      // 1. Get current theme from <html> (document.documentElement)
+      // 2. Decide new theme ('dark' or 'light')
+      // 3. Set the 'data-bs-theme' attribute on <html> to the new theme
+      // 4. Save the new theme to localStorage
+      // 5. Update the button innerHTML (change the icon and text based on active theme)
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<div class="checkout-container">
+  <h2>ShopAngular — Checkout Wizard</h2>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" novalidate>
+    
+    <!-- 1. CUSTOMER INFO GROUP -->
+    <fieldset formGroupName="customerInfo">
+      <legend>1. Customer Information</legend>
+      
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName" class="form-control" />
+          <div *ngIf="customerInfo.get('firstName')?.invalid && customerInfo.get('firstName')?.touched" class="error-msg">
+            First name is required.
+          </div>
+        </div>
+
+        <div class="form-group col-half">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control" />
+          <div *ngIf="customerInfo.get('lastName')?.invalid && customerInfo.get('lastName')?.touched" class="error-msg">
+            Last name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" formControlName="email" class="form-control" />
+        <div *ngIf="customerInfo.get('email')?.invalid && customerInfo.get('email')?.touched" class="error-msg">
+          <span *ngIf="customerInfo.get('email')?.hasError('required')">Email is required.</span>
+          <span *ngIf="customerInfo.get('email')?.hasError('email')">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" formControlName="phone" class="form-control" />
+        <div *ngIf="customerInfo.get('phone')?.invalid && customerInfo.get('phone')?.touched" class="error-msg">
+          Phone number is required.
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 2. SHIPPING ADDRESS GROUP -->
+    <fieldset formGroupName="shippingAddress">
+      <legend>2. Shipping Address</legend>
+
+      <div class="form-group">
+        <label for="country">Country</label>
+        <select id="country" formControlName="country" class="form-control">
+          <option value="USA">USA</option>
+          <option value="Canada">Canada</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="street">Street Address</label>
+        <input type="text" id="street" formControlName="street" class="form-control" />
+        <div *ngIf="shippingAddress.get('street')?.invalid && shippingAddress.get('street')?.touched" class="error-msg">
+          Street address is required.
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="city">City</label>
+          <input type="text" id="city" formControlName="city" class="form-control" />
+          <div *ngIf="shippingAddress.get('city')?.invalid && shippingAddress.get('city')?.touched" class="error-msg">
+            City is required.
+          </div>
+        </div>
+
+        <div class="form-group col-half">
+          <label for="state">State / Province</label>
+          <input type="text" id="state" formControlName="state" class="form-control" />
+          <div *ngIf="shippingAddress.get('state')?.invalid && shippingAddress.get('state')?.touched" class="error-msg">
+            State is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="zip">Zip / Postal Code</label>
+        <input type="text" id="zip" formControlName="zip" class="form-control" />
+        <div *ngIf="shippingAddress.get('zip')?.invalid && shippingAddress.get('zip')?.touched" class="error-msg">
+          Zip code is required.
+        </div>
+        <!-- Group validation error display -->
+        <div *ngIf="shippingAddress.touched && shippingAddress.hasError('zipCountryMismatch')" class="error-msg">
+          Zip/Postal Code does not match the format for the selected Country. (USA: 5 digits, Canada: A1A 1A1).
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 3. PAYMENT INFO GROUP -->
+    <fieldset formGroupName="paymentInfo">
+      <legend>3. Payment Information</legend>
+
+      <div class="form-group">
+        <label for="cardNumber">Credit Card Number</label>
+        <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" placeholder="16 digits" />
+        <div *ngIf="paymentInfo.get('cardNumber')?.invalid && paymentInfo.get('cardNumber')?.touched" class="error-msg">
+          <span *ngIf="paymentInfo.get('cardNumber')?.hasError('required')">Card number is required.</span>
+          <span *ngIf="paymentInfo.get('cardNumber')?.hasError('invalidCard')">Please enter a valid 16-digit card number.</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="expiry">Expiration Date (MM/YY)</label>
+          <input type="text" id="expiry" formControlName="expiry" class="form-control" placeholder="e.g. 12/28" />
+          <div *ngIf="paymentInfo.get('expiry')?.invalid && paymentInfo.get('expiry')?.touched" class="error-msg">
+            Expiration date is required (Format: MM/YY).
+          </div>
+        </div>
+
+        <div class="form-group col-half">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" formControlName="cvv" class="form-control" placeholder="3 digits" />
+          <div *ngIf="paymentInfo.get('cvv')?.invalid && paymentInfo.get('cvv')?.touched" class="error-msg">
+            CVV must be 3 digits.
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="submit-section">
+      <button type="submit" [disabled]="checkoutForm.invalid" class="btn btn-submit">Place Order</button>
+    </div>
+  </form>
+
+  <hr />
+
+  <!-- Live Form Values Visualizer -->
+  <h3>Form Live State (JSON):</h3>
+  <pre class="json-viewer">{{ checkoutForm.value | json }}</pre>
+</div>

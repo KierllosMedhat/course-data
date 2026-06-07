@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 1 - Rebuild Bootstrap Card in Tailwind</title>
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6">
+
+  <!-- Main Container -->
+  <div class="max-w-md w-full">
+    
+    <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">Rebuild a Bootstrap Card in Tailwind</h3>
+
+    <!-- TODO: Step 1-5: Rebuild the card using Tailwind CSS -->
+    <!-- Requirements:
+         1. Card container: white bg, rounded corners, shadow-sm, border, hover:shadow-lg hover:-translate-y-1 transition duration-300
+         2. Image: w-full, h-48, object-cover, rounded-t-xl (or appropriate rounding)
+         3. Category badge: small, uppercase, bold, accent color text/bg (e.g. text-blue-600 bg-blue-50 px-2 py-1 rounded)
+         4. Title: text-lg, font-semibold, hover style
+         5. Description: text-gray-500, margin details
+         6. Author: flex layout, avatar image rounded-full, author name, post date
+    -->
+    
+    <!-- Starter Skeleton Structure for Students -->
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
+      
+      <!-- Card Image -->
+      <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=800&auto=format&fit=crop&q=60" alt="Tech workspace" class="w-full h-48 object-cover">
+
+      <!-- Card Body -->
+      <div class="p-6">
+        <!-- Badge -->
+        <span class="inline-block text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider mb-3">
+          Technology
+        </span>
+
+        <!-- Title -->
+        <h4 class="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer">
+          Designing the Perfect Developer Workspace
+        </h4>
+
+        <!-- Description -->
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+          Optimize your daily workflow, improve ergonomics, and select the right physical and digital tools to boost your productivity.
+        </p>
+
+        <!-- Author Area (Footer of Card) -->
+        <div class="flex items-center gap-3 border-t border-gray-100 pt-4">
+          <!-- Avatar -->
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Author Avatar" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <p class="text-sm font-semibold text-gray-900">Sarah Connor</p>
+            <p class="text-xs text-gray-400">June 5, 2026 · 4 min read</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

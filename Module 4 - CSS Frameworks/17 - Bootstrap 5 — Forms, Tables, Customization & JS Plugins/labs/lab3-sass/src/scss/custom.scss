@@ -1,0 +1,21 @@
+// Google Font import
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+// TODO: Step 3: Override Bootstrap variables BEFORE importing
+// 1. Change primary color (e.g. to a coral or dark purple)
+$primary: #e65f2b;
+
+// 2. Increase border radius
+$border-radius: 0.75rem;
+
+// 3. Set custom font family
+$font-family-base: 'Poppins', sans-serif;
+
+// TODO: Step 2: Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// TODO: Step 4: Add custom classes AFTER Bootstrap import
+.hero-gradient {
+  background: linear-gradient(135deg, $primary 0%, darken($primary, 20%) 100%);
+  color: white;
+}

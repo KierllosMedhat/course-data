@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Lab 1: Desktop-First Legacy Stylesheet (To be Refactored)
+   ========================================================================== */
+
+/* 
+   --------------------------------------------------------------------------
+   THE LEGACY DESKTOP-FIRST CODE (UNCOMMENT & REFACTOR THIS CODE TO MOBILE-FIRST)
+   --------------------------------------------------------------------------
+   
+   Notice how we declare desktop sizes as the default and use max-width to strip 
+   away styles as the screen shrinks. This is an anti-pattern.
+*/
+
+/* 
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+.app-header {
+  background-color: #0f172a;
+  color: white;
+  padding: 2rem 4rem;
+  text-align: left;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.main-hero {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.main-hero h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.product-card {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 1024px) {
+  .app-header {
+    padding: 1.5rem 3rem;
+  }
+  .content-wrapper {
+    padding: 3rem 1.5rem;
+  }
+  .main-hero h2 {
+    font-size: 2.5rem;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 1rem 1.5rem;
+    text-align: center;
+  }
+  .main-hero {
+    text-align: center;
+  }
+  .main-hero h2 {
+    font-size: 2rem;
+  }
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .product-card {
+    padding: 1.5rem;
+  }
+}
+*/
+
+/* 
+   --------------------------------------------------------------------------
+   TODO: WRITE YOUR REFACTORED MOBILE-FIRST CODE BELOW
+   --------------------------------------------------------------------------
+   
+   Rules:
+   1. Set base defaults targeting mobile viewports (e.g. 1 column, small padding).
+   2. Use @media (min-width: 768px) to introduce tablet size enhancements (e.g. 2 columns).
+   3. Use @media (min-width: 1024px) to introduce desktop layouts (e.g. 3 columns).
+   4. Avoid max-width queries completely.
+*/

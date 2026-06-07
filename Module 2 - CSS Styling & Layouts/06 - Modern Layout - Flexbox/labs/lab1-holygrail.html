@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 1 - Holy Grail Layout (Flexbox)</title>
+  <link rel="stylesheet" href="lab1-holygrail.css">
+</head>
+<body>
+
+  <!-- Holy Grail Outer Wrapper -->
+  <div class="page-wrapper">
+    
+    <header class="site-header">
+      <h1>Header</h1>
+    </header>
+    
+    <!-- Middle content section containing columns -->
+    <div class="middle-row">
+      <aside class="sidebar sidebar--left">
+        <h3>Left Navigation</h3>
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Settings</a></li>
+        </ul>
+      </aside>
+      
+      <main class="main-content">
+        <h2>Main Content Area</h2>
+        <p>
+          This content section is flanked by two sidebars. In a desktop viewport, they sit side-by-side. 
+          In a mobile screen, the layout will stack vertically, and this main content will jump to the top 
+          using the visual reordering <code>order: -1</code> property.
+        </p>
+      </main>
+      
+      <aside class="sidebar sidebar--right">
+        <h3>Widgets</h3>
+        <p>Weather Widget</p>
+        <p>News Feed</p>
+      </aside>
+    </div>
+    
+    <footer class="site-footer">
+      <p>Footer Content - Stays sticky at the bottom of the viewport even if page content is short.</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+.checkout-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  color: #1a202c;
+  margin-bottom: 25px;
+}
+
+fieldset {
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+legend {
+  font-size: 1.15em;
+  font-weight: bold;
+  color: #2b6cb0;
+  padding: 0 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.col-half {
+  width: 48%;
+}
+
+.error-msg {
+  color: #e53e3e;
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+.submit-section {
+  text-align: right;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.05em;
+  transition: background-color 0.2s ease;
+}
+
+.btn-submit {
+  background-color: #3182ce;
+  color: white;
+  width: 100%;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #2b6cb0;
+}
+
+.btn-submit:disabled {
+  background-color: #cbd5e0;
+  color: #718096;
+  cursor: not-allowed;
+}
+
+.json-viewer {
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 15px;
+  font-family: Courier, monospace;
+  font-size: 0.9em;
+  overflow-x: auto;
+}

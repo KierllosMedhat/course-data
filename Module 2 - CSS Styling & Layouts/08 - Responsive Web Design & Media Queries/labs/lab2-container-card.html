@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - Container Query Card</title>
+  <link rel="stylesheet" href="lab2-container-card.css">
+</head>
+<body>
+
+  <!-- Outer Structural Layout Grid -->
+  <div class="layout-grid">
+    
+    <!-- Wide Main Panel -->
+    <main class="main-panel">
+      <h2>Main Workspace Container</h2>
+      <p>This panel is wide. Below, you will see a profile card component that adapts visually using <code>@container</code> queries.</p>
+      
+      <div class="card-wrapper">
+        <!-- Profile Card Component -->
+        <article class="profile-card">
+          <div class="profile-card__avatar">👤</div>
+          <div class="profile-card__info">
+            <h3 class="profile-card__name">Jordan Croft</h3>
+            <p class="profile-card__title">Senior Cloud Architect</p>
+            <p class="profile-card__bio">Designing fault-tolerant microservice clusters and automated deployment pipelines.</p>
+          </div>
+          <div class="profile-card__actions">
+            <a href="#" class="btn btn--small">Message</a>
+            <a href="#" class="btn btn--small btn--outline">Follow</a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Narrow Sidebar Panel -->
+    <aside class="sidebar-panel">
+      <h2>Sidebar Container</h2>
+      <p>This panel is narrow. The exact same component markup is pasted here:</p>
+
+      <div class="card-wrapper">
+        <!-- Exact Same Profile Card Component -->
+        <article class="profile-card">
+          <div class="profile-card__avatar">👤</div>
+          <div class="profile-card__info">
+            <h3 class="profile-card__name">Jordan Croft</h3>
+            <p class="profile-card__title">Senior Cloud Architect</p>
+            <p class="profile-card__bio">Designing fault-tolerant microservice clusters and automated deployment pipelines.</p>
+          </div>
+          <div class="profile-card__actions">
+            <a href="#" class="btn btn--small">Message</a>
+            <a href="#" class="btn btn--small btn--outline">Follow</a>
+          </div>
+        </article>
+      </div>
+    </aside>
+
+  </div>
+
+</body>
+</html>

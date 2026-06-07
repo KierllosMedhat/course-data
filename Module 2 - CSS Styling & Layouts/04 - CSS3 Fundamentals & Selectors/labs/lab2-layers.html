@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - Specificity & Layer Wars</title>
+  <link rel="stylesheet" href="lab2-layers.css">
+</head>
+<body>
+
+  <main style="padding: 2rem;">
+    <h1>Lab 2: Cascade Layers (@layer) Experiment</h1>
+    <p>
+      In standard CSS specificity, an ID selector (e.g., <code>#special</code>) always beats a class selector (e.g., <code>.highlight</code>) or element selector.
+      However, with Cascade Layers, we can control priority explicitly. Let's test it!
+    </p>
+
+    <!-- TODO: Style this paragraph. We want to see if we can make it red using a class in a high-priority layer, 
+         even if a low-priority layer styles it green using its ID. -->
+    <p id="special" class="highlight">
+      If cascade layers are configured correctly, this text should turn RED (from the high-priority layer class selector) 
+      rather than GREEN (from the low-priority layer ID selector).
+    </p>
+  </main>
+
+</body>
+</html>

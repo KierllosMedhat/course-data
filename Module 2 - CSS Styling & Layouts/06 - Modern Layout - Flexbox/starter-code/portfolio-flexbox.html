@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox Developer Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar__logo">DevCraft</div>
+    <ul class="navbar__links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#cta">Centering Demo</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero__text">
+      <h1>Crafting High-Performance Applications</h1>
+      <p>I build clean frontend interfaces and scalable backend solutions using modern web patterns.</p>
+      <a href="#services" class="btn">Explore Services</a>
+    </div>
+    <div class="hero__visual">
+      <!-- Dummy visual container in place of an image -->
+      <div class="hero__dummy-img">400px Flex Visual</div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <div class="about__photo">
+      <div class="about__dummy-photo">Profile Photo</div>
+    </div>
+    <div class="about__bio">
+      <h2>About Me</h2>
+      <p>I am a full-stack developer who values performance, readability, and modern styling. By moving away from floats and table-based structures, I utilize Flexbox to deliver responsive, standard-compliant layout templates.</p>
+      <p>My stack includes semantic HTML5, modern CSS3 (Nesting, Cascade Layers, oklch colors), JavaScript (ES6+), and ASP.NET Core.</p>
+    </div>
+  </section>
+
+  <!-- Services/Skills Cards Section -->
+  <section id="services" class="services">
+    <h2 class="services__heading">Services & Skills</h2>
+    <div class="services__grid">
+      <!-- Service Card 1 -->
+      <article class="service-card">
+        <h3>UI/UX Styling</h3>
+        <p class="service-card__desc">Creating pixel-perfect responsive designs using modern CSS modules including Flexbox, Grid, and OKLCH color palettes.</p>
+        <button class="service-card__btn">Learn More</button>
+      </article>
+
+      <!-- Service Card 2 -->
+      <article class="service-card">
+        <h3>API Architectures</h3>
+        <p class="service-card__desc">Building robust controllers, database entities, and middleware handlers in ASP.NET Core.</p>
+        <button class="service-card__btn">Learn More</button>
+      </article>
+
+      <!-- Service Card 3 -->
+      <article class="service-card">
+        <h3>Database Management</h3>
+        <p class="service-card__desc">Constructing relational tables, executing fast SELECT queries, and configuring robust database indexing solutions.</p>
+        <button class="service-card__btn">Learn More</button>
+      </article>
+    </div>
+  </section>
+
+  <!-- Perfect Centering Demo CTA Section (min-height 100vh) -->
+  <section id="cta" class="cta-center">
+    <div class="cta-center__box">
+      <h2>Looking for a Developer?</h2>
+      <p>Let's work together to bring your ideas to life.</p>
+      <a href="mailto:hello@devcraft.com" class="btn btn--accent">Get In Touch</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__columns">
+      <div class="footer__column">
+        <h4>About DevCraft</h4>
+        <p>A full-stack development workspace highlighting modern layout methods.</p>
+      </div>
+      <div class="footer__column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+        </ul>
+      </div>
+      <div class="footer__column">
+        <h4>Social Links</h4>
+        <ul>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__copyright">
+      &copy; 2026 DevCraft. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>

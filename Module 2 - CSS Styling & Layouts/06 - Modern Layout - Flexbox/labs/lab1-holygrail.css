@@ -1,0 +1,87 @@
+/* ==========================================================================
+   Lab 1: Holy Grail Layout CSS (Flexbox)
+   ========================================================================== */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #334155;
+  background-color: #f8fafc;
+}
+
+/* TODO 1: Implement the outer wrapper.
+   It must be a flex container with a column direction, spanning at least 100vh height. */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header & Footer styling */
+.site-header,
+.site-footer {
+  background-color: #0f172a;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+/* TODO 2: Configure the middle container holding sidebars and main content.
+   It should be a flex container. Give it flex-grow: 1 so it consumes any extra vertical space. */
+.middle-row {
+  display: flex;
+  flex: 1;
+}
+
+/* TODO 3: Style the sidebars.
+   They should have a fixed width. Use the flex shorthand: flex: 0 0 220px. */
+.sidebar {
+  flex: 0 0 220px;
+  padding: 1.5rem;
+  background-color: #f1f5f9;
+  border-right: 1px solid #e2e8f0;
+}
+
+.sidebar--right {
+  border-right: none;
+  border-left: 1px solid #e2e8f0;
+}
+
+/* TODO 4: Style the main content.
+   Make it stretch to absorb all remaining width using flex: 1. */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #ffffff;
+}
+
+/* TODO 5: Implement mobile responsiveness.
+   When the viewport is 768px or narrower:
+   - Change middle-row direction to column.
+   - Force sidebars to collapse their width constraints (flex: none, width: 100%).
+   - Reorder main content to appear first/top visually (order: -1). */
+@media (max-width: 768px) {
+  .middle-row {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    flex: none;
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .main-content {
+    order: -1;
+  }
+}

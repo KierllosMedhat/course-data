@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1 - CORS Test Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eee;
+            border-radius: 4px;
+            min-height: 50px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lab 1 - CORS Test Frontend</h1>
+        <p>This page runs on VS Code Live Server (normally <code>http://127.0.0.1:5500</code>) and attempts to fetch data from your ASP.NET Core API.</p>
+        
+        <button id="fetch-btn">Fetch Weather Forecast</button>
+        
+        <h3>API Response:</h3>
+        <div id="results">Click the button to fetch...</div>
+    </div>
+
+    <script>
+        document.getElementById('fetch-btn').addEventListener('click', () => {
+            // TODO: Update this URL to match your running ASP.NET Core Web API port (e.g. http://localhost:5000, http://localhost:5080, etc.)
+            const apiUrl = 'http://localhost:5080/weatherforecast'; 
+            
+            console.log('Sending request to:', apiUrl);
+            document.getElementById('results').textContent = 'Fetching data...';
+
+            // TODO: Write vanilla Fetch JS logic here
+            // 1. Fetch data from apiUrl using GET
+            // 2. Handle the response and render the JSON in the 'results' div
+            // 3. Catch errors and render them in the 'results' div.
+            // Notice: Before you enable CORS on the C# Web API, you will see a CORS block error in your Chrome/Edge DevTools console.
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('results').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    document.getElementById('results').innerHTML = `<span style="color: red;"><strong>CORS or Network Error!</strong><br>${error.message}<br>Check browser console for details.</span>`;
+                });
+        });
+    </script>
+</body>
+</html>

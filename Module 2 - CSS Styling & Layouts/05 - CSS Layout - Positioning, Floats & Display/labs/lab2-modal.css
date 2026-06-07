@@ -1,0 +1,152 @@
+/* ==========================================================================
+   Lab 2: CSS-Only Modal CSS
+   ========================================================================== */
+
+/* Universal Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.page {
+  text-align: center;
+}
+
+.page h1 {
+  margin-bottom: 1rem;
+}
+
+.page p {
+  margin-bottom: 1.5rem;
+  color: #64748b;
+  max-width: 400px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #1d4ed8;
+}
+
+/* ==========================================================================
+   Modal Components (using BEM format)
+   ========================================================================== */
+
+.modal {
+  /* TODO 1: Hide modal initially and pin it to viewport edges */
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  
+  /* Hidden states */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+
+/* TODO 2: Style backdrop. Use absolute positioning inside the modal. */
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+/* TODO 3: Style the panel. Center it, and configure transitions. */
+.modal__panel {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  z-index: 1001; /* Must sit above backdrop */
+  
+  /* Initial translation for slide-up effect */
+  transform: translateY(20px);
+  transition: transform 0.25s;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* TODO 4: Apply the :target rule. When URL hash matches the modal ID: */
+.modal:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* TODO 5: Apply transition on modal__panel when modal is targeted */
+.modal:target .modal__panel {
+  transform: translateY(0);
+}
+
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #94a3b8;
+  line-height: 1;
+}
+
+.modal__close:hover {
+  color: #475569;
+}
+
+.modal__title {
+  margin-bottom: 0.5rem;
+}
+
+.modal p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal__input,
+.modal__textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.modal__input:focus,
+.modal__textarea:focus {
+  outline: 2px solid #2563eb;
+  border-color: #2563eb;
+}

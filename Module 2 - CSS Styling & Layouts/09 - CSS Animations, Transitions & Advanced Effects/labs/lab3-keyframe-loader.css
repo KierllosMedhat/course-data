@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Lab 3: Multi-Step Keyframe Loader CSS
+   ========================================================================== */
+
+/* Reset & Center Container */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #0f172a;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.wave-loader {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   TODO 1: Style the loader circles.
+   Make them circular (border-radius: 50%), define size (width/height: 20px),
+   set a background-color (e.g. #3b82f6), and configure the initial animation.
+   ========================================================================== */
+.loader-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  
+  /* Set the animation: name (bounce), duration (0.6s), timing (ease-in-out), infinite, alternate */
+  animation: bounce 0.6s ease-in-out infinite alternate;
+}
+
+/* ==========================================================================
+   TODO 3: Stagger the animation-delays.
+   Use the class modifiers or nth-child selectors to delay the second and 
+   third circles (e.g. 0.2s, 0.4s) to create the wave loading flow.
+   ========================================================================== */
+.loader-circle--1 {
+  animation-delay: 0s;
+}
+
+.loader-circle--2 {
+  animation-delay: 0.2s;
+}
+
+.loader-circle--3 {
+  animation-delay: 0.4s;
+}
+
+.loader-text {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   TODO 2: Create the bounce animation.
+   Write an @keyframes bounce rule:
+   - At 0%: transform: translateY(0); opacity: 0.3;
+   - At 100%: transform: translateY(-20px); opacity: 1;
+   ========================================================================== */
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-20px);
+    opacity: 1;
+  }
+}

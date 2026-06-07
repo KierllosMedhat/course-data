@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - The Intelligent CSS-Only Toggle Switch</title>
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6">
+
+  <div class="bg-white rounded-3xl p-8 shadow-xl max-w-sm w-full text-center">
+    <h3 class="text-xl font-extrabold text-gray-900 mb-6">Choose Your Plan</h3>
+
+    <!-- TODO: Step 1-4: Build the iOS styled toggle switch purely in CSS -->
+    <div class="flex flex-col items-center gap-6">
+      
+      <!-- Toggle Label Wrapper -->
+      <label class="relative inline-flex items-center cursor-pointer select-none gap-4">
+        
+        <!-- Sibling Text: Monthly (recalcitrant/inactive state) -->
+        <!-- Hint: Use peer modifier styles to make it gray-400 by default, dark text when peer is not checked -->
+        <span class="text-sm font-semibold text-gray-900 peer-checked:text-gray-400">Monthly</span>
+        
+        <!-- Hidden Checkbox Input -->
+        <!-- Must have the class 'peer sr-only' -->
+        <input type="checkbox" id="billing-toggle" class="peer sr-only">
+
+        <!-- The Track Pill -->
+        <!-- Must have: w-14, h-8, bg-gray-200, rounded-full, peer-checked:bg-indigo-600, transition-colors, relative -->
+        <div class="w-14 h-8 bg-gray-200 rounded-full peer-checked:bg-indigo-600 transition-colors relative">
+          <!-- The Knob Circle -->
+          <!-- Must have: w-6, h-6, bg-white, rounded-full, absolute, top-1, left-1, transition-transform, peer-checked:translate-x-6, shadow-md -->
+          <div class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 transition-transform peer-checked:translate-x-6 shadow-md"></div>
+        </div>
+
+        <!-- Sibling Text: Annual -->
+        <!-- Hint: Use peer modifier styles to make it gray-400 by default, indigo text when peer is checked -->
+        <span class="text-sm font-semibold text-gray-400 peer-checked:text-indigo-600">Annual</span>
+
+      </label>
+
+      <!-- TODO: Sibling reaction display elements -->
+      <!-- Show/Hide specific pricing details depending on checked status of the peer -->
+      <div class="border-t border-gray-100 pt-6 w-full">
+        <!-- Monthly price block (hidden when peer-checked) -->
+        <div class="peer-checked:hidden text-slate-800">
+          <p class="text-5xl font-black">$19<span class="text-sm text-gray-500 font-normal">/mo</span></p>
+          <span class="inline-block bg-slate-100 text-xs px-3 py-1 rounded-full text-gray-500 mt-3 font-semibold">Standard Monthly Rates</span>
+        </div>
+
+        <!-- Annual price block (only visible when peer-checked) -->
+        <!-- Note: since peer is defined above, you can simulate this sibling relationship or use CSS selector rules -->
+        <!-- Inside pure Tailwind, we can wrap the container and use custom class structures if the peer is placed appropriately, 
+             or target via custom classes. Since peer is a sibling of the container, we can restructure slightly or use JS if needed,
+             but let's see how we can make the pricing blocks react. 
+             If we put the inputs/labels correctly, peer selector works on all subsequent siblings! -->
+        
+        <!-- To make subsequent siblings react, we can structure it like this:
+             <input type="checkbox" class="peer sr-only" ...>
+             <div class="peer-checked:hidden">Monthly Pricing</div>
+             <div class="hidden peer-checked:block">Annual Pricing</div>
+             Let's do that! It is incredibly clean and purely CSS-driven.
+        -->
+      </div>
+
+      <!-- Let's rewrite the structure above to make the pricing blocks siblings of the input! -->
+      <div class="w-full">
+        <label class="relative inline-flex items-center justify-center cursor-pointer select-none gap-3 w-full mb-6">
+          <input type="checkbox" id="billing-switch" class="peer sr-only">
+          
+          <span class="text-sm font-semibold text-gray-900 peer-checked:text-gray-400 transition-colors">Monthly</span>
+          <div class="w-14 h-8 bg-gray-200 rounded-full peer-checked:bg-indigo-600 transition-colors relative">
+            <div class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 transition-transform peer-checked:translate-x-6 shadow-md"></div>
+          </div>
+          <span class="text-sm font-semibold text-gray-400 peer-checked:text-indigo-600 transition-colors">Annual</span>
+
+          <!-- Pricing blocks placed as siblings of the checkbox peer! -->
+          <div class="absolute top-16 left-0 right-0 pt-4 border-t border-gray-100">
+            <!-- Monthly block: hidden when peer checked -->
+            <div class="peer-checked:hidden">
+              <p class="text-5xl font-black text-slate-950">$19<span class="text-sm text-gray-500 font-normal">/mo</span></p>
+              <p class="text-xs text-gray-400 mt-2">Billed monthly. Cancel anytime.</p>
+            </div>
+            
+            <!-- Annual block: block when peer checked, hidden by default -->
+            <div class="hidden peer-checked:block">
+              <p class="text-5xl font-black text-indigo-600">$15<span class="text-sm text-gray-500 font-normal">/mo</span></p>
+              <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2 font-bold uppercase">Save 20% ($180 billed annually)</span>
+            </div>
+          </div>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

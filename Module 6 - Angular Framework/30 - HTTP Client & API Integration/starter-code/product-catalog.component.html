@@ -1,0 +1,67 @@
+<div class="storefront-container">
+  <header class="storefront-header">
+    <h1>ShopAngular Storefront</h1>
+    <p>Powered by FakeStoreAPI & Angular 19 rxResource</p>
+  </header>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" (change)="onCategoryChange($event)" class="form-control">
+      <option value="">All Categories</option>
+      @if (!categoriesResource.isLoading() && !categoriesResource.error()) {
+        @for (cat of categoriesResource.value(); track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      }
+    </select>
+  </section>
+
+  <!-- Products Content Area -->
+  <main class="products-area">
+    <!-- 1. LOADING STATE -->
+    @if (productsResource.isLoading()) {
+      <div class="spinner-container">
+        <div class="loading-spinner"></div>
+        <p>Loading products from the catalog...</p>
+      </div>
+    }
+
+    <!-- 2. ERROR STATE -->
+    @else if (productsResource.error()) {
+      <div class="error-container">
+        <h3>Catalog Unavailable</h3>
+        <p>There was a problem communicating with the FakeStore API. Please check your network and try again.</p>
+        <button class="btn btn-retry" (click)="productsResource.reload()">Try Again</button>
+      </div>
+    }
+
+    <!-- 3. SUCCESS / GRID STATE -->
+    @else {
+      <div class="products-grid">
+        @for (product of productsResource.value(); track product.id) {
+          <div class="product-card">
+            <div class="product-image">
+              <img [src]="product.image" [alt]="product.title" />
+            </div>
+            <div class="product-info">
+              <span class="product-category">{{ product.category }}</span>
+              <h3 class="product-title" [title]="product.title">{{ product.title }}</h3>
+              <p class="product-description">{{ product.description }}</p>
+              <div class="product-footer">
+                <span class="product-price">${{ product.price | number:'1.2-2' }}</span>
+                <span class="product-rating">
+                  ⭐ {{ product.rating.rate }} ({{ product.rating.count }})
+                </span>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No products found in this category.</p>
+          </div>
+        }
+      </div>
+    }
+  </main>
+</div>

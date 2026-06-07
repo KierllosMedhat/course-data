@@ -1,0 +1,38 @@
+/* ==========================================================================
+   Lab 2 - Specificity & Layer Wars Starter Stylesheet
+   ========================================================================== */
+
+/* 
+   TODO 1: Declare your cascade layers using @layer.
+   Define two layers: 'baseTheme' (lower priority) and 'overrideTheme' (higher priority).
+   Remember: In layer order declaration, layers declared LATER have HIGHER priority.
+   
+   Example:
+   @layer baseTheme, overrideTheme;
+*/
+
+
+/* 
+   TODO 2: Inside the lower-priority layer ('baseTheme'), 
+   style the paragraph using its ID (#special) and set the color to green (or oklch/hex equivalent).
+   
+   Example:
+   @layer baseTheme {
+     #special {
+       color: green;
+     }
+   }
+*/
+
+
+/* 
+   TODO 3: Inside the higher-priority layer ('overrideTheme'), 
+   style the paragraph using its class (.highlight) and set the color to red (or oklch/hex equivalent).
+   
+   Example:
+   @layer overrideTheme {
+     .highlight {
+       color: red;
+     }
+   }
+*/

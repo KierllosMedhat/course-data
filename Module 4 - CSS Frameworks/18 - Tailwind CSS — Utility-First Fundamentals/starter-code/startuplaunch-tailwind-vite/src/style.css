@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap');
+
+@theme {
+  /* TODO: Define custom brand colors */
+  --color-brand-primary: #3b82f6; /* Custom brand blue */
+  --color-brand-accent: #8b5cf6;  /* Custom accent purple */
+  --color-brand-dark: #0f172a;    /* Custom dark gray */
+
+  /* TODO: Define custom brand fonts */
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}

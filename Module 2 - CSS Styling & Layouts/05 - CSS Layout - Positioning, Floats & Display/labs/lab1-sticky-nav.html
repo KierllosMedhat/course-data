@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 1 - Sticky Nav with Dropdown</title>
+  <!-- Link external CSS file -->
+  <link rel="stylesheet" href="lab1-sticky-nav.css">
+</head>
+<body>
+
+  <!-- Navigation Bar following BEM format -->
+  <header class="site-header">
+    <nav class="nav">
+      <a href="/" class="nav__brand">🌐 MyBrand</a>
+      <ul class="nav__list">
+        <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="#about" class="nav__link">About ▾</a>
+          <ul class="nav__dropdown">
+            <li><a href="#team" class="nav__dropdown-link">Our Team</a></li>
+            <li><a href="#process" class="nav__dropdown-link">Our Process</a></li>
+            <li><a href="#awards" class="nav__dropdown-link">Awards</a></li>
+          </ul>
+        </li>
+        <li class="nav__item"><a href="#work" class="nav__link">Work</a></li>
+        <li class="nav__item"><a href="#contact" class="nav__link nav__link--cta">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Dummy Content to allow page scrolling and test sticky/fixed positioning -->
+  <main class="page-content">
+    <section id="home">
+      <h1>Welcome to MyBrand</h1>
+      <p>Scroll down to see the fixed navigation bar stay in place at the top of the viewport.</p>
+    </section>
+
+    <section id="about" style="height: 100vh; background-color: #f1f5f9; padding: 2rem;">
+      <h2>About Us Section</h2>
+      <p>This section is here to create scrollable space on the page.</p>
+    </section>
+
+    <section id="work" style="height: 100vh; background-color: #cbd5e1; padding: 2rem;">
+      <h2>Our Work</h2>
+      <p>Check out our portfolio below.</p>
+    </section>
+  </main>
+
+</body>
+</html>

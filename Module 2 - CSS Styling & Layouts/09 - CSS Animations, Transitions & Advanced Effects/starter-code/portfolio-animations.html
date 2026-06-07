@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Dev Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Sticky Navbar with Micro-interactions -->
+  <header class="navbar">
+    <div class="navbar__logo">MotionCraft</div>
+    <ul class="navbar__links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero Section with Staggered Entrance Animations on page load -->
+  <section id="hero" class="hero">
+    <div class="hero__content">
+      <!-- Staggered element 1 -->
+      <h1 class="hero__title">Creative UI Engineer</h1>
+      <!-- Staggered element 2 -->
+      <p class="hero__tagline">Fusing layout engineering with performant, hardware-accelerated micro-animations.</p>
+      <!-- Staggered element 3 -->
+      <a href="#projects" class="btn btn--primary hero__cta">View My Work</a>
+    </div>
+  </section>
+
+  <!-- About Section with Scroll Reveal (fades in as scrolled into viewport) -->
+  <section id="about" class="about scroll-reveal">
+    <h2>About My Stack</h2>
+    <p>I build web systems leveraging semantic markup, flexible grid architectures, and hardware-accelerated transition properties. Restricting transforms to composite properties like opacity and transform ensures clean 60fps animations.</p>
+  </section>
+
+  <!-- Projects Grid Section with Cards that lift and cast deep shadows on hover -->
+  <section id="projects" class="projects">
+    <h2 class="scroll-reveal">Featured Projects</h2>
+    <div class="projects-grid">
+      <!-- Project Card 1 -->
+      <article class="project-card scroll-reveal">
+        <h3>3D Web UI</h3>
+        <p>Interactive cards flipping along the 3D Y-axis coordinate system using perspective rules.</p>
+        <button class="project-card__btn">Explore Project</button>
+      </article>
+
+      <!-- Project Card 2 -->
+      <article class="project-card scroll-reveal">
+        <h3>Scroll Engine</h3>
+        <p>Native scroll-driven progress bars using standard CSS view and scroll timelines.</p>
+        <button class="project-card__btn">Explore Project</button>
+      </article>
+
+      <!-- Project Card 3 -->
+      <article class="project-card scroll-reveal">
+        <h3>GPU Canvas</h3>
+        <p>Optimizing page transition sequences by avoiding expensive layout reflow triggers.</p>
+        <button class="project-card__btn">Explore Project</button>
+      </article>
+    </div>
+  </section>
+
+</body>
+</html>

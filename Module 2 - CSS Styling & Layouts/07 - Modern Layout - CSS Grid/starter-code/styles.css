@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Portfolio Assignment - Part 6: CSS Grid Refactor Stylesheet
+   ========================================================================== */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+/* ==========================================================================
+   1. Outer Page Layout (using grid-template-areas)
+   ========================================================================== */
+.page-container {
+  /* TODO: Turn page-container into a grid.
+     - Set height to 100vh.
+     - Define rows: auto (header), 1fr (main content), auto (footer).
+     - Define columns: 1fr (single column layout that expands).
+     - Define grid-template-areas mapping out:
+       "header"
+       "main"
+       "footer"
+  */
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+
+/* Map items to their named template areas */
+.header {
+  grid-area: header;
+  
+  /* Micro-alignment layout (can combine Grid or Flex here) */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.main-content {
+  grid-area: main;
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  
+  /* TODO: Make the main element layout its child sections using CSS Grid.
+     Set a vertical layout gap. */
+  display: grid;
+  gap: 4rem;
+}
+
+.footer {
+  grid-area: footer;
+  background-color: #0f172a;
+  color: #94a3b8;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Header links list */
+.header__nav ul {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.header__nav a {
+  text-decoration: none;
+  color: #475569;
+  font-weight: 500;
+}
+
+.header__nav a:hover {
+  color: #2563eb;
+}
+
+/* ==========================================================================
+   2. About Section Layout (Grid columns)
+   ========================================================================== */
+.about-section {
+  /* TODO: Make this section a 2-column grid. Column 1 (description), Column 2 (visual).
+     Set alignment, heights, gaps. */
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.about-section__visual {
+  height: 250px;
+  background-color: #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   3. Projects Grid Section (Requirement: auto-fit responsive columns, NO media queries)
+   ========================================================================== */
+.projects-section h2 {
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+}
+
+.projects-grid {
+  /* TODO: Implement the responsive formula:
+     - Set display to grid.
+     - Set columns using repeat(auto-fit, minmax(280px, 1fr))
+     - Set gap spacing. Do NOT use margin on children for spacing!
+  */
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.project-card {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.project-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   4. Responsive Rules
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* TODO: Stack the about-section layout into a single column. */
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+}

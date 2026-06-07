@@ -1,0 +1,31 @@
+/* 
+  Lab 1: Custom Theme Setup
+  TODO: Configure your custom Angular Material theme here.
+*/
+
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material.
+@include mat.core();
+
+// TODO: Define custom primary and accent color palettes using mat.define-palette
+// Example:
+// $custom-primary: mat.define-palette(mat.$indigo-palette);
+// $custom-accent:  mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// TODO: Create the theme object (either light or dark)
+// $custom-theme: mat.define-light-theme((
+//   color: (
+//     primary: $custom-primary,
+//     accent: $custom-accent,
+//   )
+// ));
+
+// TODO: Apply the theme to all Angular Material components
+// @include mat.all-component-themes($custom-theme);
+
+/* Global styling stubs for lab testing */
+.mat-app-background {
+  min-height: 100vh;
+  padding: 20px;
+}

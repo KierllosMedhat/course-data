@@ -1,0 +1,288 @@
+/* ==========================================================================
+   Portfolio Assignment - Part 8: Animations and Advanced Effects Stylesheet
+   ========================================================================== */
+
+/* Reset & Basics */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  background-color: #f8fafc;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   1. Navigation Hover Transitions (Micro-interactions)
+   ========================================================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2.5rem;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar__logo {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #6366f1;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.navbar__links a {
+  text-decoration: none;
+  color: #475569;
+  font-weight: 500;
+  position: relative;
+  padding: 0.25rem 0;
+  
+  /* TODO 1: Add a transition for color using cubic-bezier timing. */
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar__links a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #6366f1;
+  
+  /* Initial scale for transition underline */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar__links a:hover {
+  color: #6366f1;
+}
+
+.navbar__links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   2. Hero entrance (Staggered Animations on Page Load)
+   ========================================================================== */
+.hero {
+  min-height: 80dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f5f9;
+  padding: 2rem;
+}
+
+.hero__content {
+  text-align: center;
+  max-width: 700px;
+}
+
+/* 
+   TODO 2: Stagger the load animations.
+   - Define keyframes named slideUpFade (from translateY(30px) & opacity 0 to normal).
+   - Apply the animation to title, tagline, and CTA.
+   - Stagger them using animation-delay (e.g. 0.1s, 0.3s, 0.5s).
+   - Crucial: use animation-fill-mode: both; so elements stay visible after fading in.
+*/
+.hero__title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  
+  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.1s;
+}
+
+.hero__tagline {
+  font-size: 1.25rem;
+  color: #475569;
+  margin-bottom: 2rem;
+  
+  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.3s;
+}
+
+.hero__cta {
+  animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.5s;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Helper Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  background-color: #6366f1;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+}
+
+/* ==========================================================================
+   3. Card Lift Hover State (GPU Compositing Properties)
+   ========================================================================== */
+.projects {
+  padding: 6rem 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.projects h2 {
+  text-align: center;
+  font-size: 2.25rem;
+  margin-bottom: 4rem;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2.5rem;
+  
+  /* Initial shadow state */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  
+  /* TODO 3: Configure transition using only composited properties (transform, box-shadow). */
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.project-card:hover {
+  /* GPU Composited Transform Lift and Soft Shadow Expansion */
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+}
+
+.project-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.project-card p {
+  color: #475569;
+  margin-bottom: 2rem;
+}
+
+.project-card__btn {
+  background-color: transparent;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.project-card__btn:hover {
+  background-color: #6366f1;
+  border-color: #6366f1;
+  color: white;
+}
+
+.about {
+  padding: 6rem 2.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about h2 {
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.about p {
+  font-size: 1.15rem;
+  color: #475569;
+}
+
+/* ==========================================================================
+   4. Scroll Reveal Animations (Scroll Timeline API)
+   ========================================================================== */
+/* 
+   TODO 4: Set up native scroll-driven reveals for elements with .scroll-reveal.
+   - Use animation-timeline: view();
+   - Set keyframes that transition opacity from 0 to 1 and translateY(50px) to 0.
+   - Configure animation-range: entry 10% cover 30%;
+*/
+.scroll-reveal {
+  animation: revealOnScroll linear both;
+  animation-timeline: view();
+  animation-range: entry 10% cover 30%;
+}
+
+@keyframes revealOnScroll {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   5. Accessibility Reset (prefers-reduced-motion)
+   ========================================================================== */
+/* 
+   TODO 5: Implement a global reset to respect users who prefer reduced motion.
+   Ensure all animation-durations and transition-durations are overridden to 0.01ms.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

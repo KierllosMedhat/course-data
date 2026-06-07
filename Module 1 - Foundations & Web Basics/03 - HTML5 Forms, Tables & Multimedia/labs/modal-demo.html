@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dialog Modal Demo</title>
+</head>
+<body>
+
+    <h1>Interactive Modal Demo</h1>
+
+    <!-- TODO 1: Create a button to trigger the dialog modal.
+         It should call document.getElementById('terms-dialog').showModal() when clicked.
+    -->
+    <button>View Terms of Service</button>
+
+    <!-- TODO 2: Create a <dialog> element with id="terms-dialog".
+         Inside it:
+         - Add an <h2> heading "Terms of Service"
+         - Add 3-4 placeholder paragraphs (<p>) representing the terms
+         - Add a <form method="dialog"> with two buttons:
+           - One with value="agreed" (e.g. "I Agree")
+           - One with value="declined" (e.g. "Decline")
+    -->
+    <dialog id="terms-dialog">
+        <!-- Write dialog content, paragraphs, and form here -->
+    </dialog>
+
+    <!-- TODO 3: Write JavaScript to detect the user's response.
+         - Select the dialog element.
+         - Add an event listener for the 'close' event.
+         - Inside the event listener, check dialog.returnValue.
+         - Use alert() to display feedback (e.g., "Thank you for agreeing!" or "You must agree to continue.")
+    -->
+    <script>
+        // Write your JavaScript code here
+    </script>
+
+</body>
+</html>

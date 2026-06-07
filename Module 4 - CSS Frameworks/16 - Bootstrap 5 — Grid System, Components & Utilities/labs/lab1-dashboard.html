@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 1 - Responsive Grid Dashboard</title>
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+  <!-- TODO: Step 1: Create a Sticky Navbar -->
+  <!-- Hint: Use classes like 'navbar', 'navbar-expand-lg', 'bg-white', 'shadow-sm', 'sticky-top' -->
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-primary" href="#">
+        <i class="bi bi-speedometer2 me-2"></i>AdminDash
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Analytics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Settings</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Container -->
+  <div class="container my-4">
+    
+    <!-- TODO: Step 2 - Row 1: 4 Stats Cards -->
+    <!-- Grid rule: Needs col-6 col-md-3 on each column for responsive sizing (2 per row on mobile, 4 on desktop) -->
+    <!-- All cards should have equal height (use class 'h-100' on the card) -->
+    <div class="row g-4 mb-4">
+      <!-- Card 1: Users -->
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <!-- TODO: Add dynamic icon, count (e.g. 1,245) and label (e.g. Total Users) -->
+          </div>
+        </div>
+      </div>
+      <!-- Card 2: Revenue -->
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <!-- TODO: Add revenue details -->
+          </div>
+        </div>
+      </div>
+      <!-- Card 3: Orders -->
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <!-- TODO: Add order details -->
+          </div>
+        </div>
+      </div>
+      <!-- Card 4: Growth -->
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <!-- TODO: Add growth details -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TODO: Step 2 - Row 2: Main Chart Area + Sidebar -->
+    <!-- Grid rule: Main Chart should be col-lg-8, Sidebar should be col-lg-4 -->
+    <div class="row g-4 mb-4">
+      <!-- Main Content Area -->
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Sales Overview</h5>
+            <p class="text-muted">Interactive chart would go here.</p>
+            <!-- TODO: Create a placeholder container for the chart -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar Area -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Recent Activities</h5>
+            <!-- TODO: Create a list of 3-4 recent activities using Bootstrap list-group or utilities -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TODO: Step 2 - Row 3: Full-width Data Table Section -->
+    <!-- Grid rule: Full-width (col-12) data table -->
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-3">Latest Transactions</h5>
+            <!-- TODO: Add a Bootstrap data table with at least 3 columns (ID, Customer, Status, Amount) -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

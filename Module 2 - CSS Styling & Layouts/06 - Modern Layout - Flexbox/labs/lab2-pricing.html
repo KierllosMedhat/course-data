@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - Pricing Card Grid</title>
+  <link rel="stylesheet" href="lab2-pricing.css">
+</head>
+<body>
+
+  <main class="page-container">
+    <header class="page-header">
+      <h1>Simple, Transparent Pricing</h1>
+      <p>Choose the plan that fits your project best.</p>
+    </header>
+
+    <div class="card-grid">
+      <!-- Starter Card -->
+      <article class="pricing-card">
+        <h2 class="pricing-card__title">Starter</h2>
+        <div class="pricing-card__price">$9<span>/mo</span></div>
+        <ul class="feature-list">
+          <li>1 Project Repository</li>
+          <li>Basic Tech Support</li>
+          <li>Community Access</li>
+        </ul>
+        <!-- This button needs to align to the bottom of the card -->
+        <a href="#" class="cta-button">Get Started</a>
+      </article>
+
+      <!-- Pro Card (Featured/Distinct) -->
+      <article class="pricing-card pricing-card--featured">
+        <span class="badge">Most Popular</span>
+        <h2 class="pricing-card__title">Pro</h2>
+        <div class="pricing-card__price">$29<span>/mo</span></div>
+        <ul class="feature-list">
+          <li>10 Project Repositories</li>
+          <li>Priority Support (Email)</li>
+          <li>10 GB Cloud Storage</li>
+          <li>Collaborator Access</li>
+          <li>API Integrations</li>
+        </ul>
+        <a href="#" class="cta-button cta-button--featured">Go Pro</a>
+      </article>
+
+      <!-- Enterprise Card -->
+      <article class="pricing-card">
+        <h2 class="pricing-card__title">Enterprise</h2>
+        <div class="pricing-card__price">$99<span>/mo</span></div>
+        <ul class="feature-list">
+          <li>Unlimited Repositories</li>
+          <li>24/7 Phone & Email Support</li>
+          <li>100 GB Cloud Storage</li>
+          <li>Dedicated Account Specialist</li>
+        </ul>
+        <a href="#" class="cta-button">Contact Sales</a>
+      </article>
+    </div>
+  </main>
+
+</body>
+</html>

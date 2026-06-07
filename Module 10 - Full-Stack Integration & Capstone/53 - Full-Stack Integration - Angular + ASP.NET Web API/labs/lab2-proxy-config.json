@@ -1,0 +1,17 @@
+{
+  "/api": {
+    "target": "https://localhost:7123",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+
+/*
+  TODO Instructions:
+  1. Replace the "target" address ("https://localhost:7123") with the actual HTTPS localhost port of your C# Web API.
+  2. Set "secure" to false to bypass SSL certificate issues for self-signed certificates in local development.
+  3. Change "changeOrigin" to true to alter the origin of the host header to match the target.
+  4. Ensure you reference this file in your Angular project's `angular.json` under:
+     projects -> [your-app-name] -> architect -> serve -> options -> "proxyConfig": "src/proxy.conf.json"
+*/

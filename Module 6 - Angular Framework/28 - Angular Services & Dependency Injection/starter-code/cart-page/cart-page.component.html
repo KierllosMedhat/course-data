@@ -1,0 +1,29 @@
+<div class="cart-container">
+  <h2>Your Shopping Cart</h2>
+
+  <!-- TODO: 1. Render cart items when cart contains elements -->
+  <!-- Loop through items() and display quantity inputs, remove button, product name, and price -->
+  <!-- 
+    @for (item of items(); track item.product.id) {
+      <div class="cart-item">
+        <span>{{ item.product.name }}</span>
+        <span>{{ item.product.price | currency }}</span>
+        <input type="number" [value]="item.quantity" (change)="updateQty(item.product.id, +$any($event.target).value)">
+        <button (click)="remove(item.product.id)">Remove</button>
+      </div>
+    }
+  -->
+
+  <!-- TODO: 2. Show empty message if cart is empty -->
+  <!-- Hint: Use @if (items().length === 0) -->
+  <div class="empty-cart">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <div class="cart-summary">
+    <!-- TODO: Display dynamic total cost of cart contents -->
+    <!-- Hint: totalValue() | currency -->
+    <h3>Total: <!-- Total Value --></h3>
+    <button (click)="clear()">Clear Cart</button>
+  </div>
+</div>

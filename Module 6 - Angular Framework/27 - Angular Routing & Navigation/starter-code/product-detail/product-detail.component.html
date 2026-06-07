@@ -1,0 +1,31 @@
+<div class="detail-container">
+  <!-- TODO: 1. Loading State -->
+  <!-- Display loading spinner or text while fetching -->
+  <!-- Hint: Use @if (productResource.isLoading()) -->
+  <div class="loading">
+    <p>Loading product details...</p>
+  </div>
+
+  <!-- TODO: 2. Error State -->
+  <!-- Display error message if the fetch failed -->
+  <!-- Hint: Use @else if (productResource.error()) -->
+  <div class="error">
+    <h2>Product Not Found</h2>
+    <p>We could not load the details for this product.</p>
+    <a routerLink="/products">← Back to Products</a>
+  </div>
+
+  <!-- TODO: 3. Success State -->
+  <!-- Display product details if successfully loaded -->
+  <!-- Hint: Use @else and extract value via productResource.value() -->
+  <!-- Inside, display the title, price (with CurrencyPipe), description, and image -->
+  <!-- 
+    <div class="product-detail">
+      <img [src]="product.image" [alt]="product.title">
+      <h1>{{ product.title }}</h1>
+      <p class="price">{{ product.price | currency }}</p>
+      <p class="description">{{ product.description }}</p>
+      <button>Add to Cart</button>
+    </div>
+  -->
+</div>

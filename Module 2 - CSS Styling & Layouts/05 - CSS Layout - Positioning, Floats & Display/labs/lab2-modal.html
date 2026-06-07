@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - CSS-Only Modal using :target</title>
+  <link rel="stylesheet" href="lab2-modal.css">
+</head>
+<body>
+
+  <main class="page">
+    <h1>CSS-Only Modal Demo</h1>
+    <p>Using only HTML anchors and the CSS <code>:target</code> pseudo-class, we can toggle modals without a single line of JavaScript!</p>
+    
+    <!-- Open link triggers the modal by referencing its ID in href -->
+    <a href="#contact-modal" class="btn btn--primary">Open Modal</a>
+  </main>
+
+  <!-- The Modal container -->
+  <div class="modal" id="contact-modal">
+    <!-- Click backdrop to navigate back to # (close modal) -->
+    <a href="#" class="modal__backdrop" aria-label="Close modal"></a>
+    
+    <div class="modal__panel">
+      <!-- Close button redirects page hash to # -->
+      <a href="#" class="modal__close" aria-label="Close">&times;</a>
+      
+      <h2 class="modal__title">Get in Touch</h2>
+      <p>Fill out the form below. Clicking outside this card or on the close icon will close the modal.</p>
+      
+      <form class="modal__form" action="#" method="POST" onsubmit="event.preventDefault();">
+        <input type="text" placeholder="Your Name" required class="modal__input">
+        <input type="email" placeholder="Email" required class="modal__input">
+        <textarea rows="4" placeholder="Message..." required class="modal__textarea"></textarea>
+        <button type="submit" class="btn btn--primary">Send</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

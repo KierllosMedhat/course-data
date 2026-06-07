@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capstone - LaunchDeck Admin Layout</title>
+  
+  <!-- Tailwind CSS Play CDN with Forms and Typography plugins enabled -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+  <!-- TODO: Requirement 1: Prevent FOUC (Flash of Unstyled Content) dark mode flash -->
+  <script>
+    try {
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (_) {}
+  </script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-brand-primary: #6366f1; /* Indigo */
+      --color-brand-accent: #f43f5e;  /* Rose */
+      
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="font-body bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen transition-colors duration-300">
+
+  <!-- Main Dashboard Wrapper Layout -->
+  <div class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- TODO: Requirement 3: Sidebar Navigation -->
+    <!-- Requirements: group/navlink anchors, icon color transforms, active state indicator sliding in -->
+    <aside class="w-full md:w-64 bg-slate-900 text-slate-400 p-6 flex flex-col justify-between border-r border-slate-800 shrink-0">
+      <div>
+        <div class="text-white font-display font-extrabold text-2xl mb-8 flex items-center gap-2">
+          <i class="bi bi-speedometer text-brand-primary"></i>LaunchDeck
+        </div>
+        
+        <nav class="space-y-2">
+          <!-- Sidebar Nav Link 1 (Active) -->
+          <!-- Use border/background styles or translate lines to indicate active state -->
+          <a href="#" class="group/navlink flex items-center gap-3 text-white bg-slate-800 px-4 py-3 rounded-xl transition duration-200 relative overflow-hidden">
+            <span class="absolute left-0 top-0 bottom-0 w-1 bg-brand-primary rounded-r-md"></span>
+            <i class="bi bi-grid-1x2 text-brand-primary"></i>
+            <span>Dashboard</span>
+          </a>
+
+          <!-- Sidebar Nav Link 2 -->
+          <a href="#changelog" class="group/navlink flex items-center gap-3 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl transition duration-200">
+            <i class="bi bi-journal-text text-slate-500 group-hover/navlink:text-brand-primary transition-colors"></i>
+            <span>Changelog</span>
+          </a>
+
+          <!-- Sidebar Nav Link 3 -->
+          <a href="#settings" class="group/navlink flex items-center gap-3 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl transition duration-200">
+            <i class="bi bi-gear text-slate-500 group-hover/navlink:text-brand-primary transition-colors"></i>
+            <span>Settings</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Theme Toggle Switch & Profile summary in sidebar footer -->
+      <div class="border-t border-slate-800 pt-6 mt-6">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm font-semibold">Dark Mode</span>
+          <!-- Theme Toggle Button -->
+          <button id="themeToggle" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800 transition">
+            <i class="bi bi-moon-stars" id="themeIcon"></i>
+          </button>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80" alt="Profile" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <div class="text-sm font-bold text-white">Alex Mercer</div>
+            <div class="text-xs text-slate-500">Workspace Owner</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 md:p-10 max-w-5xl mx-auto w-full">
+      
+      <!-- Top header bar inside main area -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl font-display font-extrabold text-slate-900 dark:text-white">Workspace Overview</h1>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage project deployments, view logs, and configure security.</p>
+        </div>
+        
+        <!-- Status Badges Grid testing dynamic classes merges -->
+        <div class="flex gap-2">
+          <!-- TODO: Requirement 5: Test dynamic cn helper badge renders -->
+          <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50">
+            System Online
+          </span>
+          <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/30 dark:text-amber-400 border border-amber-200 dark:border-amber-900/50">
+            2 Deployments Active
+          </span>
+        </div>
+      </div>
+
+      <!-- Tabs or sections grid -->
+      <div class="grid grid-cols-1 gap-8">
+        
+        <!-- TODO: Requirement 4: Forms Plugin Configuration & Peer Validations -->
+        <section id="settings" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 rounded-3xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Account Settings</h2>
+          <form class="space-y-4" novalidate id="profileForm">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">First Name</label>
+                <input type="text" class="form-input w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:border-brand-primary focus:ring-brand-primary" placeholder="Alex" required>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Last Name</label>
+                <input type="text" class="form-input w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:border-brand-primary focus:ring-brand-primary" placeholder="Mercer" required>
+              </div>
+            </div>
+
+            <!-- Email validation using peer-invalid -->
+            <div class="flex flex-col">
+              <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Email Address</label>
+              <!-- Peer Class placed here -->
+              <input type="email" id="email" required class="peer form-input w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:border-brand-primary focus:ring-brand-primary invalid:[&:not(:placeholder-shown)]:border-red-500 invalid:[&:not(:placeholder-shown)]:text-red-500" placeholder="alex@launchdeck.io">
+              <span class="hidden peer-invalid:[&:not(:placeholder-shown)]:block text-xs text-red-500 mt-1">Please enter a valid business email.</span>
+            </div>
+
+            <button type="submit" class="bg-brand-primary hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 rounded-xl transition duration-200">
+              Save Changes
+            </button>
+          </form>
+        </section>
+
+        <!-- TODO: Requirement 2: Typography Integration (Changelog Section) -->
+        <!-- Requirements: prose dark:prose-invert classes wrapper, markdown structure support -->
+        <section id="changelog" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 rounded-3xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2">Workspace Changelog</h2>
+          
+          <article class="prose prose-slate dark:prose-invert max-w-none">
+            <h3>Version 2.4.0 Release Notes</h3>
+            <p>We've rolled out database updates and improved global cache invalidation times. See details below:</p>
+            <ul>
+              <li><strong>Optimized build speeds</strong>: Reduced asset compiles to under 100ms.</li>
+              <li><strong>Secure cookies</strong>: Implemented HTTPOnly configurations across subdomains.</li>
+            </ul>
+            <blockquote>
+              Note: Database backup configurations will be migrated to AWS zones starting next Friday.
+            </blockquote>
+          </article>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- JavaScript dark mode toggle functionality -->
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    // Sync Icon on load
+    function updateIcon() {
+      if (document.documentElement.classList.contains('dark')) {
+        themeIcon.className = 'bi bi-sun-fill text-warning';
+      } else {
+        themeIcon.className = 'bi bi-moon-stars';
+      }
+    }
+    updateIcon();
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateIcon();
+    });
+  </script>
+</body>
+</html>

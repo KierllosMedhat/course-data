@@ -1,0 +1,46 @@
+<div class="product-catalog">
+  <h2>Product Catalog</h2>
+
+  <!-- Search and Filtering UI -->
+  <div class="filters">
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm" 
+      placeholder="Search products..." 
+      (input)="onSearch()"
+      class="search-input" />
+
+    <select (change)="onCategoryChange($any($event.target).value)" class="category-select">
+      <option value="">All Categories</option>
+      <!-- TODO: Render options for each category using *ngFor -->
+      <option *ngFor="let cat of categories" [value]="cat.id">
+        {{ cat.name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loader">
+    <p>Loading products from the API...</p>
+  </div>
+
+  <!-- Product List Display -->
+  <div *ngIf="!loading" class="product-grid">
+    <!-- TODO: Iterate over the products list and display product cards -->
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.imageUrl || 'assets/placeholder.png'" alt="{{ product.name }}" class="product-img" />
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p class="category">{{ product.categoryName }}</p>
+        <p class="price">{{ product.price | currency }}</p>
+        <p class="description">{{ product.description }}</p>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="products.length === 0" class="no-products">
+      <p>No products match your criteria.</p>
+    </div>
+  </div>
+</div>

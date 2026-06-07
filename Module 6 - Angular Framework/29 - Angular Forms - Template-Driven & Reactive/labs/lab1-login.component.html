@@ -1,0 +1,102 @@
+<div class="login-container">
+  <h2>Lab 1: The Ultimate Login Refactor</h2>
+
+  <!-- ==================== APPROACH A: TEMPLATE-DRIVEN FORM ==================== -->
+  <!-- TODO: Uncomment this block to build the Template-Driven form first. -->
+  <!--
+  <div class="form-section">
+    <h3>Approach A: Template-Driven Form</h3>
+    <form #loginForm="ngForm" (ngSubmit)="onTemplateSubmit(loginForm)" novalidate>
+      <div class="form-group">
+        <label for="template-email">Email Address</label>
+        <input 
+          type="email" 
+          id="template-email" 
+          name="email"
+          class="form-control"
+          ngModel
+          required
+          email
+          #templateEmail="ngModel"
+        />
+        <div *ngIf="templateEmail.invalid && (templateEmail.dirty || templateEmail.touched)" class="error-msg">
+          <small *ngIf="templateEmail.errors?.['required']">Email is required.</small>
+          <small *ngIf="templateEmail.errors?.['email']">Please enter a valid email.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="template-password">Password</label>
+        <input 
+          type="password" 
+          id="template-password" 
+          name="password"
+          class="form-control"
+          ngModel
+          required
+          minlength="8"
+          #templatePassword="ngModel"
+        />
+        <div *ngIf="templatePassword.invalid && templatePassword.touched" class="error-msg">
+          <small *ngIf="templatePassword.errors?.['required']">Password is required.</small>
+          <small *ngIf="templatePassword.errors?.['minlength']">Password must be at least 8 characters.</small>
+        </div>
+      </div>
+
+      <div class="form-check">
+        <input 
+          type="checkbox" 
+          id="template-remember" 
+          name="rememberMe"
+          ngModel
+        />
+        <label for="template-remember">Remember Me</label>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">Submit (Template-Driven)</button>
+    </form>
+  </div>
+  -->
+
+  <!-- ==================== APPROACH B: REACTIVE FORM ==================== -->
+  <!-- TODO: Implement and bind the Reactive Form below. -->
+  <div class="form-section">
+    <h3>Approach B: Reactive Form</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="onReactiveSubmit()" novalidate>
+      
+      <div class="form-group">
+        <label for="reactive-email">Email Address</label>
+        <!-- TODO: Bind control using formControlName -->
+        <input 
+          type="email" 
+          id="reactive-email" 
+          class="form-control"
+        />
+        <!-- TODO: Add validation error messages when email control is touched and invalid -->
+      </div>
+
+      <div class="form-group">
+        <label for="reactive-password">Password</label>
+        <!-- TODO: Bind control using formControlName -->
+        <input 
+          type="password" 
+          id="reactive-password" 
+          class="form-control"
+        />
+        <!-- TODO: Add validation error messages when password control is touched and invalid -->
+      </div>
+
+      <div class="form-check">
+        <!-- TODO: Bind control using formControlName -->
+        <input 
+          type="checkbox" 
+          id="reactive-remember" 
+        />
+        <label for="reactive-remember">Remember Me</label>
+      </div>
+
+      <!-- TODO: Disable button if form is invalid -->
+      <button type="submit" class="btn btn-primary">Submit (Reactive)</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2 - Styled Data Table</title>
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    /* Smooth delete animation */
+    .fade-out {
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.5s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <div class="container my-5">
+    <h2 class="mb-4">User Directory</h2>
+
+    <!-- TODO: Step 3: Add responsive table wrapper -->
+    <div class="table-responsive shadow-sm bg-white rounded">
+      
+      <!-- TODO: Step 3: Add classes 'table', 'table-striped', 'table-hover', 'table-bordered', 'align-middle' -->
+      <table class="table table-striped table-hover table-bordered align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <!-- TODO: Step 4: Status Column -->
+            <th scope="col">Status</th>
+            <!-- TODO: Step 5: Actions Column -->
+            <th scope="col" class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Row 1 -->
+          <tr id="row-1">
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john@example.com</td>
+            <td>Administrator</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-1"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 2 -->
+          <tr id="row-2">
+            <td>2</td>
+            <td>Jane Smith</td>
+            <td>jane@example.com</td>
+            <td>Editor</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-2"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 3 -->
+          <tr id="row-3">
+            <td>3</td>
+            <td>Bob Johnson</td>
+            <td>bob@example.com</td>
+            <td>Subscriber</td>
+            <td><span class="badge bg-danger">Suspended</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-3"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 4 -->
+          <tr id="row-4">
+            <td>4</td>
+            <td>Alice Williams</td>
+            <td>alice@example.com</td>
+            <td>Contributor</td>
+            <td><span class="badge bg-warning text-dark">Pending</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-4"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 5 -->
+          <tr id="row-5">
+            <td>5</td>
+            <td>Charlie Brown</td>
+            <td>charlie@example.com</td>
+            <td>Subscriber</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-5"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 6 -->
+          <tr id="row-6">
+            <td>6</td>
+            <td>Diana Prince</td>
+            <td>diana@example.com</td>
+            <td>Administrator</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-6"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 7 -->
+          <tr id="row-7">
+            <td>7</td>
+            <td>Ethan Hunt</td>
+            <td>ethan@example.com</td>
+            <td>Editor</td>
+            <td><span class="badge bg-warning text-dark">Pending</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-7"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- Row 8 -->
+          <tr id="row-8">
+            <td>8</td>
+            <td>Fiona Gallagher</td>
+            <td>fiona@example.com</td>
+            <td>Subscriber</td>
+            <td><span class="badge bg-danger">Suspended</span></td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-danger delete-btn" data-row-id="row-8"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- TODO: Step 6: Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this user row? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete User</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Table Interaction Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let rowToDelete = null;
+      
+      const deleteModalEl = document.getElementById('deleteConfirmModal');
+      const deleteModal = new bootstrap.Modal(deleteModalEl);
+      const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+      // Add click handler to all delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const rowId = btn.getAttribute('data-row-id');
+          rowToDelete = document.getElementById(rowId);
+          deleteModal.show();
+        });
+      });
+
+      // Handle confirmation button click
+      confirmDeleteBtn.addEventListener('click', () => {
+        if (rowToDelete) {
+          // Add transition class
+          rowToDelete.classList.add('fade-out');
+          
+          // Wait for the transition to finish, then remove the row
+          setTimeout(() => {
+            rowToDelete.remove();
+            rowToDelete = null;
+          }, 500);
+          
+          deleteModal.hide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

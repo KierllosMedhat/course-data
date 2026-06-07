@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Lab 1: 3D Flip Card CSS (Transforms & Perspective)
+   ========================================================================== */
+
+/* Reset & Basics */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  padding: 4rem 2rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: #64748b;
+}
+
+.directory-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   TODO 1: Card Container (The 3D Scene / Viewport).
+   Give this element an explicit perspective of 1000px.
+   Set up fixed width/height constraints for cards (e.g. width: 300px, height: 400px).
+   ========================================================================== */
+.card-container {
+  perspective: 1000px;
+  width: 300px;
+  height: 400px;
+}
+
+/* ==========================================================================
+   TODO 2: The Card Wrapper (Rotates in 3D Space).
+   Configure:
+   - Make it take 100% width and height of container.
+   - Establish 3D context using transform-style: preserve-3d.
+   - Transition transform over 0.6s using a custom timing function.
+   - Relative positioning to anchor absolute faces inside.
+   ========================================================================== */
+.card {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.6s;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   TODO 3: Card Faces (Front & Back).
+   Configure:
+   - Absolute position using inset: 0 to stack them exactly on top of each other.
+   - Hide the backs of elements using backface-visibility: hidden.
+   - Design layout styles (flex centering, styling, padding).
+   ========================================================================== */
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+
+/* Front face specific visual design */
+.card-face--front {
+  background-color: #ffffff;
+}
+
+.card-face__avatar {
+  font-size: 4rem;
+  background-color: #f1f5f9;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.card-face--front h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-face__role {
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   TODO 4: Card Back Face Specifics.
+   Configure:
+   - Pre-rotate the back face by 180 degrees on the Y-axis (transform: rotateY(180deg)).
+   - Set up background color, font sizes, text color.
+   ========================================================================== */
+.card-face--back {
+  background-color: #1e293b;
+  color: white;
+  transform: rotateY(180deg);
+  border-color: #1e293b;
+}
+
+.card-face--back h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-face__bio {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.card-face__btn {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.card-face__btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* ==========================================================================
+   TODO 5: Hover and Focus Interactions.
+   - When the user hovers over .card-container, rotate .card by rotateY(180deg).
+   - Increase box shadow intensity or translate position slightly on hover.
+   ========================================================================== */
+.card-container:hover .card {
+  transform: rotateY(180deg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}

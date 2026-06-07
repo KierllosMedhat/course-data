@@ -1,0 +1,22 @@
+<div class="shop-container">
+  <header class="shop-header">
+    <h1>ShopAngular</h1>
+    <!-- TODO: Display the cart count dynamically -->
+    <!-- Hint: Use cart().length -->
+    <div class="cart-status">
+      🛒 Cart (<!-- Cart Count -->)
+      <button (click)="clearCart()">Clear</button>
+    </div>
+  </header>
+
+  <!-- TODO: Display message if it's set (Bonus) -->
+  <!-- Hint: Use @if (message()) -->
+  <div class="alert-message">
+    <!-- Message content -->
+  </div>
+
+  <main class="product-grid">
+    <!-- TODO: Use @for to iterate over products and display <app-product-card> -->
+    <!-- Bind [product] and handle (addedToCart) event -->
+  </main>
+</div>

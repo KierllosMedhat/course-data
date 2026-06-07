@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1 - Pokedex</title>
+    <style>
+        .container {
+            margin: 20px auto;
+            max-width: 400px;
+            font-family: sans-serif;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+        #pokemon-card {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            display: none;
+            background-color: #f9f9f9;
+        }
+        #pokemon-card img {
+            max-width: 200px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pokedex</h1>
+        <input type="text" id="search-input" placeholder="Enter Pokemon name or ID">
+        <button id="search-btn">Search</button>
+        
+        <div id="error-message" class="error"></div>
+        
+        <div id="pokemon-card">
+            <h2 id="poke-name"></h2>
+            <p id="poke-id"></p>
+            <img id="poke-img" src="" alt="Pokemon Artwork">
+            <p id="poke-types"></p>
+        </div>
+    </div>
+    <script src="lab1-pokedex.js" defer></script>
+</body>
+</html>

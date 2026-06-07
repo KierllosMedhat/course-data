@@ -1,0 +1,29 @@
+<div class="dashboard-view">
+  <h1>Lab 2: Dashboard Deferred Loading Demo</h1>
+  <p>The top of this page renders immediately. The chart component is located below the viewport. Scroll down to trigger deferred loading.</p>
+
+  <div class="spacer-block">
+    <p>↓↓ Scroll Down to load the heavy chart widget ↓↓</p>
+  </div>
+
+  <!-- TODO: Implement deferred loading block for the heavy chart component
+       - Trigger: on viewport
+       - Placeholder: show a skeleton card
+       - Loading: show a spinner/loading text with a minimum duration of 500ms to avoid flickering
+       - Error: show an error message if loading fails -->
+  @defer (on viewport) {
+    <app-heavy-chart />
+  } @placeholder {
+    <div class="skeleton-placeholder">
+      <p>📈 Chart module placeholder. Scroll into view to load...</p>
+    </div>
+  } @loading (minimum 500ms) {
+    <div class="spinner-loading">
+      <p>Downloading chart files...</p>
+    </div>
+  } @error {
+    <div class="error-msg">
+      <p>Error: Could not load the heavy chart module chunk.</p>
+    </div>
+  }
+</div>

@@ -1,0 +1,37 @@
+<div class="character-explorer">
+  <h2>Rick and Morty Character Explorer</h2>
+
+  <!-- TODO: 1. Loading State -->
+  <!-- Show a spinner or message while characterResource is loading. -->
+  <!-- Hint: Use @if (characterResource.isLoading()) -->
+  <div class="loading">
+    <p>⏳ Loading characters...</p>
+  </div>
+
+  <!-- TODO: 2. Error State -->
+  <!-- Show an error message and a retry button if fetching fails. -->
+  <!-- Hint: Use @else if (characterResource.error()) -->
+  <!-- Implement a click listener on the button that calls: characterResource.reload() -->
+  <div class="error-state">
+    <p>❌ Failed to load characters.</p>
+    <button>Try Again</button>
+  </div>
+
+  <!-- TODO: 3. Success State -->
+  <!-- Render the grid of character cards when data is loaded successfully. -->
+  <!-- Hint: Use @else -->
+  <!-- Iterate through characters using @for (character of characterResource.value()?.results; track character.id) -->
+  <!-- Handle empty lists with an @empty block inside the @for loop. -->
+  <div class="character-grid">
+    <!-- 
+      <div class="character-card">
+        <img [src]="character.image" [alt]="character.name">
+        <h3>{{ character.name }}</h3>
+        <p>Species: {{ character.species }}</p>
+        
+        <!-- Use an @if or @switch statement to apply different css classes or styles depending on status (Alive vs Dead vs unknown) -->
+        <span class="status">Status: {{ character.status }}</span>
+      </div>
+    -->
+  </div>
+</div>

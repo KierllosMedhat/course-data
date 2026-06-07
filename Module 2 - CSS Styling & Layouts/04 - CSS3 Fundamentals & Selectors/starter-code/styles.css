@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Portfolio Assignment - Part 3: Global Styling & Design Tokens
+   ========================================================================== */
+
+/* 
+   OPTIONAL BONUS: Set up Cascade Layers
+   Uncomment the line below to group your styles:
+   @layer reset, base, layout, components, utilities;
+*/
+
+/* ==========================================================================
+   1. Universal Reset
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   2. Design Tokens (CSS Variables)
+   ========================================================================== */
+:root {
+  /* TODO 4a: Define 5 color variables using oklch() color space
+     - Background color
+     - Text color
+     - Primary brand color
+     - Secondary brand color
+     - Muted/Border color
+  */
+  --bg-color: oklch(100% 0 0); /* Example: Pure white */
+  /* Add other colors here */
+
+  /* TODO 4b: Define 5 spacing variables (xs, sm, md, lg, xl) in rem
+     - Example: --space-xs: 0.25rem; (4px)
+  */
+
+  /* TODO 4c: Define 2 font-family variables
+     - Heading font (e.g., Georgia or Serif font)
+     - Body font (e.g., System UI or sans-serif)
+  */
+
+  /* TODO 4d: Define 2 border-radius variables
+     - Small border-radius (for buttons/cards)
+     - Large border-radius (for larger elements)
+  */
+}
+
+/* ==========================================================================
+   OPTIONAL BONUS: Dark Mode Variables
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* TODO: Override colors here to implement dark mode */
+  }
+}
+
+/* ==========================================================================
+   3. Base Styles
+   ========================================================================== */
+body {
+  /* TODO 5a: Set background-color, color, font-family, and line-height using your variables */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  /* Set font family to heading variable */
+  margin-bottom: var(--space-md, 1rem);
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: var(--space-md, 1rem);
+}
+
+/* Sections */
+section {
+  /* TODO 5c: Add padding using your spacing variables */
+}
+
+/* ==========================================================================
+   4. Component Styles (using CSS Nesting)
+   ========================================================================== */
+
+/* Navigation */
+.main-nav {
+  /* TODO 5b: Style your nav and its links using CSS Nesting.
+     Make sure to style the list items, anchors, :hover states, and active/button classes.
+  */
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  /* TODO 5d: Apply border-radius, padding, background, and text colors from your variables */
+}
+
+.btn-primary {
+  /* Apply primary color */
+}
+
+.btn-secondary {
+  /* Apply secondary color */
+}
+
+/* Project Cards */
+.project-card {
+  /* Apply styles for your card components */
+}
+
+/* Contact Form */
+.contact-form {
+  /* Style your form fields and spacing */
+}

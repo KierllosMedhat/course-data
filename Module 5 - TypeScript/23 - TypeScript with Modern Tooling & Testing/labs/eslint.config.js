@@ -1,0 +1,28 @@
+// eslint.config.js - ESLint 9 Flat Config Starter
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      // TODO: Configure rules
+      // 1. Enable '@typescript-eslint/no-explicit-any' as 'error'
+      // 2. Enable '@typescript-eslint/no-unused-vars' as 'error'
+      // 3. Enable 'prefer-const' as 'error'
+      // 4. Configure 'no-console' as 'warn'
+    }
+  },
+  {
+    ignores: ['dist/**', 'node_modules/**', 'eslint.config.js']
+  }
+);

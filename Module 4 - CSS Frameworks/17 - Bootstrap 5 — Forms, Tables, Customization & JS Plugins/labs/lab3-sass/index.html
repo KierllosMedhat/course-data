@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 3 - Sass Customization Test</title>
+  <!-- Link to Compiled Sass styles -->
+  <link rel="stylesheet" href="dist/css/style.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+  <!-- Hero Banner using Custom class .hero-gradient -->
+  <div class="hero-gradient text-center py-5 mb-5 px-3">
+    <div class="container py-4">
+      <h1 class="display-4 fw-bold">Sass Custom Theme Test</h1>
+      <p class="lead">If Sass compiled correctly, this background is a gradient of your primary color, and the font is Poppins!</p>
+      <button class="btn btn-light btn-lg mt-3 fw-bold">Action Button</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        
+        <!-- Card component to test border radius and buttons -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body p-4 text-center">
+            <h4 class="card-title fw-bold text-primary mb-3">Custom Primary & Border Radius</h4>
+            <p class="card-text text-muted">Notice how the card borders are more rounded (0.75rem) and the primary color for the header and button has changed!</p>
+            
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-primary px-4">Primary Button</button>
+              <button class="btn btn-outline-primary px-4">Outline Button</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

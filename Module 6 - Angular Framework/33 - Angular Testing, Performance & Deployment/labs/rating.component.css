@@ -1,0 +1,22 @@
+.rating-container {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.star-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease-in-out;
+}
+
+.star-button:hover {
+  color: #ffb703;
+}
+
+.star-button.filled {
+  color: #ffb703;
+}

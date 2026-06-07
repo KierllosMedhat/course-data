@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Lab 2: Scroll-Driven Reading Progress Bar CSS
+   ========================================================================== */
+
+/* Reset & Layout */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.8;
+  color: #334155;
+  background-color: #f8fafc;
+}
+
+/* ==========================================================================
+   TODO 1: Progress Bar styling.
+   Configure:
+   - Position it fixed at the top left and right edges.
+   - Set a height of 6px and z-index: 100 to stay on top.
+   - Important: set transform-origin to left (0% 50%) so it expands from left to right.
+   - Define a default background gradient or color.
+   ========================================================================== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 100;
+  transform-origin: 0% 50%;
+  
+  /* ==========================================================================
+     TODO 3: Bind the scroll animation to the document scroll timeline.
+     - Set animation-name to your progress keyframes.
+     - Set animation-duration to linear.
+     - Set animation-fill-mode to both.
+     - Set animation-timeline to scroll(root) to bind it to document scrolling.
+     ========================================================================== */
+  animation: expandProgress linear both;
+  animation-timeline: scroll(root);
+}
+
+/* ==========================================================================
+   TODO 2: Create the Progress Animation.
+   Write an @keyframes rule.
+   - At 0%: transform: scaleX(0); and background-color: #ef4444 (Red).
+   - At 100%: transform: scaleX(1); and background-color: #22c55e (Green).
+   ========================================================================== */
+@keyframes expandProgress {
+  from {
+    transform: scaleX(0);
+    background-color: #ef4444; /* Red starting state */
+  }
+  to {
+    transform: scaleX(1);
+    background-color: #22c55e; /* Green ending state */
+  }
+}
+
+/* Typography styles to make the document long enough to scroll */
+.reading-container {
+  max-width: 700px;
+  margin: 6rem auto;
+  padding: 0 1.5rem;
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.article-header {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.article-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.meta {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.article-content {
+  padding: 2rem 0;
+}
+
+.article-content p {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.article-content h2 {
+  font-size: 1.75rem;
+  margin: 3rem 0 1.5rem;
+}

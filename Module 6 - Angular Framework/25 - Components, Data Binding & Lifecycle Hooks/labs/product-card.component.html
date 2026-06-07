@@ -1,0 +1,18 @@
+<div class="product-card">
+  <!-- TODO: Display product image, name, and currency-formatted price -->
+  <!-- Hint: Use product().imageUrl, product().name, and product().price with CurrencyPipe -->
+  <img alt="Product image">
+  <h3><!-- Product Name --></h3>
+  <p><!-- Product Price --></p>
+
+  <div class="quantity-controls">
+    <!-- TODO: Add buttons with click bindings to decrement/increment quantity -->
+    <!-- Display the current quantity signal value -->
+    <button (click)="decrement()">-</button>
+    <span><!-- Quantity Signal Here --></span>
+    <button (click)="increment()">+</button>
+  </div>
+
+  <!-- TODO: Add click binding to emit addedToCart event -->
+  <button (click)="addToCartClick()">Add to Cart</button>
+</div>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 2 - Dynamic Dog Gallery</title>
+    <style>
+        .container {
+            margin: 20px;
+            font-family: sans-serif;
+        }
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        #gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lab 2: Dynamic Dog Gallery</h1>
+        <!-- TODO: Create a button with id "fetch-btn" -->
+        <button id="fetch-btn">Get Dog</button>
+        
+        <!-- TODO: Create a div container with id "gallery" -->
+        <div id="gallery"></div>
+    </div>
+    
+    <script src="lab2-dog-gallery.js" defer></script>
+</body>
+</html>

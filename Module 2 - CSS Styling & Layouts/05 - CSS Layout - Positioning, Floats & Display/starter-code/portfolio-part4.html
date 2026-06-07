@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Portfolio - Part 4 (Layout & Overlays)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. Fixed Navigation Bar (BEM: header / nav) -->
+  <header class="portfolio-header">
+    <nav class="nav">
+      <a href="#" class="nav__brand">DevPortfolio</a>
+      <ul class="nav__list">
+        <li class="nav__item"><a href="#hero" class="nav__link">Home</a></li>
+        <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
+        <li class="nav__item"><a href="#skills" class="nav__link">Skills</a></li>
+        <li class="nav__item"><a href="#projects" class="nav__link">Projects</a></li>
+        <li class="nav__item">
+          <!-- Triggers the <dialog> using Javascript showModal() -->
+          <button id="open-contact-btn" class="nav__btn btn btn--primary">Contact</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 2. Hero Section with Absolute Positioning -->
+  <section id="hero" class="hero">
+    <div class="hero__content">
+      <h1 class="hero__title">Innovating Web Solutions</h1>
+      <p class="hero__subtitle">Modern CSS layout, clean BEM markup, and accessible web experiences.</p>
+    </div>
+    <!-- TODO: Absolutely positioned decorative background element(s) -->
+    <div class="hero__badge">Available for Work</div>
+    <div class="hero__circle hero__circle--1"></div>
+    <div class="hero__circle hero__circle--2"></div>
+  </section>
+
+  <!-- 3. Skills Section with Sticky Heading -->
+  <section id="skills" class="skills-section">
+    <!-- TODO: This heading needs to be sticky during scroll -->
+    <h2 class="skills-section__title">My Skillset</h2>
+    <div class="skills-section__content">
+      <div class="skill-category">
+        <h3>Frontend Development</h3>
+        <p>HTML5, CSS3, ES6 JavaScript, TypeScript, Tailwind CSS, Responsive Web Design.</p>
+      </div>
+      <div class="skill-category">
+        <h3>Backend Development</h3>
+        <p>ASP.NET Core, C#, Entity Framework Core, SQL Server, Web API Design.</p>
+      </div>
+      <div class="skill-category">
+        <h3>Other Skills</h3>
+        <p>Git, GitHub, Agile Methodologies, BEM Convention, Cascade Layers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Project Cards with Hover Overlay -->
+  <section id="projects" class="projects">
+    <h2 class="projects__title">Recent Projects</h2>
+    
+    <div class="projects__grid">
+      <!-- Project Card 1 -->
+      <article class="project-card">
+        <div class="project-card__media">
+          <!-- Dummy Project Thumbnail -->
+          <div class="project-card__dummy-img" style="background-color: #3b82f6;"></div>
+        </div>
+        
+        <!-- Hover overlay positioned absolutely inset 0 -->
+        <div class="project-card__overlay">
+          <h3 class="project-card__overlay-title">Task Manager App</h3>
+          <p class="project-card__overlay-desc">Built with custom grid layouts and a drag-and-drop workflow.</p>
+          <a href="#" class="btn btn--secondary">Learn More</a>
+        </div>
+      </article>
+
+      <!-- Project Card 2 -->
+      <article class="project-card">
+        <div class="project-card__media">
+          <div class="project-card__dummy-img" style="background-color: #10b981;"></div>
+        </div>
+        
+        <div class="project-card__overlay">
+          <h3 class="project-card__overlay-title">Recipe Portfolio</h3>
+          <p class="project-card__overlay-desc">A semantic database showcase of traditional gourmet dishes.</p>
+          <a href="#" class="btn btn--secondary">Learn More</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 5. Contact Modal using Native <dialog> -->
+  <dialog id="contact-dialog" class="contact-dialog">
+    <div class="contact-dialog__header">
+      <h2 class="contact-dialog__title">Get in Touch</h2>
+      <button id="close-contact-btn" class="contact-dialog__close" aria-label="Close modal">&times;</button>
+    </div>
+    
+    <form method="dialog" class="contact-dialog__form">
+      <div class="contact-dialog__field">
+        <label for="modal-name">Name:</label>
+        <input type="text" id="modal-name" required placeholder="Jane Doe">
+      </div>
+      <div class="contact-dialog__field">
+        <label for="modal-email">Email:</label>
+        <input type="email" id="modal-email" required placeholder="jane@example.com">
+      </div>
+      <div class="contact-dialog__field">
+        <label for="modal-msg">Message:</label>
+        <textarea id="modal-msg" rows="4" required placeholder="Write details here..."></textarea>
+      </div>
+      
+      <div class="contact-dialog__actions">
+        <button type="button" id="cancel-contact-btn" class="btn btn--secondary">Cancel</button>
+        <button type="submit" class="btn btn--primary">Submit Message</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- JavaScript to trigger and close the Dialog Modal -->
+  <script>
+    const dialog = document.getElementById('contact-dialog');
+    const openBtn = document.getElementById('open-contact-btn');
+    const closeBtn = document.getElementById('close-contact-btn');
+    const cancelBtn = document.getElementById('cancel-contact-btn');
+
+    // Open modal using .showModal()
+    openBtn.addEventListener('click', () => {
+      dialog.showModal();
+    });
+
+    // Close modal
+    const closeModal = () => dialog.close();
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+  </script>
+
+</body>
+</html>
